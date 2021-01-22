@@ -1,0 +1,109 @@
+<template>
+  <view class="unExpert view-container">
+    <view class="agent-card">
+        <view class="agent-top"></view>
+        <view class="card">
+            <image src="{{expertData.ico}}" class="card-pic"></image>
+            <image src="{{imgSrc}}" class="icon-card"></image>
+            <view class="card-content">
+                <view class="name break">{{expertData.name}}<text class="tag">{{expertData.sign}}</text></view>
+                <view class="content break">{{expertData.desc}}</view>
+            </view>
+        </view>
+    </view>
+    <view class="content-box">
+        <text class="content-title">专家介绍</text>
+        <view class="content-detail">
+            {{expertData.content}}
+        </view>
+    </view>
+  </view>
+</template>
+
+<script>
+
+	import cml from 'chameleon-api';
+	import http from '../../api/http.js';
+  
+class UnExpert   {
+
+  data = {
+    id: '',    // 顾问id
+    inType: '',
+    expertData: '', // 页面数据
+    imgSrc: "https://bx.wts999.com/m/xcxStatic/bdgj/icon-cred-big.png"
+  }
+
+  computed = {
+  }
+
+  watch  = {
+  }
+
+  methods = {
+    detailAjax() {
+      var ajax,
+          that= this;
+      if(this.inType == "2"){
+        ajax = "Exe_expertsDetail"
+      }
+      http({
+        name: ajax,
+        data: {
+            id: that.id
+        }
+      }).then(function(res) {
+        that.expertData= res.data;
+      }).catch(function(res) {
+          console.log(res)
+      })
+    }
+  }
+
+  beforeCreate(query) {
+    this.id = query.agentId; 
+    this.inType = query.inType; //详情类型
+    this.detailAjax();
+  }
+
+  created(query) {
+  }
+
+  beforeMount(query) {
+  }
+
+  onShow() {
+  }
+
+  mounted() {
+  }
+
+  onHide() {
+  }
+
+  beforeDestroy() {
+  }
+
+  destroyed() {
+  }
+}
+
+export default new UnExpert();
+</script>
+
+<style>
+  @import './unExpert.less';
+</style>
+
+<script cml-type="json">
+{
+  "base": {
+    "usingComponents": {}
+  },
+  "wx": {
+    "navigationBarTitleText": "家庭保单智能管家",
+    "backgroundTextStyle": "dark",
+    "backgroundColor": "#E2E2E2"
+  }
+}
+</script>

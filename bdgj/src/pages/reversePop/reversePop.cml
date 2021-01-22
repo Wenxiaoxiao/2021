@@ -1,0 +1,154 @@
+<template>
+  <view class="reseve-popup">
+      <view class="contact-layer-box" c-show="{{isLayerHide}}">
+          <view class="showMask"  c-catch:click="hidePop"></view>
+            <view class="contact-layer" c-show="{{isLayerHide}}">
+                <view class="title2">
+                    - 服务预约 -
+                </view>
+                <view class="msg">
+                    <view class="msg-box">
+                        <text class="msg-key">您的姓名：</text>
+                        <input placeholder="您的姓名" value="{{customerName}}" maxlength="{{20}}" c-bind:input="getName" class="msg-value msg-name" cstyle="border: 2cpx solid #ccc;border-radius: 6cpx;height: 76cpx;line-height: 76cpx;width: 346cpx;padding-left: 15cpx;letter-spacing: 0;"></input>
+                    </view>
+                    <view class="msg-box">
+                        <text class="msg-key">您的手机：</text>
+                        <input placeholder="您的手机" value="{{mobilePhone}}" type="number" c-bind:input="getTel" class="msg-value msg-phone" cstyle="border: 2cpx solid #ccc;border-radius: 6cpx;height: 76cpx;line-height: 76cpx;width: 346cpx;padding-left: 15cpx;letter-spacing: 0;"></input>
+                    </view>
+                </view>
+                <view class="submit" c-bind:click="submitFn">提交预约</view>
+            </view>
+      </view>
+      <view class="tagBox" c-show="{{isTagshow}}">
+        <view class="tag-backdrop" c-catch:click="hideTask"></view>
+        <view class="tagBlock" c-show="{{isTagshow}}">
+            <image src="{{imgSrc}}"></image>  
+        </view>
+      </view>
+  </view>
+</template>
+
+<script>
+
+	import cml from 'chameleon-api';
+  import http from '../../api/http.js';
+  import tools from '../../api/tools.js';
+  import notice from '../../api/notice.js';
+
+class ReversePop   {
+
+  props= {
+    isLayerHide: Boolean,
+    agentId: String
+  }
+  data = {
+    imgSrc: "https://bx.wts999.com/m/xcxStatic/bdgj/tan_bg.png",
+    //成功弹窗隐藏
+    isTagshow:false,
+    //时间内容隐藏
+    isTimeBox:false,
+    //用户名称
+    customerName:'',
+    //用户手机
+    mobilePhone:'',
+    reVal1: ''
+  }
+
+  computed = {
+  }
+
+  watch  = {
+  }
+
+  methods = {
+    submitFn() {
+      if(!tools.trim(this.customerName)) {
+        notice.msg("请输入您的姓名");
+        return false;
+      }
+      if(!tools.isPhone(this.mobilePhone)) {
+        notice.msg("请输入正确的手机号");
+        return false;
+      }
+      var that= this;
+      http({
+        name: "Exe_agentOrder",
+        data: {
+          agentId: that.agentId,
+          name: that.customerName,
+          mobile: that.mobilePhone
+        }
+      }).then(function(res) {
+        if(res.httpCode==200) {
+          that.$cmlEmit("hidePop");
+          that.isTagshow= true;
+        }else {
+          notice.msg(res.msg);
+        }
+        that.customerName= "";
+        that.mobilePhone= "";
+      }).catch(function(res) {
+      })
+    },
+    // 获取姓名
+    getName(e) {
+      this.customerName= e.detail.value;
+    },
+    // 号码
+    getTel(e) {
+      this.mobilePhone= e.detail.value;
+    },
+    // 隐藏弹窗
+    hidePop() {
+      this.$cmlEmit("hidePop")
+    },
+    // 隐藏预约成功图片
+    hideTask() {
+      this.isTagshow= false;
+    }
+  }
+
+  beforeCreate(query) {
+  }
+
+  created(query) {
+  }
+
+  beforeMount(query) {
+  }
+
+  onShow() {
+  }
+
+  mounted() {
+  }
+
+  onHide() {
+  }
+
+  beforeDestroy() {
+  }
+
+  destroyed() {
+  }
+}
+
+export default new ReversePop();
+</script>
+
+<style>
+  @import './reversePop.less';
+</style>
+
+<script cml-type="json">
+{
+  "base": {
+    "usingComponents": {}
+  },
+  "wx": {
+    "navigationBarTitleText": "家庭保单智能管家",
+    "backgroundTextStyle": "dark",
+    "backgroundColor": "#E2E2E2"
+  }
+}
+</script>

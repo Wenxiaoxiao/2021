@@ -1,0 +1,182 @@
+<template>
+    <view class="views" c-if="{{hasData}}">
+        <view class="title_box">
+            <view class="{{currentIdx==0?'active title':'title'}}" c-bind:click="toggleIdx(0)">进行中</view>
+            <view class="{{currentIdx==1?'active title':'title'}}" c-bind:click="toggleIdx(1)">已完成</view>
+        </view>
+        <!-- <scroller class="" height="{{scrollHeight}}"  bottom-offset="{{50}}" c-bind:scrolltobottom="onBottom"> -->
+        <scroller class="" height="{{scrollHeight}}">
+			<!-- 无数据 -->
+			<view c-if="{{!claimData.length}}" class="none">
+				<image class="none_face" src="{{imgSrc1}}"></image>
+				<text class="none_text">{{noneStr}}</text>
+				<text class="tips">温馨提示：\n1.专人全程帮您理赔，享VIP理赔绿色通道\n2.提供理赔法律援助\n24小时客服热线：400-9955-788</text>
+				<image class="fixed_icon" src="{{imgSrc3}}" c-bind:click="goClaim"></image>
+			</view>
+			<!-- 有数据 -->
+			<view c-else>
+				<view c-for="{{claimData}}" class="item" data-id="{{item.id}}" c-bind:click="claimDetail">
+					<view class="item_title">
+						<image class="a1" src="{{imgSrc2}}"></image>
+						<text class="a2">{{'申请时间：' + item.createTime}}</text>
+						<text class="a3">{{claimStatus[item.settleStatus]}}</text>
+					</view>
+					<view class="item_content">
+						<text class="b1">{{item.insuranceProductName}}</text>
+						<text class="b1">{{'保单号：' + item.policyNo}}</text>
+						<text class="b1">{{'被保险人：' + item.dangerName}}</text>
+						<text class="b1">{{'保障额度：' + item.guaranteeLimit}}</text>
+					</view>
+					<view c-if="{{item.settleResult}}" class="claim-return">
+						<view class="name">理赔反馈：<text class="reason">{{item.settleResult}}</text></view>
+					</view>
+				</view>
+				<!-- <view id="emptyDom">
+					<block c-if="{{hasMore}}">
+						<image class="a1" src="{{loadingImg}}"></image>
+						<text class="a2">加载中...</text>
+					</block>
+					<block c-else>
+						<text class="a3">-- 暂无更多数据 --</text>
+					</block>
+				</view> -->
+			</view>
+        </scroller>
+		<nav navbar="{{navbar}}"></nav>
+    </view>
+</template>
+<script>
+	import cml from 'chameleon-api';
+	import http from '../../api/http.js';
+	import tools from '../../api/tools.js';
+	import notice from '../../api/notice.js';
+    
+	class claimProgress {
+		props = {
+			
+		}
+
+		data = {
+			hasData: false,
+            scrollHeight: -1,
+			navbar: "progress",
+			currentIdx: 0, // 进行中0   已完成1
+			imgSrc1: "https://bx.wts999.com/m/xcxStatic/bdgj/none_face.png",
+			imgSrc2: "https://bx.wts999.com/m/xcxStatic/bdgj/icon_time.png",
+			imgSrc3: "https://bx.wts999.com/m/xcxStatic/bdgj/icon_claim.png",
+			loadingImg: "https://bx.wts999.com/m/xcxStatic/bdgj/loading.gif",
+			noneStr: "您还没有理赔中的保单",
+			claimStatus: ['受理中','审核中','审核通过','打款中','已完成'],
+			claimData: [], // 显示的数据
+			claiming: [], // 理赔中数据
+			claimed: [],  // 理赔完成数据
+			currentNum: 1
+			// currentNum: [1,1],
+			// maxPage: 99,
+			// hasMore: true
+		}
+
+		methods = {
+			getData() {
+				var that= this;	
+				http({
+					name: 'c_progress',
+					data: {
+						pageNum: that.currentNum,
+						pageSize: 99
+					}
+				}).then(function(res) {
+					that.maxPage= res.pages;
+					res.data.map(function(item) {
+						// 保障额度显示内容判断
+						item.guaranteeLimit= that.guaranteeLimit2(item);
+						// 进行(0,1,2,3)/已完成(4)状态分类
+						if(item.settleStatus==4) {
+							that.claimed.push(item);
+						}else {
+							that.claiming.push(item);
+						}
+					})
+					that.claimData= that.claiming;
+					that.hasData= true;
+					notice.hideloading();
+					// if(that.currentNum==that.maxPage) {
+					// 	that.hasMore= false;
+					// }
+				}).catch(function(res) {
+					that.hasData= true;
+					notice.hideloading();
+				})
+			},
+			toggleIdx(i) {
+				// 数据切换
+				this.claimData=  i? this.claimed: this.claiming;
+				// 无数据时提示切换
+				this.noneStr= i?'您还没有已完成理赔的保单':'您还没有理赔中的保单';
+				this.currentIdx= i;
+			},
+			guaranteeLimit2(content) { //根据产品类型判断是否显示保障金额
+				var val = "";
+				if(!content)return
+				if ((content.typeCode && content.typeCode.indexOf("03") > -1) || (content.insuranceProductName && content.insuranceProductName.indexOf('重疾') > -1)) {
+					val = content.policy.guaranteeLimit + "元";
+				} else {
+					val = "详见保障权益"
+				}
+				return val;
+			},
+			// 去保单页面
+			goClaim() {
+				cml.redirectTo ({
+					path: "/pages/policyList/policyList"
+				});
+			},
+			claimDetail(e) {
+				cml.navigateTo({
+					path: "/pages/webView",
+					query: {
+						url: 'https://bx.wts999.com/#/personal/myClaimsDetail/'+e.currentTarget.dataset.id+'?login=2'
+					}
+				});
+			}
+		}
+		beforeCreate() {
+			notice.showloading("加载中...");
+			this.getData();
+		}
+		
+		created() {
+			cml.getSystemInfo().then((info) => {
+				if(info.env == 'weex') {
+					this.scrollHeight = Number(info.viewportHeight) - 192 - 88;
+				} else {
+					this.scrollHeight = Number(info.viewportHeight) - 192;
+				}
+			})
+			tools.hideMenu();
+		}
+
+		mounted() {
+			
+		}
+	}
+
+	export default new claimProgress();
+</script>
+
+<style lang="less">
+    @import './claimProgress.less';
+</style>
+<script cml-type="json">
+	{ 
+		"base": { 
+		"usingComponents": {
+			"nav": "../../components/nav"
+			} 
+		},
+		"navigationBarTitleText": "家庭保单智能管家",
+		"backgroundTextStyle": "dark",
+		"backgroundColor": "#fff",
+		"defaultTitle": "家庭保单智能管家"
+	}
+</script>

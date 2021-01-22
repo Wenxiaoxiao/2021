@@ -1,0 +1,52 @@
+<template>
+  <app store="{{store}}" router-config="{{routerConfig}}"></app>
+</template>
+
+<script>
+import store from '../store/index.js'
+import routerConfig from '../router.config.json';
+
+class App {
+  data = {
+    store,
+    routerConfig
+  }
+  created(res) {
+  }
+}
+
+export default new App();
+</script>
+
+<style>
+
+</style>
+
+<script cml-type="json">
+{
+  "wx": {
+    "window": {
+      "backgroundTextStyle":"light",
+      "navigationBarBackgroundColor": "#3365dd",
+      "navigationBarTitleText": "家庭保单智能管家",
+      "navigationBarTextStyle":"white"
+    }
+  },
+  "baidu": {
+    "window": {
+      "backgroundTextStyle": "light",
+      "navigationBarBackgroundColor": "#ffffff",
+      "navigationBarTitleText": "Chameleon",
+      "navigationBarTextStyle": "black"
+    }
+  },
+  "alipay": {
+      "window": {
+        "titleBarColor": "#fff",
+        "defaultTitle": "梧桐树保险网",
+        "backgroundColor": "#fff",
+        "backgroundImageColor": "#fff"
+      }
+  }
+}
+</script>

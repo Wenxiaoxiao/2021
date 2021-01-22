@@ -1,0 +1,52 @@
+<template>
+    <view class="page-body">
+      <web-view src="{{url}}"></web-view>
+    </view>
+</template>
+
+<script>
+  import cml from 'chameleon-api';
+
+  import tools from '../api/tools.js';
+  import notice from '../api/notice.js';
+  import http from '../api/http.js';
+
+  class MyProject {
+    data = {
+      url:"https://bx.wts999.com/m/customer/index.html",
+      
+    }
+    methods = {
+      
+    }
+
+    beforeCreate(params){
+      if(params.url) {
+        this.url = decodeURIComponent(params.url);
+      }
+    }
+    mounted() {
+
+    }
+    created(params) {
+      if(params.c) {
+            cml.setStorage('channel', params.c);
+      } 
+    }
+  }
+  export default new MyProject();
+</script>
+<style>
+</style>
+<script cml-type="json">
+  {
+    "base":{
+      "usingComponents": {
+        
+      },
+      "navigationBarTitleText": "预约核保专家",
+      "backgroundTextStyle": "dark",
+      "backgroundColor": "white"
+    }
+  }
+</script>

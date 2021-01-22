@@ -1,0 +1,138 @@
+{
+	"mode": "history",
+	"pages": [
+		{
+			"path": "pages/policyList/policyList",
+	        "style" : {
+	            // "navigationBarTitleText":"首页"
+	        }
+		},
+		{
+			"path": "pages/invitation/invitation",
+	        "style" : {
+	            //"navigationBarTitleText":"保单邀请"
+	        }
+		},
+		// {
+		// 	"path": "pages/authorizationPage/authorizationPage",
+		//     "style" : {
+		//         //"navigationBarTitleText":"微信授权"
+		//     }
+		// },
+		{
+			"path": "pages/claimProgress/claimProgress",
+	        "style" : {
+	            //"navigationBarTitleText":"理赔进度"
+	        }
+		},
+		{
+			"path": "pages/insureAnalysis/insureAnalysis",
+	        "style" : {
+	            //"navigationBarTitleText":"保障分析"
+	        }
+		},
+		{
+			"path": "pages/appointAdviser/appointAdviser",
+	        "style" : {
+	            //"navigationBarTitleText":"顾问预约"
+	        }
+		},
+		{
+			"path": "pages/vertifyPolicy/vertifyPolicy",
+	        "style" : {
+	            //"navigationBarTitleText":"保单验真"
+	        }
+		},
+		{
+			"path": "pages/unExpert/unExpert",
+	        "style" : {
+	            //"navigationBarTitleText":"保险专家"
+	        }
+		},
+		{
+			"path": "pages/inExpert/inExpert",
+	        "style" : {
+	            //"navigationBarTitleText":"保险顾问"
+	        }
+		},
+		{
+			"path": "pages/bindPolicy/bindPolicy",
+	        "style" : {
+	            //"navigationBarTitleText":"绑定保单"
+	        }
+		},
+		{
+			"path": "pages/minePolicy/minePolicy",
+	        "style" : {
+	            //"navigationBarTitleText":"我的服务"
+	        }
+		},
+		{
+			"path": "pages/orderList/orderList",
+	        "style" : {
+	            //"navigationBarTitleText":"其他订单类型查询"
+	        }
+		}, 
+		{
+			"path": "pages/policyDetail/policyDetail",
+	        "style" : {
+	            //"navigationBarTitleText":"保单详情"
+	        }
+		}, {
+			"path": "pages/protectRight/protectRight",
+	        "style" : {
+	            //"navigationBarTitleText":"保障权益"
+	        }
+		}, {
+			"path": "pages/sendComment/sendComment",
+	        "style" : {
+	            //"navigationBarTitleText":"评价商品"
+	        }
+		},{
+			"path": "pages/familyMember/familyMember",
+	        "style" : {
+	            //"navigationBarTitleText":"我的家庭成员"
+	        }
+		},{
+			"path": "pages/onlineClaims/onlineClaims",
+	        "style" : {
+	            //"navigationBarTitleText":"快速理赔"
+	        }
+		},
+		{
+			"path": "pages/BDmobile/BDmobile",
+	        "style" : {
+	            //"navigationBarTitleText":"绑定手机号"
+	        }
+		},
+		{
+			"path": "pages/policyNumbers/policyNumber",
+	        "style" : {
+	            //"navigationBarTitleText":"续费保单总数"
+	        }
+		},
+		{
+			"path": "pages/familyTotalPremium/familyTotalPremium",
+	        "style" : {
+	            //"navigationBarTitleText":"今年家庭总保费"
+	        }
+		},
+		{
+			"path": "pages/webView",
+	        "style" : {
+	            //"navigationBarTitleText":"保单预览"
+	        }
+		},
+		{
+			"path": "pages/claimDetail/claimDetail",
+	        "style" : {
+	            //"navigationBarTitleText":"保单详情"
+	        }
+		}
+    ],
+	"globalStyle": {
+        "navigationBarTextStyle": "#fff",
+        "navigationBarTitleText": "家庭保单智能管家",
+        "navigationBarBackgroundColor": "#3365dd"
+	}
+}

@@ -1,0 +1,96 @@
+<template>
+<view>
+  <form report-submit="true" report-submit-timeout="10000" bindsubmit="payAjax">
+    <origin-button form-type="submit" class="pay-button">立即支付</origin-button>
+  </form>
+</view>
+</template>
+
+<script>
+import myApi from '../../components/tools/tools.interface';
+import tools from '../../api/tools.js';
+import http from '../../api/http.js';
+
+class PayButton implements PayButtonInterface {
+  props = {
+    tradeNo: String
+  }
+  data = {
+    loading: false
+  }
+  methods = {
+    payAjax(event) {
+      console.log(this.tradeNo);
+      console.log("form", event);
+      tools.getAppUserinfo().then(data => {
+        const params = {
+          tradeNo: this.tradeNo,
+          openid: data.openid,
+          orderType: "fsServer"
+        }
+        if (this.loading) {
+          return;
+        }
+        this.loading = true;
+        myApi.showLoading();
+        console.log(params)
+        http({
+          url: '/pay/wechat/minijsapi',
+          contentType: "form",
+          data: params
+        }).then(res => {
+          myApi.hideLoading();
+          this.loading = false;
+          console.log(res);
+          res.data.success = res => {
+            this.$cmlEmit("ok");
+            // 发送模板消息
+            this.sendMsg(event);
+          }
+          res.data.fail = res => {
+            console.log("支付已取消", res);
+          }
+          console.log(res.data)
+          wx.requestPayment(res.data);
+        }).catch(e => {
+          myApi.hideLoading();
+          this.loading = false;
+        })
+      })
+    },
+    sendMsg(event) {
+      if (event.detail.formId && event.detail.formId.indexOf(" ") < 0) {
+        this.sendMsg(event.detail.formId);
+      }
+      http({
+        name: 'login.wxminiSendMessage',
+        data: {
+          formId: event.detail.formId,
+          orderId: this.tradeNo
+        }
+      }).then(res => {
+        console.log("模板消息发送成功!", res);
+      }).catch(err => {
+        console.log(err);
+      })
+    }
+  }
+}
+
+
+export default new PayButton();
+</script>
+
+<style >
+@import "./payButton.less";
+</style>
+
+<script cml-type="json">
+{
+		"base": {
+				"usingComponents": {
+						
+				}
+		}
+}
+</script>

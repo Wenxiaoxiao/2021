@@ -1,0 +1,418 @@
+/**
+ * 这里编写 sass 之后，可在 vue 的 style 标签中通过 @import 相对路径引入
+ * 注意 style 标签的 lang 属性需要设置为 less/sass
+ */
+.wrapper {
+  flex-direction: row;
+  justify-content: space-around;
+}
+.container {
+  width: 750rpx;
+  min-height: 1000rpx;
+}
+/*margin值*/
+/*上*/
+.margin-top-10 {
+  margin-top: 10rpx !important;
+}
+.margin-top-20 {
+  margin-top: 20rpx !important;
+}
+.margin-top-30 {
+  margin-top: 30rpx !important;
+}
+.margin-top-40 {
+  margin-top: 40rpx !important;
+}
+/*左*/
+.margin-left-10 {
+  margin-left: 10rpx !important;
+}
+.margin-left-20 {
+  margin-left: 20rpx !important;
+}
+.margin-left-30 {
+  margin-left: 30rpx !important;
+}
+.margin-left-40 {
+  margin-left: 40rpx !important;
+}
+/*右*/
+.margin-right-10 {
+  margin-right: 10rpx !important;
+}
+.margin-right-20 {
+  margin-right: 20rpx !important;
+}
+.margin-right-30 {
+  margin-right: 30rpx !important;
+}
+.margin-right-40 {
+  margin-right: 40rpx !important;
+}
+/*下*/
+.margin-bottom-10 {
+  margin-bottom: 10rpx !important;
+}
+.margin-bottom-20 {
+  margin-bottom: 20rpx !important;
+}
+.margin-bottom-30 {
+  margin-bottom: 30rpx !important;
+}
+.margin-bottom-40 {
+  margin-bottom: 40rpx !important;
+}
+/*padding值*/
+/*上*/
+.padding-top-10 {
+  padding-top: 10rpx !important;
+}
+.padding-top-20 {
+  padding-top: 20rpx !important;
+}
+.padding-top-30 {
+  padding-top: 30rpx !important;
+}
+.padding-top-40 {
+  padding-top: 40rpx !important;
+}
+/*左*/
+.padding-left-10 {
+  padding-left: 10rpx !important;
+}
+.padding-left-20 {
+  padding-left: 20rpx !important;
+}
+.padding-left-30 {
+  padding-left: 30rpx !important;
+}
+.padding-left-40 {
+  padding-left: 40rpx !important;
+}
+/*右*/
+.padding-right-10 {
+  padding-right: 10rpx !important;
+}
+.padding-right-20 {
+  padding-right: 20rpx !important;
+}
+.padding-right-30 {
+  padding-right: 30rpx !important;
+}
+.padding-right-40 {
+  padding-right: 40rpx !important;
+}
+/*下*/
+.padding-bottom-10 {
+  padding-bottom: 10rpx !important;
+}
+.padding-bottom-20 {
+  padding-bottom: 20rpx !important;
+}
+.padding-bottom-30 {
+  padding-bottom: 30rpx !important;
+}
+.padding-bottom-40 {
+  padding-bottom: 40rpx !important;
+}
+.justify-center {
+  flex-direction: row;
+  justify-content: center;
+}
+.justify-between {
+  flex-direction: row;
+  justify-content: space-between;
+}
+.fl {
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-end;
+}
+.fr {
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+.fc {
+  flex-direction: row;
+  justify-content: center;
+}
+.line-one {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+.line-two {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.f-24 {
+  font-size: 24rpx;
+  line-height: 36rpx;
+}
+.f-26 {
+  font-size: 26rpx;
+  line-height: 39rpx;
+}
+.f-28 {
+  font-size: 28rpx;
+  line-height: 42rpx;
+}
+.f-30 {
+  font-size: 30rpx;
+  line-height: 45rpx;
+}
+.f-32 {
+  font-size: 32rpx;
+  line-height: 48rpx;
+}
+.c-f {
+  color: #ffffff;
+}
+.c-0 {
+  color: #000000;
+}
+image {
+  height: auto;
+}
+.personalMy {
+  background: #f5f5f5;
+}
+.person-center-top {
+  position: relative;
+  width: 100%;
+}
+.person-center-top .person-title {
+  padding: 25rpx;
+  background-color: #FFF;
+}
+.person-center-top .person-title .person-title-desc {
+  font-size: 30rpx;
+  line-height: 32rpx;
+  border-left: 3px solid #0382ff;
+  color: #000;
+  padding-left: 10rpx;
+  flex-direction: row;
+  align-items: center;
+}
+.person-center-top .person-title .person-title-desc .setting {
+  width: 36rpx;
+  margin-left: 20rpx;
+}
+.person-center-top .person-list {
+  display: block;
+  background-color: #FFF;
+  white-space: nowrap;
+}
+.person-center-top .person-li {
+  display: inline-block;
+  width: 170rpx;
+  text-align: center;
+  position: relative;
+  padding-bottom: 30rpx;
+  align-items: center;
+  vertical-align: top;
+}
+.person-center-top .person-li .icon-chuyidong {
+  position: absolute;
+  width: 40rpx;
+  height: 40rpx;
+  line-height: 40rpx;
+  right: 15rpx;
+  top: 0;
+  background: #fff;
+  border-radius: 50%;
+  border: none;
+}
+.person-center-top .person-li .person-li-img {
+  display: block;
+  width: 140rpx;
+  height: 140rpx;
+  border-radius: 50%;
+  margin: 0 auto 8rpx;
+  border: 1px solid #ddd;
+}
+.person-center-top .person-li .person-li-img.addImg {
+  border: 1px solid #fff;
+}
+.person-center-top .person-li .name {
+  width: 100%;
+  font-size: 26rpx;
+  color: #000;
+  text-align: center;
+}
+.person-center-top .person-li.sharePerson {
+  position: relative;
+}
+.person-center-top .person-li.sharePerson .shareBtn {
+  width: 100%;
+  height: 190rpx;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.person-center-top .li-w {
+  width: 160rpx;
+}
+.person-center-top .vip_service {
+  margin-top: 7rpx;
+  background: #FFF;
+  padding-bottom: 30rpx;
+}
+.person-center-top .vip_service .vip_service_content {
+  display: flex;
+  margin-top: 15rpx;
+  flex-direction: row;
+  justify-content: space-around;
+}
+.person-center-top .vip_service .vip_service_content .vip_service_box {
+  display: flex;
+  flex-direction: column;
+  width: 104rpx;
+}
+.person-center-top .vip_service .vip_service_content .vip_service_box .vip_service_img {
+  margin-bottom: 20rpx;
+  height: 68rpx;
+  width: 104rpx;
+}
+.person-center-top .vip_service .vip_service_content .vip_service_box text {
+  font-size: 26rpx;
+  line-height: 30rpx;
+  letter-spacing: 0;
+}
+.person-center-top .title {
+  background-color: #fff;
+  font-size: 30rpx;
+  line-height: 90rpx;
+  position: relative;
+  margin: 18rpx 0 0;
+  border-bottom: 2rpx solid #efefef;
+  padding-left: 30rpx;
+}
+.person-center-top .title .kf {
+  width: 200rpx;
+  position: absolute;
+  right: 0;
+  top: 16%;
+}
+.person-center-top .box {
+  position: relative;
+  padding: 20rpx 20rpx;
+  background-color: #fff;
+  margin-bottom: 20rpx;
+}
+.person-center-top .box.padd0 {
+  padding: 0 20rpx;
+}
+.person-center-top .box .li-cross {
+  width: 50%;
+  float: left;
+  height: 130rpx;
+  text-align: center;
+  color: #000;
+}
+.person-center-top .box .li-cross:first-child {
+  border-right: 1px solid #ececec;
+}
+.person-center-top .box .li-cross .icons {
+  display: block;
+  width: 82rpx;
+  height: 80rpx;
+  margin: 0 auto 3px;
+}
+.person-center-top .box .li-cross .item-e-title {
+  font-size: 30rpx;
+  line-height: 40rpx;
+}
+.person-center-top .box .li-vertical {
+  position: relative;
+  height: 90rpx;
+  line-height: 90rpx;
+  display: block;
+  color: #000;
+  border-bottom: 1px solid #ececec;
+  padding-left: 75rpx;
+  font-size: 30rpx;
+}
+.person-center-top .box .li-vertical:last-child {
+  border-bottom: none;
+}
+.person-center-top .box .li-vertical .icons-left {
+  position: absolute;
+  left: 5px;
+  top: 50%;
+  margin-top: -20rpx;
+  width: 40rpx;
+  height: 40rpx !important;
+}
+.person-center-top .box .li-vertical .icons-right {
+  position: absolute;
+  right: 5px;
+  top: 0;
+  font-size: 30rpx;
+}
+.person-center-top .kf-layer {
+  width: 750rpx;
+  height: 100%;
+  position: fixed;
+  left: 50%;
+  top: 0;
+  margin-left: -375rpx;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 998;
+}
+.person-center-top .kf-layer .kf-box {
+  position: absolute;
+  top: 28%;
+  left: 50%;
+  margin-left: -275rpx;
+  width: 550rpx;
+  padding: 200rpx 0 0;
+  background-color: #fff;
+  border-radius: 5px;
+}
+.person-center-top .kf-layer .kf-box .auther {
+  position: absolute;
+  width: 280rpx;
+  top: -110rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+}
+.person-center-top .kf-layer .kf-box .bac {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1;
+}
+.person-center-top .kf-layer .kf-box .text {
+  font-size: 30rpx;
+  color: #000;
+  padding: 20rpx 0;
+}
+.person-center-top .kf-layer .kf-box .text .text-content {
+  text-align: center;
+}
+.person-center-top .kf-layer .kf-box .btns {
+  flex-direction: row;
+}
+.person-center-top .kf-layer .kf-box .btns .btn {
+  width: 50%;
+  height: 100rpx;
+  line-height: 100rpx;
+  font-size: 34rpx;
+  text-align: center;
+  float: left;
+  border-top: 1px solid #dddddd;
+}
+.person-center-top .kf-layer .kf-box .btns .call {
+  color: #0382ff;
+  border-left: 1px solid #dddddd;
+}

@@ -1,0 +1,247 @@
+.unExpert {
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  position: relative;
+}
+.unExpert .view-container {
+  height: 100%;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+}
+.unExpert .agent-card {
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+.unExpert .agent-card .agent-top {
+  width: 120%;
+  height: 140rpx;
+  background-color: #0088ff;
+  border-radius: 0 0 50% 50%;
+  margin-left: -10%;
+}
+.unExpert .agent-card .card {
+  width: 710rpx;
+  border: 2rpx solid #dcdcdc;
+  border-radius: 5rpx;
+  background-color: #fff;
+  position: relative;
+  margin: 0 auto;
+  min-height: 170rpx;
+  margin-top: -100rpx;
+  overflow: hidden;
+}
+.unExpert .agent-card .card .card-pic {
+  position: absolute;
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 100%;
+  -webkit-border-radius: 100%;
+  -moz-border-radius: 100%;
+  -ms-border-radius: 100%;
+  -o-border-radius: 100%;
+  border: 1px solid #dbdbdb;
+  left: 20rpx;
+  top: 30rpx;
+}
+.unExpert .agent-card .card .icon-card {
+  width: 72rpx;
+  height: 94rpx;
+  position: absolute;
+  right: 15rpx;
+  top: -2rpx;
+}
+.unExpert .agent-card .card .card-content {
+  padding-top: 40rpx;
+  padding-left: 165rpx;
+  padding-right: 20rpx;
+  padding-bottom: 20rpx;
+  min-height: 170rpx;
+}
+.unExpert .agent-card .card .card-content .name {
+  flex-direction: row;
+  font-size: 38rpx;
+  font-weight: 700;
+  width: 450rpx;
+  line-height: 1;
+  overflow: hidden;
+}
+.unExpert .agent-card .card .card-content .name .tag {
+  padding-left: 15rpx;
+  margin-left: 10rpx;
+  font-size: 30rpx;
+  font-weight: 400;
+  color: #ff5500;
+  border-left: 2rpx solid #ff5500;
+  height: 40rpx;
+  line-height: 40rpx;
+}
+.unExpert .agent-card .card .card-content .content {
+  margin-top: 22rpx;
+  font-size: 30rpx;
+  color: #000;
+}
+.unExpert .agent-card .card .card-content .dest {
+  font-size: 30rpx;
+  color: #666;
+}
+.unExpert .agent-card .card .cred-num {
+  min-height: 60rpx;
+  line-height: 1.2;
+  background-color: #fff4ec;
+  color: #ff7200;
+  font-size: 26rpx;
+  padding: 15rpx 20rpx;
+}
+.unExpert .agent-card .card .cred-num .iconfont {
+  font-size: 38rpx;
+  vertical-align: middle;
+}
+.unExpert .comment-box {
+  padding: 20rpx 20rpx 30rpx;
+}
+.unExpert .comment-box .comment-title {
+  font-weight: 900;
+  font-size: 34rpx;
+  line-height: 1.5;
+}
+.unExpert .comment-box .comment_more {
+  font-size: 32rpx;
+  text-align: center;
+  color: #9c9c9c;
+  border-bottom: 0;
+}
+.unExpert .comment-box .comment-list li {
+  padding: 20rpx;
+  border-bottom: 1px solid #dcdcdc;
+}
+.unExpert .comment-box .comment-list li:last-child {
+  border-bottom: 0;
+}
+.unExpert .comment-box .comment-list .user-msg {
+  height: 85rpx;
+  line-height: 85rpx;
+}
+.unExpert .comment-box .comment-list .user-msg .user-img {
+  width: 60rpx;
+  height: 60rpx;
+  border-radius: 100%;
+  border: 2rpx solid #dcdcdc;
+  display: inline-block;
+  vertical-align: -webkit-baseline-middle;
+  vertical-align: middle;
+  margin-top: -6rpx;
+  margin-right: 15rpx;
+}
+.unExpert .comment-box .comment-list .user-msg .user-name {
+  font-size: 30rpx;
+  color: #000;
+  display: inline-block;
+}
+.unExpert .comment-box .comment-list .user-content {
+  font-size: 28rpx;
+  color: #666;
+  padding-top: 10rpx;
+}
+.unExpert .content-box {
+  padding: 20rpx 20rpx 30rpx;
+}
+.unExpert .content-box .content-title {
+  font-weight: 900;
+  font-size: 34rpx;
+  line-height: 1.5;
+}
+.unExpert .content-box .content-detail {
+  padding-top: 15rpx;
+  font-size: 28rpx;
+  color: #000;
+}
+.unExpert .bottom-blank {
+  width: 100%;
+  height: 60px;
+}
+.unExpert .btn-bottom {
+  width: 100%;
+  height: 60px;
+  padding: 20rpx 25rpx;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  background-color: #fff;
+  border-top: 2rpx solid #dcdcdc;
+}
+.unExpert .btn-bottom .btn {
+  width: 340rpx;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  color: #fff;
+  font-size: 32rpx;
+  border-radius: 40rpx;
+}
+.unExpert .btn-bottom .btn.btn1 {
+  background-color: #ff7200;
+}
+.unExpert .btn-bottom .btn.btn2 {
+  background-color: #4587f6;
+}
+.unExpert .comment-input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 998;
+}
+.unExpert .comment-input .comment-mask {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.unExpert .comment-input .comment-content {
+  padding: 30rpx 20rpx;
+  background-color: #fff;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  z-index: 999;
+  transition: all 0.3s;
+}
+.unExpert .comment-input .comment-content .inputAreas {
+  width: 78%;
+  height: 180rpx;
+}
+.unExpert .comment-input .comment-content .inputAreas .c_user_text {
+  min-height: 100%;
+  padding: 20rpx;
+  font-size: 30rpx;
+}
+.unExpert .comment-input .comment-content .right {
+  width: 20%;
+  height: 180rpx;
+  position: relative;
+}
+.unExpert .comment-input .comment-content .right #sendMsg {
+  background-color: #eee;
+  color: #fff;
+  font-size: 30rpx;
+  width: 90%;
+  text-align: center;
+  height: 60rpx;
+  line-height: 60rpx;
+  position: absolute;
+  right: 0;
+  bottom: 10rpx;
+  border-radius: 6rpx;
+}
+.unExpert .comment-input .slide-fade-enter-active {
+  transition: all 0.2s;
+}
+.unExpert .comment-input .slide-fade-enter,
+.unExpert .comment-input .slide-fade-leave-to {
+  transform: translateY(100%);
+  opacity: 0.3;
+}

@@ -1,0 +1,313 @@
+<template>
+	<view class="personalMy">
+	<view class="poilcy_mask" c-if="{{loadingMask}}" style="height:{{totalHeight}}cpx;"></view>
+		<!-- 保单统计 -->
+		<scroller class="person-center-top" height="{{scrollHeight}}">
+			<view class="person-title">
+				<view class="person-title-desc">我的家庭
+					<!-- <image mode="widthFix" c-catch:click="displayPloicyList('/pages/familyMember/familyMember')" class="setting" mode="widthFix" src="https://bx.wts999.com/m/xcxStatic/setting.png"></image> -->
+				</view>
+			</view>
+			<view class="person-list">
+				<view class="person-li">
+					<image mode="widthFix" class="person-li-img" mode="widthFix" src="{{user.headimgurl?user.headimgurl:'https://bx.wts999.com/m/xcxStatic/person-center-03.jpg'}}" alt></image>
+					<view class="name line-one">{{user.nickname || user.mobile}}</view>
+				</view>
+
+				<block c-if="{{shareUser}}">
+					<view c-catch:click="displayPloicyList('/pages/policyList/policyList',val.id)" class="person-li" c-for="{{shareUser}}" c-for-index="i" c-for-item="val">
+						<image mode="widthFix" class="person-li-img" mode="widthFix" src="{{val.headimgurl?val.headimgurl:'https://bx.wts999.com/m/xcxStatic/person-center-03.jpg'}}" alt></image>
+						<view class="name line-one">{{val.nickname || val.mobile}}</view>
+					</view>
+				</block>
+
+				<view c-if="{{!shareFlag}}" class="person-li" c-catch:click="noshare">
+					<image mode="widthFix" class="person-li-img addImg" mode="widthFix" src="https://bx.wts999.com/m/xcxStatic/add.png" alt></image>
+					<view class="name line-one">让家人知道</view>
+				</view>
+
+				<view c-else class="person-li sharePerson">
+					<image mode="widthFix" class="person-li-img addImg" mode="widthFix" src="https://bx.wts999.com/m/xcxStatic/add.png" alt></image>
+					<view class="name line-one">让家人知道</view>
+					<button class="shareBtn" btn-style="opacity: 0;height:190cpx ;" open-type="share"></button>
+				</view>
+			</view>
+			<!-- 尊享服务 -->
+			<view class="vip_service">
+				<view class="person-title">
+					<view class="person-title-desc">尊享服务</view>
+				</view>
+				<view class="vip_service_content">
+					<view c-bind:click="navigateTo('/pages/bindPolicy/bindPolicy')" class="vip_service_box"><image class="vip_service_img" src="{{imgSrc1}}"></image><text>保单绑定</text></view>
+					<view c-bind:click="navigateTo('/pages/vertifyPolicy/vertifyPolicy')" class="vip_service_box"><image class="vip_service_img" src="{{imgSrc2}}"></image><text>保单验真</text></view>
+					<view c-bind:click="navigateTo('/pages/appointAdviser/appointAdviser')" class="vip_service_box"><image class="vip_service_img" src="{{imgSrc3}}"></image><text>顾问预约</text></view>
+				</view>
+			</view>
+			<view class="title">
+				我的家庭保单汇总
+				<!--<image mode="widthFix" mode="widthFix" src="https://bx.wts999.com/m/xcxStatic/personal-my/kf.png" alt class="kf" c-catch:click="showOrHidePolicy(true)"></image>-->
+			</view>
+			<view class="box clearfix padd0">
+				<view c-catch:click="displayOrderList('/pages/orderList/orderList','1')" class="li-vertical click-weixin">
+					<image mode="widthFix" mode="widthFix" src="https://bx.wts999.com/m/xcxStatic/personal-my/img-1.png" alt class="icons-left"></image>
+					<view class="item-e-title">全部有效保单（{{insuranceCount.validCount || 0}}）</view>
+				</view>
+				<view c-catch:click="displayOrderList('/pages/orderList/orderList','-6.-7')" class="li-vertical click-weixin">
+					<image mode="widthFix" mode="widthFix" src="https://bx.wts999.com/m/xcxStatic/personal-my/img-2.png" alt class="icons-left"></image>
+					<view class="item-e-title">已经失效保单（{{insuranceCount.invalidCount || 0}}）</view>
+				</view>
+				<view c-catch:click="displayOrderList('/pages/orderList/orderList','1','0301')" class="li-vertical click-weixin">
+					<image mode="widthFix" mode="widthFix" src="https://bx.wts999.com/m/xcxStatic/personal-my/img-3.png" alt class="icons-left"></image>
+					<view class="item-e-title">重疾保险保单（{{insuranceCount['重疾'] || 0}}）</view>
+				</view>
+				<view c-catch:click="displayOrderList('/pages/orderList/orderList','1','0201')" class="li-vertical click-weixin">
+					<image mode="widthFix" mode="widthFix" src="https://bx.wts999.com/m/xcxStatic/personal-my/img-4.png" alt class="icons-left"></image>
+					<view class="item-e-title">医疗保险保单（{{insuranceCount['医疗'] || 0}}）</view>
+				</view>
+				<view c-catch:click="displayOrderList('/pages/orderList/orderList','1','0101.1301.0901')" class="li-vertical click-weixin">
+					<image mode="widthFix" mode="widthFix" src="https://bx.wts999.com/m/xcxStatic/personal-my/img-5.png" alt class="icons-left"></image>
+					<view class="item-e-title">意外保险保单（{{insuranceCount['意外'] || 0}}）</view>
+				</view>
+				<view c-catch:click="displayOrderList('/pages/orderList/orderList','1','0501.0401')" class="li-vertical click-weixin">
+					<image mode="widthFix" mode="widthFix" src="https://bx.wts999.com/m/xcxStatic/personal-my/img-6.png" alt class="icons-left"></image>
+					<view class="item-e-title">寿险及理财险保单（{{insuranceCount['寿险'] || 0}}）</view>
+				</view>
+
+				<view c-catch:click="displayOrderList('/pages/orderList/orderList','1','inputPolicy')" class="li-vertical click-weixin">
+					<image mode="widthFix" mode="widthFix" src="https://bx.wts999.com/m/xcxStatic/personal-my/img-7.png" alt class="icons-left"></image>
+					<view class="item-e-title">管理其他平台保单（{{insuranceCount.inputCount || 0}}）</view>
+				</view>
+			</view>
+
+			<view class="kf-layer" c-show="{{isEttle}}">
+				<view class="kf-box">
+					<image mode="widthFix" mode="widthFix" src="https://bx.wts999.com/m/xcxStatic/personal-my/kf-auther.png" alt class="auther"></image>
+					<image mode="widthFix" mode="widthFix" src="https://bx.wts999.com/m/xcxStatic/personal-my/kf-bac.png" alt class="bac"></image>
+					<view class="text">
+						<view class="text-content">联系客服电话</view>
+						<view class="text-content">可录入外来保单，对家庭保单</view>
+						<view class="text-content">进行统一管理</view>
+					</view>
+					<view class="btns">
+						<view class="btn cancle" c-catch:click="showOrHidePolicy(false)">取消</view>
+						<button class="btn call" btn-style="background: none;height: 100cpx;line-height: 100cpx;color:#000;font-size:34cpx;" open-type="contact" bindcontact="handleContact">在线客服</button>
+					</view>
+				</view>
+			</view>
+		</scroller>
+		<nav navbar="{{navbar}}"></nav>
+	</view>
+</template>
+
+<script>
+	import cml from 'chameleon-api';
+	import tools from '../../api/tools.js';
+	import notice from '../../api/notice.js';
+	import http from '../../api/http.js';
+	import store from '../../store/';
+	import lifecycleInterface from '../../components/lifecycleInterface/lifecycleInterface';
+	import util from '../../components/util/util.interface';
+	class minePolicy {
+		data = {
+			scrollHeight:-1,
+			totalHeight:-1,  //总高度
+			loadingMask:true,
+			navbar:"service",
+			shareFlag:false,
+			user: {},
+			showAppDown: false, //是否显示app下载
+			isNavHide: true,
+			isEttle: false, //一键理赔
+			shareUser: [], //接收邀请用户
+			shareUserId: '', //share分享ID
+			insuranceCount: {
+				validCount: 0, //全部有效保单
+				invalidCount: 0, //已失效保单
+				inputCount: 0, //录入保单
+				"重疾": 0, //重疾
+				"医疗": 0, //医疗
+				"意外": 0, //意外
+				"寿险": 0 //寿险及理财
+			},
+			imgSrc1: "https://bx.wts999.com/m/xcxStatic/bdgj/vip_service1.png",
+			imgSrc2: "https://bx.wts999.com/m/xcxStatic/bdgj/vip_service2.png",
+			imgSrc3: "https://bx.wts999.com/m/xcxStatic/bdgj/vip_service3.png"
+		}
+		beforeCreate() {
+			util.hideShareMenu();
+		}
+		methods = {
+			...lifecycleInterface,
+			navigateTo(url) {
+				cml.navigateTo({
+					path: url
+				})
+			},
+			//客服回调
+			handleContact(){
+
+			},
+			//跳转
+			displayOrderList(url,status,type) {
+				cml.navigateTo({
+					path: url,
+					query: {
+						status:status || "",
+						type:type || ""
+					}
+				})
+			},
+
+			//跳转
+			displayPloicyList(url, userId) {
+				cml.navigateTo({
+					path: url,
+					query: {
+						userId:userId || "",
+						currentCom:"policyList"
+					}
+				})
+			},
+
+			//显示或隐藏录入外来保单
+			showOrHidePolicy(flag) {
+				this.isEttle = flag;
+			},
+			/**查询被邀请用户 */
+			shareUserQuery() {
+				var vm = this;
+				http({
+						name: 'P_policyQuery',
+						data: {}
+					})
+					.then(function(data, e) {
+						if(data.httpCode!=200) return;
+						vm.shareUser = data.data ? data.data : []
+					})
+					.catch(error => {
+						console.log(error);
+					});
+			},
+			/**保险种类保单统计 */
+			getIfyPolicy() {
+				var vm = this;
+				http({
+						name: 'P_classifyPolicyCount',
+						data: {
+							userId: this.user.id
+						}
+					})
+					.then(function(data, e) {
+						if(data.httpCode!=200) return;
+						vm.insuranceCount = data.data;
+						vm.loadingMask = false;
+						notice.hideloading();
+					})
+					.catch(error => {
+						console.log(error);
+					});
+			},
+			showBack(s) {
+				//监听弹出框关闭
+				this.showAppDown = s;
+			},
+			noshare(){
+				return notice.msg("您的保单还未分类，请给保单分类后再分享");
+			},
+
+			//拨打电话
+			makingCall(){
+				this.showOrHidePolicy(false);
+				tools.makingCall(store.state.KFPhoneNumber);
+			},
+
+			/**邀请用户进入保单 */
+    sharePolicyAdd(){
+		var vm = this;
+       http({
+        name: "P_bind_newRelations",
+        data:{userId:this.user.id}
+      }).then(data => {
+        if(data.httpCode!=200)return;
+        if(!data.data.relations || data.data.relations.length == 0){
+          return vm.shareFlag = false;
+        }
+        vm.getRelations()
+      });
+    },
+    getRelations(){
+		var vm = this;
+     http({
+        name: "P_policyShare",
+      }).then(data => {
+        if(data.httpCode!=200)return;
+        let datas = data.data;
+		vm.shareFlag = true;
+		var params = {name:vm.user.nickname || vm.user.mobile,img:vm.user.headimgurl,inviteId:datas.userid,checkKey:datas.checkKey};
+		tools.share(vm.user.nickname+'分享了TA的家庭保单', "/pages/invitation/invitation?query="+escape(JSON.stringify(params)), "https://bx.wts999.com/m/xcxStatic/shrepolicy.jpg")
+      });
+    },
+		}
+
+		created() {
+			notice.showloading("加载中...");
+			cml.getSystemInfo().then((info) => {
+				if(info.env == 'weex') {
+					this.scrollHeight = Number(info.viewportHeight) - 100 - 88;
+					this.totalHeight =  Number(info.viewportHeight)  - 88;
+				} else {
+					this.scrollHeight = Number(info.viewportHeight) - 100;
+					this.totalHeight =  Number(info.viewportHeight);
+				}
+			})
+
+			tools.hideMenu();
+		}
+
+		mounted() {
+			tools.login("/pages/minePolicy/minePolicy")
+				.then(res=>{
+					if(!res.id){
+						return cml.redirectTo ({
+							path: "/pages/authorizationPage/authorizationPage",
+							query:{path:"/pages/minePolicy/minePolicy"}
+						});
+					}
+					this.user = store.state.WTS_USER_XCX;
+					this.getIfyPolicy(); //保险种类保单统计
+					this.shareUserQuery();
+					this.sharePolicyAdd();
+				})
+				.catch(err=>{
+					console.log(err);
+				})
+			
+		}
+	}
+	export default new minePolicy();
+</script>
+<style lang="less" scoped>
+	@import "./minePolicy.less";
+	.poilcy_mask{
+		width: 100%;
+		height: 100%;
+		top: 0;
+		left: 0;
+		z-index: 100;
+		position: fixed;
+		background: #fff;
+	}
+</style>
+<script cml-type="json">
+	{
+		"base": {
+			"usingComponents": {
+				"nav": "../../components/nav"
+			},
+			"navigationBarTitleText": "家庭保单智能管家",
+			"backgroundTextStyle": "dark",
+			"backgroundColor": "#fff",
+			"defaultTitle": "家庭保单智能管家"
+		}
+	}
+</script>

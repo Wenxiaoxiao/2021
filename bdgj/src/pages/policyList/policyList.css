@@ -1,0 +1,262 @@
+/**
+ * 这里编写 sass 之后，可在 vue 的 style 标签中通过 @import 相对路径引入
+ * 注意 style 标签的 lang 属性需要设置为 scss/sass
+ */
+.wrapper {
+  flex-direction: row;
+  justify-content: space-around;
+}
+.container {
+  width: 750cpx;
+  min-height: 1000cpx;
+}
+/*margin值*/
+/*上*/
+.margin-top-10 {
+  margin-top: 10cpx !important;
+}
+.margin-top-20 {
+  margin-top: 20cpx !important;
+}
+.margin-top-30 {
+  margin-top: 30cpx !important;
+}
+.margin-top-40 {
+  margin-top: 40cpx !important;
+}
+/*左*/
+.margin-left-10 {
+  margin-left: 10cpx !important;
+}
+.margin-left-20 {
+  margin-left: 20cpx !important;
+}
+.margin-left-30 {
+  margin-left: 30cpx !important;
+}
+.margin-left-40 {
+  margin-left: 40cpx !important;
+}
+/*右*/
+.margin-right-10 {
+  margin-right: 10cpx !important;
+}
+.margin-right-20 {
+  margin-right: 20cpx !important;
+}
+.margin-right-30 {
+  margin-right: 30cpx !important;
+}
+.margin-right-40 {
+  margin-right: 40cpx !important;
+}
+/*下*/
+.margin-bottom-10 {
+  margin-bottom: 10cpx !important;
+}
+.margin-bottom-20 {
+  margin-bottom: 20cpx !important;
+}
+.margin-bottom-30 {
+  margin-bottom: 30cpx !important;
+}
+.margin-bottom-40 {
+  margin-bottom: 40cpx !important;
+}
+/*padding值*/
+/*上*/
+.padding-top-10 {
+  padding-top: 10cpx !important;
+}
+.padding-top-20 {
+  padding-top: 20cpx !important;
+}
+.padding-top-30 {
+  padding-top: 30cpx !important;
+}
+.padding-top-40 {
+  padding-top: 40cpx !important;
+}
+/*左*/
+.padding-left-10 {
+  padding-left: 10cpx !important;
+}
+.padding-left-20 {
+  padding-left: 20cpx !important;
+}
+.padding-left-30 {
+  padding-left: 30cpx !important;
+}
+.padding-left-40 {
+  padding-left: 40cpx !important;
+}
+/*右*/
+.padding-right-10 {
+  padding-right: 10cpx !important;
+}
+.padding-right-20 {
+  padding-right: 20cpx !important;
+}
+.padding-right-30 {
+  padding-right: 30cpx !important;
+}
+.padding-right-40 {
+  padding-right: 40cpx !important;
+}
+/*下*/
+.padding-bottom-10 {
+  padding-bottom: 10cpx !important;
+}
+.padding-bottom-20 {
+  padding-bottom: 20cpx !important;
+}
+.padding-bottom-30 {
+  padding-bottom: 30cpx !important;
+}
+.padding-bottom-40 {
+  padding-bottom: 40cpx !important;
+}
+.active {
+  color: #4680f6;
+}
+.justify-center {
+  flex-direction: row;
+  justify-content: center;
+}
+.justify-between {
+  flex-direction: row;
+  justify-content: space-between;
+}
+.fl {
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-end;
+}
+.fr {
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+.fc {
+  flex-direction: row;
+  justify-content: center;
+}
+.line-one {
+  lines: 1;
+}
+.line-two {
+  lines: 2;
+}
+.f-24 {
+  font-size: 24cpx;
+  line-height: 36cpx;
+}
+.f-26 {
+  font-size: 26cpx;
+  line-height: 39cpx;
+}
+.f-28 {
+  font-size: 28cpx;
+  line-height: 42cpx;
+}
+.f-30 {
+  font-size: 30cpx;
+  line-height: 45cpx;
+}
+.f-32 {
+  font-size: 32cpx;
+  line-height: 48cpx;
+}
+.c-f {
+  color: #ffffff;
+}
+.c-0 {
+  color: #000000;
+}
+image {
+  height: auto;
+}
+.policy-count {
+  flex-direction: row;
+  align-items: center;
+  padding: 20cpx 0;
+  border-bottom: 1px solid #dfdfdf;
+  height: 110cpx;
+  background: #fff;
+}
+.policy-count .count-item {
+  width: 33.33%;
+  border-right: 1px solid #dfdfdf;
+}
+.policy-count .count-item:nth-last-of-type(1) {
+  border-right: none;
+}
+.policy-count .count-item .p1 {
+  text-align: center;
+  font-size: 30cpx;
+  color: #ff6d00;
+}
+.policy-count .count-item .p2 {
+  text-align: center;
+  font-size: 28cpx;
+}
+.issort-content {
+  width: 750cpx;
+  height: 100cpx;
+  overflow: hidden;
+}
+.issort-content.borderNone {
+  border-bottom: 1px solid #dfdfdf;
+}
+.policyList {
+  background: #f5f5f5;
+}
+.carousel_content {
+  background: #f6f6f6;
+}
+.carousel_content .carousel_item {
+  height: 100cpx;
+  border-right: 1px solid #dfdfdf;
+  flex-direction: row;
+  justify-content: center;
+  padding: 25cpx 20cpx;
+}
+.carousel_content .carousel_item text {
+  line-height: 50cpx;
+  box-sizing: border-box;
+  display: inline-block;
+}
+.carousel_content .carousel_item:nth-last-of-type(1) {
+  border-right: none;
+}
+.carousel_content .carousel_item.active {
+  background: #fff;
+}
+.carousel_content .carousel_item.active .cml-text {
+  border-bottom: 6cpx solid #0084ff;
+  border-radius: 3cpx;
+}
+.carousel_content .carousel_item .cml-text {
+  padding-bottom: 10cpx;
+  align-items: center;
+  justify-content: center;
+  padding: 0 10cpx;
+  border-bottom: 6cpx solid #f6f6f6;
+  border-radius: 2cpx;
+}
+#emptyDom {
+  font-size: 34cpx;
+}
+#emptyDom .empty-icon {
+  width: 185cpx;
+  display: block;
+  margin: 60cpx auto 20cpx;
+}
+#emptyDom .empty-tip {
+  text-align: center;
+  font-size: 34cpx;
+  color: #666;
+}
+#emptyDom .empty-tip .cml-view {
+  text-align: center;
+}

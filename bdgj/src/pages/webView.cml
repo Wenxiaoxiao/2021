@@ -1,0 +1,43 @@
+<template>
+    <view class="page-body">
+      <web-view src="{{url}}"></web-view>
+    </view>
+</template>
+
+<script>
+  import cml from 'chameleon-api';
+  import store from '../store/';
+  class MyProject {
+    data = {
+      url:"",
+    }
+    methods = {
+      
+    }
+    mounted() {
+
+    }
+    beforeCreate(query) {
+      console.log(decodeURIComponent(query.url));
+      this.url = query.url ? decodeURIComponent(query.url) : store.state.PDFUrl;
+    }
+    created() {
+
+    }
+  }
+  export default new MyProject();
+</script>
+<style>
+</style>
+<script cml-type="json">
+  {
+    "base":{
+      "usingComponents": {
+        
+      },
+      "navigationBarTitleText": "家庭保单智能管家",
+      "backgroundTextStyle": "dark",
+      "backgroundColor": "#fff"
+    }
+  }
+</script>

@@ -1,0 +1,40 @@
+<script cml-type="interface">
+interface UtilInterface {
+  makingCall(): Object;
+  downloadFile(): Object;
+  openDocument(): Object;
+  login(): Object;
+  getSetting(): Object;
+  getPlatformUserInfo(): Object;
+  showLoading(option: (?Object)): Void;
+  hideLoading(option: (?Object)): Void;
+  getUpdateManager(): Object;
+  hideMenu(): Void;
+  getAliPhoneNumber(): Object;
+  canIUse(str: String): Boolean;
+  getOsInfo(): Object;
+  hideShareMenu(): Void;
+  showModal(option: (?Object)): Void;
+  showToast(option: (?Object)): Void;
+}
+</script>
+
+
+<script cml-type="wx">
+  import Method from './js/wxApi.js'
+
+  export default new Method()
+</script>
+
+<script cml-type="alipay">
+  import Method from './js/alipayApi.js'
+
+  export default new Method()
+</script>
+
+
+
+
+
+
+

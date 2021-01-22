@@ -1,0 +1,77 @@
+<template>
+  <my-webview toSrc="{{webviewSrc}}"></my-webview>
+</template>
+
+<script>
+
+// import api from '../../utils/api'
+// import util from '../../utils/util'
+// import cml from 'chameleon-api'
+// import myApi from '../../components/tools/tools.interface'
+import lifeCycle from '../../components/lifeCycle/lifeCycle.interface'
+import App from '../../app/app'
+
+var timer;
+
+class Webview   {
+
+  data = {
+    webviewSrc: ''
+  }
+
+  computed = {
+  }
+
+  watch  = {
+  }
+
+  methods = {
+    ...lifeCycle
+  }
+  beforeCreate(query) {
+    this.webviewSrc= decodeURIComponent(query.urlStr);
+  }
+
+  created(query) {
+  }
+
+  beforeMount(query) {
+  }
+
+  onShow() {
+  }
+
+  mounted() {
+  }
+
+  onHide() {
+  }
+
+  beforeDestroy() {
+  }
+
+  destroyed() {
+  }
+}
+
+export default new Webview();
+</script>
+
+<style>
+  @import './webview.less';
+</style>
+
+<script cml-type="json">
+{
+  "base": {
+    "usingComponents": {
+      "my-webview": "/src/components/myWebview/myWebview"
+    }
+  },
+  "wx": {
+    "navigationBarTitleText": "梧桐树保险课堂",
+    "backgroundTextStyle": "dark",
+    "backgroundColor": "#E2E2E2"
+  }
+}
+</script>

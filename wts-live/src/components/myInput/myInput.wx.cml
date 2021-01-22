@@ -1,0 +1,75 @@
+<template>
+  <view ref="send-chat" class="send-chat" style="{{inputBottom}}">
+      <origin-input adjust-position="{{false}}" type="text" placeholder="{{'请输入'}}" bindfocus="focusEvent" bindblur="blurEvent" bindinput="adInputChange" value="{{msg}}"></origin-input>
+      <origin-button c-if="{{!avatarUrl}}" open-type="getUserInfo" bindgetuserinfo="getInfoCallback">发送</origin-button>
+      <origin-button c-else bindtap="sendMessageEvent">发送</origin-button>
+  </view>
+</template>
+<script>
+
+import myApi from '../tools/tools'
+
+class myInput implements myInputInterface {
+  props = {
+    chatPlaceholder: String
+  }
+  data = {
+    msg: '',
+    inputBottom: 'bottom: 0px',
+    avatarUrl: ''
+  }
+  watch ={
+  }
+  methods = {
+    adInputChange(e){
+      var self = this;
+      var dataset = e.currentTarget.dataset;
+      var value = e.detail.value;
+      var msg = dataset.msg;
+      self[msg]= value;
+      self.msg= self[msg];
+    },
+    focusEvent(e){
+      var _self = this;
+      this.inputBottom= 'bottom:'+e.detail.height+'px';
+    },
+    blurEvent(e){
+      var _self = this;
+      this.inputBottom= 'bottom: 0px';
+    },
+    sendMessageEvent() {
+      var _self= this;
+      this.$cmlEmit("sendMsg",{
+        chatMsg: _self.msg
+      })
+      _self.msg= '';
+    },
+    getInfoCallback(e) {
+      var self = this;
+      this.avatarUrl= e.detail.userInfo.avatarUrl;
+      myApi.setStorageSync('avatarUrl', e.detail.userInfo.avatarUrl);
+      this.$cmlEmit("hasUserAva",{
+        avatarUrl: e.detail.userInfo.avatarUrl,
+        chatMsg: self.msg
+      })
+    }
+  }
+  beforeCreate() { 
+    this.avatarUrl= myApi.getStorageSync('avatarUrl');
+  }
+}
+export default new myInput();
+</script>
+
+<style >
+@import "myInput.less";
+</style>
+
+<script cml-type="json">
+{
+  "base": {
+    "usingComponents": {
+    }
+  }
+}
+</script>

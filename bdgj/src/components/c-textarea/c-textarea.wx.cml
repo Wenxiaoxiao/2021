@@ -1,0 +1,80 @@
+<template>
+    <view class="top">
+        <origin-textarea maxlength="{{200}}" c-model="{{submitVal}}" style="height:400cpx; border: none;font-size: 30cpx; line-height: 40cpx; padding: 20cpx 30cpx;" placeholder="请输入评论内容..." id="text">
+        </origin-textarea>
+        <view class="number">
+            <view class="{{valueNum>150?'red':''}}">{{valueNum}}</view>
+            <view>/{{totalNum}}字</view>
+        </view>
+    </view>
+</template>
+
+<script>
+class Textarea implements TextareaInterface {
+    props = {
+        submitVal: {
+            type: String,
+            default: ""
+        }
+    };
+
+    data = {
+        valueNum: 0,
+        totalNum: 150
+    };
+
+    watch = {
+        submitVal: function (newV, oldV) {
+            this.valueNum = newV.length;
+            this.$cmlEmit('onshow',{
+                value: newV
+            })
+        }
+    };
+
+    methods = {};
+}
+
+export default new Textarea();
+</script>
+
+<style lang="less" scope>
+    .top{
+        width: 100%;
+        position: relative;
+        #text{
+            width: 100%;
+            border: none;
+            font-size: 30cpx;
+            line-height: 40cpx;
+            padding: 20cpx 30cpx;
+            resize:none;
+            vertical-align: middle;
+        }
+        .number{
+            position: absolute;
+            right: 30cpx;
+            bottom: 20cpx;
+            font-size: 28cpx;
+            color: #999;
+            flex-direction: row;
+            view{
+                 font-size: 28cpx;
+                 line-height: 40cpx;
+            }
+        }
+        .red{
+            color: red;
+        }
+    }
+</style>
+
+<script cml-type="json">
+{
+  "base": {
+    "usingComponents": {
+      
+    }
+  }
+}
+</script>

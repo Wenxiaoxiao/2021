@@ -1,0 +1,131 @@
+<template>
+	<view class="nav">
+		<view class="nav-item" c-catch:click="skip(policyList.url)">
+            <view class="nav_img"><image mode="widthFix" src="{{policyList.img}}"></image></view>
+            <view class="nav_title {{policyList.active?'active':''}}">{{policyList.title}}</view>
+        </view>
+        <view class="nav-item" c-catch:click="skip(service.url)">
+            <view class="nav_img"><image mode="widthFix" src="{{service.img}}"></image></view>
+            <view class="nav_title {{service.active?'active':''}}">{{service.title}}</view>
+        </view>
+		<view class="nav-item" c-catch:click="skip(analysis.url)">
+            <view class="nav_img"><image mode="widthFix" src="{{analysis.img}}"></image></view>
+            <view class="nav_title {{analysis.active?'active':''}}">{{analysis.title}}</view>
+        </view>
+        <view class="nav-item" c-catch:click="skip(progress.url)">
+            <view class="nav_img"><image mode="widthFix" src="{{progress.img}}"></image></view>
+            <view class="nav_title {{progress.active?'active':''}}">{{progress.title}}</view>
+        </view>
+	</view>
+</template>
+<script>
+	import cml from "chameleon-api";
+	import notice from '../api/notice.js';
+	import http from '../api/http.js';
+	import store from '../store/';
+	import filter from '../api/filter';
+	import tools from '../api/tools';
+	class nav {
+		props = {
+			navbar: {
+				type: String,
+				default: "policyList"
+			},
+			
+		}
+
+		data = {
+			policyList:{
+				img:"https://bx.wts999.com/m/xcxStatic/policys/policy1.png",
+				url:"/pages/policyList/policyList",
+				title:"保单管理",
+				active:false
+			},
+			service:{
+				img: "https://bx.wts999.com/m/xcxStatic/nav/service1.png",
+				url:"/pages/minePolicy/minePolicy",
+				title:"保单服务",
+				active:false
+			},
+			analysis:{
+				img: "https://bx.wts999.com/m/xcxStatic/nav/analysis1.png",
+				url:"/pages/insureAnalysis/insureAnalysis",
+				title:"保障分析",
+				active:false
+			},
+			progress:{
+				img: "https://bx.wts999.com/m/xcxStatic/nav/progress1.png",
+				url:"/pages/claimProgress/claimProgress",
+				title:"理赔管理",
+				active:false
+			}
+		}
+
+		methods = {
+			skip(url){
+				cml.redirectTo ({
+					path: url,
+				});
+			}
+		}
+
+		created() {
+			if(this.navbar == 'policyList'){
+				this.policyList.img = "https://bx.wts999.com/m/xcxStatic/policys/policy2.png";
+				this.policyList.active = true;
+			}
+
+			if(this.navbar == 'service'){
+				this.service.img = "https://bx.wts999.com/m/xcxStatic/nav/service2.png";
+				this.service.active = true;
+			}
+
+			if(this.navbar == 'analysis'){
+				this.analysis.img = "https://bx.wts999.com/m/xcxStatic/nav/analysis2.png";
+				this.analysis.active = true;
+			}
+
+			if(this.navbar == 'progress'){
+				this.progress.img = "https://bx.wts999.com/m/xcxStatic/nav/progress2.png";
+				this.progress.active = true;
+			}
+		}
+
+		mounted() {
+			
+		}
+	}
+
+	export default new nav();
+</script>
+
+<style lang="less">
+	.nav{
+        width: 100%;
+        height: 100cpx;
+        border-top:1px solid #ddd;
+        flex-direction: row;
+		background: #fff;
+		.nav-item{
+			width: 25%;
+			justify-content: center;
+			align-items: center;
+		}
+		.nav_img image{
+			width:36cpx;
+			height:36cpx;
+		}
+		.nav_title{
+			margin-top: 7cpx;
+			font-size: 24cpx;color:#575757;
+			&.active{
+				color: #00a2ff;
+			}
+		}
+		
+    }
+	
+</style>
+<script cml-type="json">
+	{ "base": { "usingComponents": {} } }
+</script>

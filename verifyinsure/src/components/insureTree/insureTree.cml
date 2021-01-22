@@ -1,0 +1,92 @@
+<template>
+<view>
+    <block c-if="{{model.type==2 && model.choosed==1}}">
+        <block  c-for="{{model.children}}" c-for-index="i" c-for-item="val" c-key="i">
+            <view class="subTitle" c-if="{{val.choosed==1}}">
+                <view class="item">{{model.content}}</view> 
+                <text c-if="{{val.content === '是'}}" class="yes result">{{val.content}}</text>
+                <text c-if="{{val.content !== '是'}}" class="no result">{{val.content}}</text>
+            </view>
+        </block>
+        <block c-if="{{model.children && model.children.length>0}}" c-for="{{model.children}}" c-for-index="i" c-for-item="val" c-key="i">
+            <insure-tree model="{{p}}" c-if="{{val.children && val.children.length>0}}" c-for="{{val.children}}" c-for-index="s" c-for-item="p" c-key="s"
+            ></insure-tree>
+        </block>
+    </block>
+    <block c-else>
+        <block c-if="{{model.children && model.children.length>0}}" c-for="{{model.children}}" c-for-index="s" c-for-item="p" c-key="s">
+            <insure-tree model="{{p}}" ></insure-tree>
+        </block>
+    </block>
+</view>
+</template>
+
+<script>
+class InsureTree {
+    props = {
+        model: Object,
+    }
+    data = {
+        loading: false,
+    }
+    methods = {
+        // 选择按钮，修改当前激活序列，修改atore中数据
+
+    }
+    mounted(){
+    }
+
+}
+
+
+export default new InsureTree();
+</script>
+
+<style lang="less">
+@import '../../pages/main.less';
+  .subTitle{
+        position: relative;
+        padding-bottom:10rpx;
+        background:#fff;
+        padding-left: 20rpx;
+        padding-top:10rpx;
+        vertical-align: middle;
+        .item{
+            width:80%;
+            display:inline-block;
+            font-size: 28rpx;
+            color:#000;
+            line-height:42rpx;
+            min-height:48rpx; 
+            vertical-align: middle;
+        }
+        .result{
+            display:inline-block;
+            width:20%;
+            position: absolute;
+            right:5cpx;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 30rpx;
+            text-align: center;
+            line-height:36rpx;
+            height:36rpx;
+        }
+        .yes{
+            color: #4580f6;
+        }
+        .no{
+            color:#e70000;
+        }
+    }
+</style>
+
+<script cml-type="json">
+{
+		"base": {
+				"usingComponents": {
+                    "insure-tree": "/components/insureTree/insureTree2"
+				}
+		}
+}
+</script>

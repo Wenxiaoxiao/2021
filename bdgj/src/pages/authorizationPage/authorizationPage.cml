@@ -1,0 +1,249 @@
+<template>
+  <page title="授权登录" height="100%">
+    <view class="apps">
+      <view class="top-panel center">
+        <view class="logo">
+          <view class="logo-img"></view>
+        </view>
+        <view class="logo-text">梧桐树保险网</view>
+      </view>
+      <view class="text-panel">
+      <view class="text-panel-content"><text>您已同意</text><text class="desc">梧桐树保险网</text><text>获取以下权限为您服务:</text></view>
+      <view class="text-panel-desc">获取您的公开信息 (昵称、头像、手机号等)</view>
+      </view>
+      <view class="logo-panel" c-if="{{ channel=='xcx_alipay' }}">
+        <origin-button c-show="{{!settingFlag}}" class="settingBtn" btn-style="background:#0084ff;" open-type="getAuthorize" onGetAuthorize="onGetAuthorize" onError="onAuthError" scope="userInfo">
+          授权获取您的用户信息
+        </origin-button>
+        <origin-button c-show="{{!phoneFlag}}" btn-style="background:#0084ff;" class="settingBtn" open-type="getAuthorize" onGetAuthorize="onGetPhoneNumber" onError="onPhoneError" scope='phoneNumber'>
+          授权获取您的手机号
+        </origin-button>
+      </view>
+      <view class="logo-panel" c-else>
+        <button c-show="{{!settingFlag}}" class="settingBtn" btn-style="background:#0084ff;" open-type="getUserInfo"  lang="zh_CN" bindgetuserinfo="onGotUserInfo">授权获取您的用户信息</button>
+        <button c-show="{{!phoneFlag}}" btn-style="background:#0084ff;" class="settingBtn" open-type="getPhoneNumber" lang="zh_CN" bindgetphonenumber="getPhoneNumber">授权获取您的手机号</button>
+      </view>
+    </view>
+    
+  </page>
+</template>
+
+<script>
+  import cml from 'chameleon-api';
+  import store from '../../store/';
+  import notice from '../../api/notice.js';
+  import http from '../../api/http.js';
+  import tools from '../../api/tools.js';
+  import util from '../../components/util/util.interface'
+  var vm;
+  class Login {
+    data = {
+      settingFlag:true,
+      phoneFlag:true,
+      user:{},
+      url:"",
+      iv:"",
+      encryptedData:"",
+      channel: ""
+    }
+    
+    methods = {
+      onGetAuthorize(res){
+        notice.showloading("加载中");
+        tools.getPlatformUserInfo()
+          .then(userData=>{
+            this.user = userData;
+            notice.hideloading();
+            if(userData.id){
+              return cml.redirectTo ({
+                path: this.url,
+                query:this.query
+              });
+            }else{
+              this.settingFlag = true;
+              this.phoneFlag = false;
+            }
+          })
+      },
+      onGotUserInfo(e){
+        console.log(e);
+        if(e.detail.errMsg.indexOf("ok")>-1){
+        
+        notice.showloading("加载中");
+        tools.getPlatformUserInfo()
+          .then(userData=>{
+            this.user = userData;
+            notice.hideloading();
+            if(userData.id){
+              return cml.redirectTo ({
+                path: this.url,
+                query:this.query
+              });
+            }else{
+              this.settingFlag = true;
+              this.phoneFlag = false;
+            }
+          })
+          }
+      },
+      onGetPhoneNumber(){
+        notice.showloading("加载中");
+        util.getAliPhoneNumber()
+          .then(res=>{
+            let phone = JSON.parse(res).response;
+            http({
+              name:"ali_minplatRegister",
+              data:{
+                phone, 
+                serverCode:"alpmini"
+              }
+            })
+            .then(res=>{
+              notice.hideloading();
+              if(res.httpCode!=200) return;
+                store.state.WTS_USER_XCX = res.data;
+                store.state.token = res.token;
+                return cml.redirectTo ({
+                  path: this.url,
+                  query:this.query
+                });
+            })
+          })
+      },
+      getPhoneNumber(e){
+        if(e.detail.errMsg.indexOf("ok")>-1){
+        this.iv = e.detail.iv;
+        this.encryptedData = e.detail.encryptedData;
+          notice.showloading("加载中");
+          http({
+            name:"minplatRegister",
+            data:{iv:this.iv,encryptedData:this.encryptedData,serverCode:"wxmini"}
+          })
+          .then(res=>{
+             notice.hideloading();
+            if(res.httpCode!=200) return;
+              store.state.WTS_USER_XCX = res.data;
+              store.state.token = res.token;
+              return cml.redirectTo ({
+                path: this.url,
+                query:this.query
+              });
+          })
+          .catch(err=>{
+            notice.hideloading();
+          })
+        }
+      }
+    }
+
+    created(query) {
+      this.url = query.path? unescape(query.path): "/pages/policyList/policyList";
+      this.query = query;
+      vm = this;
+      this.channel = store.state.channel;
+		}
+      
+    mounted() {
+      tools.getSetting()
+      .then(res=>{
+        this.settingFlag = res;
+        if(res){
+          tools.getPlatformUserInfo()
+          .then(userData=>{
+            this.user = userData;
+            if(userData.id){
+              this.phoneFlag = true;
+              return cml.redirectTo ({
+                path: this.url,
+                query:this.query
+              });
+            }
+            this.phoneFlag = false;
+          })
+        }
+      })
+    }
+  }
+  export default new Login();
+</script>
+<style lang="less" scoped>
+ @import '../../less/main';
+.apps {
+    background-color: #fff;
+    height: 100vh;
+}
+.center {
+    justify-content: center;
+    align-items: center;
+}
+.inline-box {
+    flex-direction: initial;
+}
+.top-panel {
+    width: 100%;
+    height: 420cpx;
+    background: #fff;
+    background-size: 100% 100%;
+    justify-content: flex-start;
+    padding-top: 50cpx;
+}
+.text-panel{
+  padding: 40cpx;
+  .text-panel-content{
+    font-size: 32cpx;
+    flex-direction: row;
+    .desc{
+      font-size: 32cpx;
+      color: #0084ff;
+    }
+  }
+  .text-panel-desc{
+    font-size:25cpx;
+    line-height: 60cpx; 
+    color:#666;
+  }
+}
+.logo {
+    width: 160cpx;
+    height: 160cpx;
+    border-radius: 50%;
+    padding: 10cpx;
+    background-color: #fff;
+}
+.logo-img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: url('https://bx.wts999.com/m/xcxStatic/icons.png') no-repeat;
+    background-size: 100% 100%;
+}
+.logo-text{
+  width: 100%;
+  text-align: center;
+  color: #f66d05;
+  font-size: 57cpx;
+  font-weight: 900;
+}
+.logo-panel{
+  padding: 40cpx;
+  .settingBtn{
+    width: 100%;
+    margin-top: 40cpx;
+    text-align: center;
+    background: #0084ff;
+    color: #fff;
+  }
+}
+</style>
+<script cml-type="json">
+  {
+    "base":{
+      "usingComponents": {
+        "c-loading": "cml-ui/components/c-loading/c-loading"
+      },
+      "navigationBarTitleText": "授权登录",
+      "backgroundTextStyle": "dark",
+      "backgroundColor": "#fff"
+  }
+  }
+</script>

@@ -1,0 +1,293 @@
+.inExpert {
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  position: relative;
+}
+.inExpert .view-container {
+  height: 100%;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+}
+.inExpert .agent-card {
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+.inExpert .agent-card .agent-top {
+  width: 120%;
+  height: 140rpx;
+  background-color: #0088ff;
+  border-radius: 0 0 50% 50%;
+  margin-left: -10%;
+}
+.inExpert .agent-card .card {
+  width: 710rpx;
+  border: 2rpx solid #dcdcdc;
+  border-radius: 5rpx;
+  background-color: #fff;
+  position: relative;
+  margin: 0 auto;
+  min-height: 170rpx;
+  margin-top: -100rpx;
+  overflow: hidden;
+}
+.inExpert .agent-card .card .card-pic {
+  position: absolute;
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 100%;
+  border: 1px solid #dbdbdb;
+  left: 20rpx;
+  top: 30rpx;
+  box-sizing: border-box;
+}
+.inExpert .agent-card .card .icon-card {
+  width: 72rpx;
+  height: 94rpx;
+  position: absolute;
+  right: 15rpx;
+  top: -2rpx;
+}
+.inExpert .agent-card .card .card-content {
+  padding-top: 40rpx;
+  padding-left: 165rpx;
+  padding-right: 20rpx;
+  padding-bottom: 20rpx;
+  min-height: 170rpx;
+  box-sizing: border-box;
+}
+.inExpert .agent-card .card .card-content .name {
+  flex-direction: row;
+  font-size: 38rpx;
+  font-weight: 700;
+  width: 450rpx;
+  line-height: 1;
+  overflow: hidden;
+}
+.inExpert .agent-card .card .card-content .name .tag {
+  padding-left: 15rpx;
+  margin-left: 10rpx;
+  font-size: 30rpx;
+  font-weight: 400;
+  color: #ff5500;
+  border-left: 2rpx solid #ff5500;
+  height: 40rpx;
+  line-height: 40rpx;
+}
+.inExpert .agent-card .card .card-content .content {
+  margin-top: 22rpx;
+  font-size: 30rpx;
+  color: #000;
+}
+.inExpert .agent-card .card .card-content .dest {
+  margin-top: 20rpx;
+  font-size: 30rpx;
+  color: #666;
+}
+.inExpert .agent-card .card .cred-num {
+  flex-direction: row;
+  min-height: 60rpx;
+  line-height: 1;
+  background-color: #fff4ec;
+  color: #ff7200;
+  font-size: 26rpx;
+  padding: 15rpx 20rpx;
+  box-sizing: border-box;
+}
+.inExpert .agent-card .card .cred-num .iconfont {
+  font-size: 38rpx;
+  vertical-align: middle;
+}
+.inExpert .agent-card .card .cred-num .bank_num {
+  font-size: 26rpx;
+}
+.inExpert .comment-box {
+  padding: 20rpx 20rpx 30rpx;
+}
+.inExpert .comment-box .comment-title {
+  font-weight: 900;
+  font-size: 34rpx;
+  line-height: 1.5;
+}
+.inExpert .comment-box .comment_more {
+  font-size: 32rpx;
+  text-align: center;
+  color: #9c9c9c;
+  border-bottom: 0;
+}
+.inExpert .comment-box .comment-list .comment-item {
+  padding: 20rpx;
+  border-bottom: 2rpx solid #dcdcdc;
+}
+.inExpert .comment-box .comment-list .comment-item:last-child {
+  border-bottom: 0;
+}
+.inExpert .comment-box .comment-list .user-msg {
+  flex-direction: row;
+  height: 60rpx;
+  line-height: 60rpx;
+}
+.inExpert .comment-box .comment-list .user-msg .user-img {
+  width: 60rpx;
+  height: 60rpx;
+  border-radius: 100%;
+  border: 2rpx solid #dcdcdc;
+  display: inline-block;
+  vertical-align: -webkit-baseline-middle;
+  vertical-align: middle;
+  margin-right: 15rpx;
+}
+.inExpert .comment-box .comment-list .user-msg .user-name {
+  font-size: 30rpx;
+  color: #000;
+  display: inline-block;
+  height: 60rpx;
+  line-height: 60rpx;
+}
+.inExpert .comment-box .comment-list .user-content {
+  font-size: 28rpx;
+  color: #666;
+  padding-top: 10rpx;
+}
+.inExpert .content-box {
+  padding: 20rpx 20rpx 30rpx;
+}
+.inExpert .content-box .content-title {
+  font-weight: 900;
+  font-size: 34rpx;
+  line-height: 1.5;
+}
+.inExpert .content-box .content-detail {
+  padding-top: 15rpx;
+  font-size: 28rpx;
+  color: #000;
+}
+.inExpert .bottom-blank {
+  width: 100%;
+  height: 100rpx;
+}
+.inExpert .btn-bottom {
+  width: 100%;
+  height: 120rpx;
+  padding: 20rpx 25rpx;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  background-color: #fff;
+  border-top: 2rpx solid #dcdcdc;
+  flex-direction: row;
+  justify-content: space-between;
+  display: flex;
+  box-sizing: border-box;
+}
+.inExpert .btn-bottom .btn {
+  width: 340rpx;
+  height: 80rpx;
+  line-height: 80rpx;
+  text-align: center;
+  color: #fff;
+  font-size: 32rpx;
+  border-radius: 40rpx;
+}
+.inExpert .btn-bottom .btn.btn1 {
+  background-color: #ff7200;
+}
+.inExpert .btn-bottom .btn.btn2 {
+  background-color: #4587f6;
+}
+.inExpert .comment-input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 998;
+}
+.inExpert .comment-input .comment-mask {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.inExpert .comment-input .comment-content {
+  height: 240rpx;
+  overflow: hidden;
+  flex-direction: row;
+  padding: 30rpx 20rpx;
+  background-color: #fff;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  z-index: 999;
+  transition: all 0.3s;
+  box-sizing: border-box;
+  display: flex;
+}
+.inExpert .comment-input .comment-content .inputAreas {
+  width: 78%;
+  height: 180rpx;
+  border: 2rpx solid #ddd;
+  border-radius: 6rpx;
+}
+.inExpert .comment-input .comment-content .inputAreas .c_user_text {
+  width: 100%;
+  height: 180rpx;
+  min-height: 100%;
+  padding: 20rpx;
+  font-size: 30rpx;
+  box-sizing: border-box;
+}
+.inExpert .comment-input .comment-content .right {
+  width: 20%;
+  height: 180rpx;
+  position: relative;
+}
+.inExpert .comment-input .comment-content .right #sendMsg {
+  background-color: #eee;
+  color: #fff;
+  font-size: 30rpx;
+  width: 90%;
+  text-align: center;
+  height: 60rpx;
+  line-height: 60rpx;
+  position: absolute;
+  right: 0;
+  bottom: 10rpx;
+  border-radius: 6rpx;
+  background: #307aff;
+}
+.inExpert .comment-input .slide-fade-enter-active {
+  transition: all 0.2s;
+}
+.inExpert .comment-input .slide-fade-enter,
+.inExpert .comment-input .slide-fade-leave-to {
+  transform: translateY(100%);
+  opacity: 0.3;
+}
+.inExpert #emptyDom {
+  display: flex;
+  margin-bottom: 20rpx;
+  flex-direction: row;
+  justify-content: center;
+  color: #888;
+}
+.inExpert #emptyDom .a1 {
+  width: 30rpx;
+  height: 30rpx;
+}
+.inExpert #emptyDom .a2 {
+  margin-left: 16rpx;
+  height: 30rpx;
+  line-height: 30rpx;
+  font-size: 26rpx;
+}
+.inExpert #emptyDom .a3 {
+  height: 30rpx;
+  line-height: 30rpx;
+  font-size: 26rpx;
+}
+.inExpert {
+  padding-bottom: 60rpx;
+}

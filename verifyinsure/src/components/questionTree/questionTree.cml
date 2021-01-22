@@ -1,0 +1,105 @@
+<template>
+<view>
+    <block c-if="{{model.type==2}}">
+        <view class="questionItem">
+            <text class="subTitle">{{model.content}}</text>
+            <view class='btns fc'>
+                <block c-for="{{model.children}}" c-for-index="n" c-for-item="btnData">
+                    <text class="btn {{n==activeIndex?'active':''}}"  c-bind:click="checkBtn(model.id,n)">{{btnData.content}}</text>
+                </block>
+            </view>
+        </view>
+        <question-tree model="{{p}}" parentActive="{{childActive}}" c-if="{{model.children[activeIndex] && model.children[activeIndex].children && model.children[activeIndex].children.length>0}}"
+        c-for="{{model.children[activeIndex].children}}" c-for-index="s" c-for-item="p" c-key="s"
+        ></question-tree>
+    </block>
+    <block c-else>
+        <question-tree model="{{p}}" c-if="{{model.children && model.children.length>0}}" c-for="{{model.children}}" c-for-index="s" c-for-item="p" c-key="s"></question-tree>
+    </block>
+</view>
+</template>
+
+<script>
+import store from '../../store'
+class PayButton implements PayButtonInterface {
+    props = {
+        model: Object,
+        parentActive:{
+            type:Number,
+            default:-1
+        }
+
+    }
+    data = {
+        loading: false,
+        activeIndex:-1,
+        childActive:-1
+    }
+    methods = {
+        // 选择按钮，修改当前激活序列，修改atore中数据
+        checkBtn(id,n){
+            this.activeIndex=n;
+            store.commit('checkBtn',id,n);
+            console.log(store.state.QUES_ILLS);
+            this.childActive=this.childActive-1; // 选择按钮时，重置子组件中的activeIndex
+        },
+    }
+    watch= {
+        // 监听父组件的activeIndex修改，并重置当前组件的activeIndex；
+        parentActive(newVal){
+            console.log(222);
+            this.activeIndex=-1;
+        },
+    }
+}
+
+
+export default new PayButton();
+</script>
+
+<style lang="less" scope>
+@import '../../pages/main.less';
+  .questionItem{
+      background:#fff;
+      .subTitle{
+          width: 710cpx;
+          font-size: 30rpx;
+          color:#000;
+          line-height:42rpx;
+          padding-top:27rpx;
+          margin-bottom: 15cpx;
+      }
+      .btns{
+          flex-wrap:wrap;
+          .btn{
+              min-width: 210cpx;
+              padding: 0 30cpx;
+              height: 80rpx;
+              text-align: center;
+              line-height: 80rpx;
+              margin-right: 30cpx;
+              border: 1cpx solid #dddddd;
+              border-radius: 28cpx;
+              margin-bottom: 15cpx;
+              &.active{
+                  background-color: #4580f6;
+                  color: #fff;
+                  border-color: #4580f6;
+              }
+          }
+      }
+  }
+  .questionItem+question-tree{
+        border-top:2rpx solid #eee;
+  }
+</style>
+
+<script cml-type="json">
+{
+		"base": {
+				"usingComponents": {
+                    "question-tree": "/components/questionTree/questionTree2"
+				}
+		}
+}
+</script>

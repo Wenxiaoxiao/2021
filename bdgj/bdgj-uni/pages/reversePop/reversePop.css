@@ -1,0 +1,146 @@
+.contact-layer-box .showMask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 998;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.contact-layer-box .contact-layer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(0, -60%);
+  width: 603rpx;
+  height: 540rpx;
+  background-color: #fff;
+  border-radius: 8rpx !important;
+  margin-left: -301rpx;
+  z-index: 1000;
+}
+.contact-layer-box .contact-layer .title,
+.contact-layer-box .contact-layer .title2 {
+  height: 140rpx;
+  line-height: 140rpx;
+  text-align: center;
+  font-size: 49rpx;
+  font-weight: 900;
+  border-top-left-radius: 8rpx !important;
+  border-top-right-radius: 8rpx !important;
+  color: #ff6000;
+  background: url('../../assets/images/contact-bg.png') no-repeat center;
+}
+.contact-layer-box .contact-layer .title span,
+.contact-layer-box .contact-layer .title2 span {
+  font-weight: 100;
+}
+.contact-layer-box .contact-layer .msg {
+  padding-top: 10rpx;
+  font-size: 32rpx;
+}
+.contact-layer-box .contact-layer .msg .msg-box {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 23rpx;
+}
+.contact-layer-box .contact-layer .msg .msg-box .msg-key {
+  font-size: 30rpx;
+  width: 164rpx;
+  display: inline-block;
+  text-align: right;
+  padding-right: 8rpx;
+  height: 80rpx;
+  line-height: 80rpx;
+}
+.contact-layer-box .contact-layer .msg .msg-box .msg-value {
+  display: inline-block;
+  border: 2rpx solid #ccc;
+  border-radius: 6rpx;
+  height: 76rpx;
+  line-height: 76rpx;
+  width: 346rpx;
+  padding-left: 15rpx;
+  vertical-align: middle;
+}
+.contact-layer-box .contact-layer .msg .msg-box-time {
+  position: relative;
+}
+.contact-layer-box .contact-layer .msg .msg-box-time .key-time {
+  width: 356rpx;
+  text-align: center;
+  position: relative;
+  padding: 0;
+}
+.contact-layer-box .contact-layer .msg .msg-box-time .key-time .arrow {
+  position: absolute;
+  right: 8rpx;
+  top: 50%;
+  width: 25rpx;
+  transform: translateY(-50%);
+}
+.contact-layer-box .contact-layer .msg .msg-box-time .select-box {
+  position: absolute;
+  width: 356rpx;
+  left: 2.5rem;
+  border: 1rpx solid #ccc;
+  background: #fff;
+}
+.contact-layer-box .contact-layer .msg .msg-box-time .select-box .select-value {
+  height: 45rpx;
+  line-height: 45rpx;
+  text-align: center;
+}
+.contact-layer-box .contact-layer .submit {
+  margin: 38rpx auto;
+  width: 526rpx;
+  height: 80rpx;
+  background-color: #ff9c00;
+  border-radius: 8rpx;
+  color: #fff;
+  font-size: 36rpx;
+  line-height: 80rpx;
+  text-align: center;
+}
+.contact-layer-box .reseve-fade-enter-active {
+  transition: all 0.2s;
+  -webkit-transition: all 0.2s;
+  -moz-transition: all 0.2s;
+  -ms-transition: all 0.2s;
+  -o-transition: all 0.2s;
+}
+.contact-layer-box .reseve-fade-enter,
+.contact-layer-box .reseve-fade-leave-to {
+  transform: scale(0);
+  opacity: 0.3;
+}
+.tagBox .tag-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+.tagBox .tagBlock {
+  width: 100%;
+  position: fixed;
+  top: 20%;
+  z-index: 1001;
+  text-align: center;
+}
+.tagBox .tag-enter-active {
+  transition: all 0.1s;
+  -webkit-transition: all 0.1s;
+  -moz-transition: all 0.1s;
+  -ms-transition: all 0.1s;
+  -o-transition: all 0.1s;
+}
+.tagBox .tag-enter,
+.tagBox .tag-leave-to {
+  transform: scale(0);
+}

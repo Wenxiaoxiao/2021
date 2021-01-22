@@ -1,0 +1,262 @@
+@import '../../less/main';
+
+.policyDetail{
+    background: #f5f5f5;
+  .policyStatus{
+    position: relative;
+    padding: 40cpx 40cpx 40cpx 150cpx;
+    min-height: 170cpx;
+
+    .iconfont{
+      position: absolute;
+      left: 40cpx;
+      top: 40cpx;
+      font-size: 90cpx;
+      line-height: 90cpx;
+      color: #0382ff;
+      width: 90cpx;
+      height: 90cpx;
+      .icon-status{
+        width: 100%;
+        height: 100%;
+      }
+    }
+
+    .icon-baocun{
+      left: 20cpx;
+    }
+    
+    .icon-shijian{
+      top: 30cpx;
+    }
+    .name{
+      font-size: 38cpx;
+      line-height: 1.4;
+      color: #0382ff;
+      font-weight: 900;
+      &.hei-90{
+        line-height: 90cpx;
+      }
+    }
+    .text{
+      font-size: 30cpx;
+      line-height: 1.5;
+      color: #666;
+    }
+  }
+  .listInfoBox {
+    font-size: 34cpx;
+  
+    .policy-04-list {
+      background-color: #fff;
+      margin-bottom: 20cpx;
+      .dlBox {
+        z-index: 3;
+        .dlheader {
+          height: 90cpx;
+          line-height: 90cpx;
+          position: relative;
+          padding: 0 30cpx;
+          
+          &:before{
+            content: '';
+            display: inline-block;
+            position: absolute;
+            left: 30cpx;
+            top: 50%;
+            margin-top: -6cpx;
+            width: 12cpx;
+            height: 12cpx;
+            border-radius: 10cpx;
+            background-color:#0382ff;
+          }
+          .item-title {
+            font-size: 38cpx;
+            padding-left: 30cpx;
+            font-weight: 800;
+          }
+        }
+        .dd {
+          position: relative;
+          padding: 10px 30cpx;
+          box-sizing: border-box;
+          border-top: 1px dashed #ddd;
+          .img-compangs{
+            width: 210cpx;
+            position: absolute;
+            right: 10px;
+            bottom: 70cpx;
+            height: 100cpx;
+            z-index: 10;
+            opacity: .8;
+          }
+          .insurederNum{
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 40cpx;
+            height: 40cpx;
+            padding-left: 6cpx;
+            color: #fff;
+            &:after{
+              content: '';
+              display: inline-block;
+              position: absolute;
+              top: -35cpx;
+              left: -35cpx;
+              border: 35cpx solid transparent;
+              border-bottom-color:#0382ff;
+              transform: rotate(-45deg);
+              opacity: .7;
+            }
+            .spans{
+              position: relative;
+              z-index: 10;
+              font-size: 26cpx;
+              line-height: 30cpx;
+              top: -2cpx;
+            }
+          }
+          .ulListBox {
+            position: relative;
+            z-index: 11;
+            view {
+              flex-direction: row;
+              position: relative;
+              word-break: break-all;
+              margin: 5cpx 0;
+              line-height: 40cpx;
+              .btn {
+                display: inline-block;
+                text-align: center;
+                border: 1px solid #ff6f07;
+                background: #fff;
+                color: #ff6f07;
+                margin: 0 3cpx;
+                border-radius: 9cpx;
+                font-size: 28cpx;
+                height: 60cpx;
+                line-height: 58cpx;
+                padding: 0 8cpx;
+              }
+            }
+            .policyName{
+              max-width: 500cpx;
+            }
+            .break{
+                padding: 20cpx;
+            }
+  
+            .lastList {
+              margin: 10cpx 0;
+              padding-right: 20cpx;
+              text-align: right;
+              min-height: 0;
+            }
+          }
+        }
+      }
+    }
+    
+  }
+  .block{
+      width: 100%;
+      height: 100cpx;
+  }
+  .bottom-btns{
+      position: fixed;
+      z-index: 12;
+      bottom: 0;
+      left: 0;
+      padding: 20cpx;
+      width: 100%;
+      background-color: #fff;
+      border-top: 1px dashed #ddd;
+      display: -webkit-flex; /* Safari */
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      flex-direction: row;
+      .btn{
+          text-align: center;
+        width: 30%;
+        background-color: #0382ff;
+        height: 60cpx;
+        line-height: 60cpx;
+        margin:0 1.5%;
+        color: #fff;
+        border-radius: 10cpx;
+      }
+      .btn-disable{
+        background-color: #bdbdbd;
+      }
+  }
+  .checkPolicy_list_mask {
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    position: fixed;
+    z-index: 100;
+    top: 0;
+    left: 0;
+  }
+  
+  .checkPolicy_list {
+    width: 680cpx;
+    background: #fff;
+    position: fixed;
+    top: 30%;
+    left: 50%;
+    margin-left: -340cpx;
+    text-align: center;
+    color: #000;
+    z-index: 101;
+  
+    .checkPolicy_list_title {
+      font-size: 35cpx;
+      font-weight: 900;
+      line-height: 90cpx;
+      border-bottom: 1px solid #ccc;
+    }
+  
+    .checkPolicy_list_item {
+      padding: 0 20cpx;
+  
+      .item {
+        line-height: 90cpx;
+        border-bottom: 1px solid #ccc;
+  
+        &:nth-last-of-type(1) {
+          border: none;
+        }
+      }
+    }
+  }
+  .prompt{
+    padding: 5px 30cpx;
+    border-top: 1px dashed #ddd;
+    .list-form{
+        font-size: 34cpx;
+        line-height: 1.8;
+        text-align: center;
+    }
+    .left-yuan{
+        position: relative;
+        font-size: 30cpx;
+        line-height: 25cpx;
+        color: #000;
+        padding-left: 10cpx;
+        &::before{
+            content: '';
+            width: 5cpx;
+            height: 5cpx;
+            border-radius: 50%;
+            background-color: #ff6f07;
+            position: absolute;
+            left: 0;
+            top: 50%;
+            margin-top: -2cpx;
+        }
+    }
+}
+}

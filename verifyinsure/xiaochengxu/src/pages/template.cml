@@ -1,0 +1,49 @@
+<template>
+<page title="健康告知">
+<view class="apps">
+
+</view>
+</page>
+</template>
+    
+<script>
+import cml from 'chameleon-api';
+import store from '../store';
+import myApi from '../components/tools/tools.interface';
+import tools from '../api/tools.js';
+import notice from '../api/notice.js';
+import http from '../api/http.js';
+import regular from '../api/regular.js';
+class Healthy {
+    data={
+        
+    }
+    methods = {
+      //跳转我的定制页
+      goHealthy1(){
+        cml.navigateTo({
+            path: '/pages/healthy1'
+        })
+      },
+    }
+    mounted(){
+      console.log('aaa');
+    }
+}
+export default new Healthy();
+</script>
+<style scope>
+    @import "healthy.less";
+</style>
+<script cml-type="json">
+    {
+    "base":{
+      "usingComponents": {
+        "c-loading": "cml-ui/components/c-loading/c-loading"
+      },
+      "navigationBarTitleText": "健康告知",
+      "backgroundTextStyle": "dark",
+      "backgroundColor": "white"
+    }
+  }
+</script>

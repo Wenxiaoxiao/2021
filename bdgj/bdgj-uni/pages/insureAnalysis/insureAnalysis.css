@@ -1,0 +1,185 @@
+.views {
+  width: 100%;
+  height: 100%;
+  background: #f5f5f5;
+}
+.views .nonData {
+  padding-top: 160rpx;
+  height: calc(100% - 100rpx);
+  box-sizing: border-box;
+}
+.views .insure_nav_box {
+  white-space: nowrap;
+}
+.views .insure_nav_box .insure_nav {
+  display: inline-block;
+  box-sizing: border-box;
+  padding: 0 20rpx;
+  height: 84rpx;
+  line-height: 84rpx;
+  text-align: center;
+  font-size: 32rpx;
+  background: #eee;
+  border-right: solid 2rpx #e5e5e5;
+  border-bottom: 4rpx solid transparent;
+}
+.views .insure_nav_box .insure_nav.active {
+  border-bottom: 4rpx solid #4580f6;
+  background: #fff;
+  color: #4580f6;
+}
+.views .insure_nav_box .insure_nav:last-child {
+  border-right: none;
+}
+.views .insure_box {
+  margin: 30rpx 20rpx 0;
+  border-radius: 10rpx;
+}
+.views .insure_box .insure_box_1 {
+  background: #fff;
+}
+.views .insure_box .insure_box_1 .insure_msg {
+  padding: 40rpx 30rpx 27rpx;
+  border-bottom: 2rpx solid #eee;
+}
+.views .insure_box .insure_box_1 .insure_msg .insure_name {
+  margin-bottom: 30rpx;
+  font-size: 40rpx;
+  height: 40rpx;
+  line-height: 40rpx;
+}
+.views .insure_box .insure_box_1 .insure_msg .insure_a {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+}
+.views .insure_box .insure_box_1 .insure_msg .insure_a .insure_a_box {
+  flex-direction: row;
+}
+.views .insure_box .insure_box_1 .insure_msg .insure_a .insure_a_box .a1 {
+  font-size: 26rpx;
+  color: #000000;
+}
+.views .insure_box .insure_box_1 .insure_msg .insure_a .insure_a_box .b1 {
+  font-size: 26rpx;
+  color: #4580f6;
+}
+.views .insure_box .insure_box_1 .insure_rate {
+  padding: 50rpx 30rpx 0;
+  border-bottom: 2rpx solid #eee;
+}
+.views .insure_box .insure_box_1 .insure_rate .insure_item {
+  margin-bottom: 50rpx;
+}
+.views .insure_box .insure_box_1 .insure_rate .insure_item .insure_type {
+  width: 94rpx;
+  font-size: 30rpx;
+  line-height: 30rpx;
+  color: #000000;
+  vertical-align: top;
+}
+.views .insure_box .insure_box_1 .insure_rate .insure_item .rate_box {
+  margin-left: 34rpx;
+  margin-right: 18rpx;
+  width: 418rpx;
+  height: 30rpx;
+  line-height: 30rpx;
+  background-color: #eeeeee;
+  border-radius: 15rpx;
+  vertical-align: top;
+  overflow: hidden;
+}
+.views .insure_box .insure_box_1 .insure_rate .insure_item .rate_box .rate {
+  padding-right: 12rpx;
+  height: 30rpx;
+  line-height: 30rpx;
+  background-image: linear-gradient(270deg, #4580f6 0%, #00a8ff 100%), linear-gradient(#ffa200, #ffa200);
+  border-radius: 15rpx;
+  text-align: right;
+  font-size: 22rpx;
+  color: #fff;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+.views .insure_box .insure_box_1 .insure_rate .insure_item .rate_box .zero_rate {
+  padding-right: 0;
+}
+.views .insure_box .insure_box_1 .insure_rate .insure_item .insure_amount {
+  vertical-align: top;
+  font-size: 30rpx;
+  line-height: 30rpx;
+}
+.views .insure_box .insure_box_1 .insure_rate .insure_item .insure_professor,
+.views .insure_box .insure_box_1 .insure_rate .insure_item .insure_info {
+  margin-top: 22rpx;
+  font-size: 26rpx;
+  line-height: 42rpx;
+  color: #888888;
+}
+.views .insure_box .insure_box_1 .insure_rate .insure_item .insure_info {
+  width: 503rpx;
+  margin-left: 26rpx;
+}
+.views .insure_box .insure_box_1 .to_prefessor {
+  margin: 25rpx auto 37rpx;
+  width: 430rpx;
+  height: 145rpx;
+}
+.views .insure_box .insure_box_1 .kefu {
+  position: absolute;
+  top: 25rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 430rpx;
+  height: 145rpx;
+  background: transparent;
+  border: 0rpx solid transparent;
+  z-index: 9;
+}
+.views .insure_box .insure_box_1 .kefu::after {
+  width: 0;
+  height: 0;
+  border: none;
+}
+.views .insure_loading {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.views .insure_loading .loading_box {
+  width: 210rpx;
+  height: 100rpx;
+  line-height: 100rpx;
+  background: #444;
+  border-radius: 8rpx;
+  text-align: center;
+}
+.views .insure_loading .loading_box .loading_img {
+  width: 50rpx;
+  height: 50rpx;
+  vertical-align: middle;
+}
+.views .insure_loading .loading_box .loading_text {
+  margin-left: 8rpx;
+  color: #fff;
+  font-size: 26rpx;
+}
+.views .fr {
+  display: flex;
+  flex-direction: row;
+}
+.views .empty-icon {
+  width: 185rpx;
+  height: 153rpx;
+  display: block;
+  margin: 0 auto 20rpx;
+}
+.views .empty-tip {
+  text-align: center;
+  font-size: 34rpx;
+  color: #666;
+}
+.views .empty-tip .cml-view {
+  text-align: center;
+}

@@ -1,0 +1,606 @@
+<template>
+<view class="order-ul-li">
+    <view class="poilcy_mask" c-if="{{loading}}" style="height:{{totalHeight}}cpx;"></view>
+    <view class="head" c-catch:click="actiondetail($event)">
+        <view class="title line-one">{{order.insuranceProductName}}</view>
+    </view>
+    <view class="center" c-catch:click="actiondetail($event)">
+        <view class="txt line-one">保单号：{{order.policyNo}}</view>
+        <view class="txt" c-if="{{order.insuranceRelationship==1}}">被保险人:{{order.policyholderName}}</view>
+        <view class="txt" c-else>被保险人:{{order.insurederName}}</view>
+        <view class="txt">保障期限：{{order.guaranteeStartTime || ""}}至
+            <block c-if="{{order.guarateeType == 1}}">终身</block>
+            <block c-else>{{order.guaranteeEndTime}}</block>
+        </view>
+        <image mode="widthFix" mode="widthFix" c-if="{{order.logo && order.logo.length >0}}" src="{{order.logo[0].url}}" class="img-compangs"></image>
+    </view>
+    <view class="order-other-btn">
+        <!--<view class="order-item-btn" c-if="{{order.isSort != 1 && !hidesort && order.policyNo!=0 && !iconishide}}" c-catch:click="showMember(true,$event)">成员分类</view>-->
+        <view class="order-item-btn {{ isSortAndShow }}" c-catch:click="checkPDF(order,$event)">电子保单</view>
+        <form report-submit="true" class="order-item-btn {{order.forbidden?'btn-disable':''}}" report-submit-timeout="10000" onSubmit="formSubmit" bindsubmit="formSubmit">
+            <origin-button style="border:none;" form-type="submit" type="default" class="origin-button">在线理赔</origin-button>
+        </form>
+        <!--<view class="order-item-btn {{order.forbidden?'btn-disable':''}}" c-catch:click="onlineClaims(order.policyNo,$event,$event)">快速理赔</view>-->
+        <view class="order-item-btn {{order.forbidden|| order.hasComment || order.overdue?'btn-disable':''}}" c-catch:click="commentPro(order)">评价商品</view>
+    </view>
+
+    <!--成员分类-->
+    <!--<view class="member-desc">
+        <view c-show="{{ishowmember}}" class="member-mask" c-catch:click="showMember(false)"></view>
+        <view c-show="{{ishowmember}}" class="member-content">
+            <view class="member-info" c-if="{{order.insureders && order.insureders.length>0}}">
+                <block c-for="{{order.insureders}}" c-for-index="number" c-for-item="insureder">
+                    <block c-if="{{insureder.insurederName && insureder.insuredRelationship}}">
+                        <view class="item-input clearfix">
+                            <text class="item-name">{{insureder.insurederName}}</text>
+                            <text class="iconfont icon-jiantou_xia"></text>
+                            <view class="selsectList">
+                                <view class="selsectListDesc" c-catch:click="showList(number)">{{insureder.insuredRelationshipVal}}</view>
+                                <view c-show="{{insureder.isShow}}" class="selsectListInfo">
+                                    <view>
+                                        <view class="li" c-for="{{members}}" c-catch:click="changeINType(number,item.type)">{{item.value}}</view>
+                                    </view>
+                                </view>
+                            </view>
+                        </view>
+                    </block>
+                </block>
+            </view>
+            <view class="member-btn">
+                <text class="save" c-catch:click="save">保存</text>
+            </view>
+        </view>
+    </view>-->
+
+</view>
+</template>
+<script>
+import cml from "chameleon-api";
+import moment from "../api/moment.min";
+import notice from '../api/notice.js';
+import http from '../api/http.js';
+import store from '../store/';
+import filter from '../api/filter';
+import tools from '../api/tools';
+class policylistitem {
+    props = {
+        itemdata: {
+            type: Object,
+            default: {}
+        },
+        issort: {
+            type: String,
+            default: "1"
+        },
+        hidesort: {
+            type: Boolean,
+            default: false
+        },
+        iconishide: {
+            type: Boolean,
+            default: false
+        }
+    }
+
+    data = {
+        loading: false,
+        os:"",
+        order: {
+            insureders: []
+        },
+        ishowmember: false,
+        members: filter.memberList(),
+        member: "1",
+        totalHeight: -1 //总高度
+    }
+
+    computed = {
+        isSortAndShow: function() {
+             if(this.iconishide)
+             {
+                return 'btn-disable';
+             }
+             if(this.itemdata.status == -2 || this.itemdata.status == -1)
+             {
+                return 'btn-disable';
+             }
+             if(this.itemdata.isPlat == 0)
+             {
+                 return this.itemdata.bdUrl ? '' : 'btn-disable'
+             }
+             return '';
+        }
+    }
+
+    methods = {
+
+        //获取当前订单的家庭成员信息
+        // getInsureders(id, callback) {
+        //     http({
+        //         name: "p_queryInsureders",
+        //         contentType: "form",
+        //         data: {
+        //             pid: id
+        //         }
+        //     }).then(data => {
+        //         callback(data.data);
+        //     });
+        // },
+
+        //查看电子保单
+        checkPDF(item) {
+            var vm = this;
+            if(item.isPlat == 0)
+            {
+                return cml.getSystemInfo().then(info => {
+                    if(info.env == 'alipay')
+                    {
+                        if(item.bdUrl)
+                        {
+                            store.state.PDFUrl = item.bdUrl;
+                            cml.navigateTo({
+                                path: "/pages/webView"
+                            });
+                        }
+                    }
+                    else
+                    {
+                        item.bdUrl && vm.showPdf(item.bdUrl);
+                    }
+                });
+            }
+            if (item.forbidden) {
+                return;
+            }
+
+            vm.loading = true;
+            notice.showloading("加载中");
+			
+            http({
+                name: "P_verifyBdurlExist",
+                data: {
+                    policyNo: item.policyNo
+                }
+            }).then(data => {
+                vm.loading = false;
+                console.log('下载电子保单:',data);
+                notice.hideloading();
+                if (data.httpCode != 200) return;
+                var url = store.state.domain[store.state.dev] + "/tools/bdurl/api/downloadPolicy?policyNo=" + item.policyNo + "&WTS_TOKEN_A=" + store.state.token;
+                console.log(url);
+                store.state.PDFUrl = url;
+                if(vm.os == "ios"){
+                    cml.navigateTo({
+					    path: "/pages/webView"
+				    });
+                }else{
+                    cml.getSystemInfo().then (info => {
+                        if (info.env == 'wx') 
+                        {
+                            vm.showPdf(url, item);
+                        }
+                        else
+                        {
+                            cml.navigateTo({
+                                path: "/pages/webView"
+                            });
+                        }
+                    });
+                }
+				
+            });
+        },
+
+        //显示电子保单
+        showPdf(url, item) {
+            var vm = this;
+            // if(vm.order.PdfPath){
+            // 	return tools.openDocument(vm.order.PdfPath);
+            // }
+            vm.loading = true;
+            notice.showloading("加载中");
+            console.log("显示电子保单:",url)
+            tools.downloadFile(url)
+                .then(path => {
+                    vm.order.PdfPath = path;
+                    console.log(path);
+                    tools.openDocument(vm.order.PdfPath)
+                        .then(res => {
+                            vm.loading = false;
+                            notice.hideloading();
+                        })
+                        .catch(err => {
+                            vm.loading = false;
+                            console.log(err);
+                            notice.hideloading();
+                        })
+                })
+                .catch(err=>{
+                    vm.loading = false;
+                    console.log(err);
+                    notice.hideloading();
+                })
+        },
+        /**是否禁用按钮 */
+        btnIsDisabled(order) {
+            if (this.iconishide) return true;
+            if (order.policyNo == 0 || !order.policyNo || order.policyNo.length < 5) return true;
+            if (order.isPlat != 1) return true; //不是平台出单的
+            if (order.status != '1') return true; //不是保障中的
+            return false
+        },
+
+        // 评价时间计算
+        isCommentTime(createTime) {
+            var _thisTime = moment().subtract(30, "days").format("YYYY-MM-DD")
+            var policyTime = moment(createTime).format('YYYY-MM-DD')
+            return _thisTime > policyTime
+        },
+
+        showMember(flag) {
+            if (!this.order.insureders || this.order.insureders.length == 0) return notice.msg("暂无成员分类信息");
+            this.ishowmember = flag;
+            this.initData();
+        },
+
+        showList(index) {
+            var arr = JSON.parse(JSON.stringify(this.order.insureders));
+            for (var i = 0; i < arr.length; i++) {
+                if (index != i) {
+                    arr[i].isShow = false;
+                }
+            }
+            arr[index].isShow = !arr[index].isShow;
+            this.order.insureders = arr;
+        },
+
+        initData() {
+            this.order = this.itemdata;
+            // var that = this;
+            // this.getInsureders(this.order.pid, function(listData) {
+            //     that.order.insureders = listData;
+            //     if (that.order.insureders && that.order.insureders.length > 0) {
+            //         for (var i = 0; i < that.order.insureders.length; i++) {
+            //             that.order.insureders[i].isShow = false;
+            //             that.order.insureders[i].insuredRelationshipVal = filter.insuranceRelationship(that.order.insureders[i].insuredRelationship);
+            //         }
+            //     }
+            // })
+
+            this.order.overdue = this.isCommentTime(this.order.createTime);
+            this.order.forbidden = this.btnIsDisabled(this.order);
+        },
+
+        changeINType(index, type) {
+            this.order.insureders[index].insuredRelationship = type;
+            this.order.insureders[index].insuredRelationshipVal = filter.insuranceRelationship(type);
+            this.showList(index);
+        },
+
+        actiondetail() {
+            this.$cmlEmit('actiondetail', {
+                item: this.order
+            });
+        },
+
+        //提交绑定的点击事件
+        save() {
+            var that = this;
+            this.showMember(false);
+            http({
+                    name: 'P_buildMember',
+                    data: {
+                        policyNo: this.order.policyNo,
+                        insureders: this.order.insureders
+                    }
+                })
+                .then(function(data, e) {
+                    if (data.httpCode != 200) return;
+                    notice.msg("分类成功!", 1000);
+                    setTimeout(() => {
+                        that.$cmlEmit('changerelations');
+                    }, 1000);
+
+                })
+        },
+
+        formSubmit(event) {
+            if (this.btnIsDisabled(this.order)) {
+                return;
+            }
+            if (event.detail.formId && event.detail.formId.indexOf(" ") < 0) {
+                cml.getSystemInfo().then(info => {
+                    http({
+                        name: info.env == 'wx' ? 'wxminiSendMessage' : 'aliminiSendMessage',
+                        data: {
+                            formId: event.detail.formId,
+                            orderId: this.order.policyNo
+                        }
+                    }).then(res => {
+                        cml.navigateTo({
+                            path: '/pages/onlineClaims/onlineClaims',
+                            query: {
+                                orderNo: this.order.policyNo
+                            }
+                        })
+                    }).catch(err => {
+                        cml.navigateTo({
+                            path: '/pages/onlineClaims/onlineClaims',
+                            query: {
+                                orderNo: this.order.policyNo
+                            }
+                        })
+                    })
+                });
+            } else {
+                cml.navigateTo({
+                    path: '/pages/onlineClaims/onlineClaims',
+                    query: {
+                        orderNo: this.order.policyNo
+                    }
+                })
+            }
+        },
+
+        //评价商品
+        commentPro(order) {
+            if (this.btnIsDisabled(this.order) || this.order.hasComment || this.order.overdue) {
+                return;
+            }
+            var policyNo = order.policyNo;
+            var productId = order.insuranceProductId;
+            var productName = order.insuranceProductName;
+            cml.navigateTo({
+                path: '/pages/sendComment/sendComment',
+                query: {
+                    policyNo,
+                    productId,
+                    productName
+                }
+            })
+        }
+    }
+
+    beforeCreate(query) {
+
+    };
+
+    created() {
+        cml.getSystemInfo().then((info) => {
+            if (info.env == 'weex') {
+                this.totalHeight = Number(info.viewportHeight) - 88;
+            } else {
+                this.totalHeight = Number(info.viewportHeight);
+            }
+            this.os = info.os;
+        })
+    }
+
+    mounted() {
+        this.initData();
+    }
+}
+
+export default new policylistitem();
+</script>
+
+<style lang="less">
+@import "../iconfont/iconfont";
+
+.poilcy_mask {
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    position: fixed;
+}
+
+.order-ul-li {
+    background: #fff;
+    margin-bottom: 10cpx;
+    border-bottom: 1px solid #dcdcdc;
+}
+
+.head {
+    position: relative;
+
+    .title {
+        height: 80cpx;
+        line-height: 80cpx;
+        font-size: 34cpx;
+        font-weight: 900;
+        lines: 1;
+        padding: 0 20cpx;
+    }
+}
+
+.buyToo {
+    position: absolute;
+    font-size: 28cpx;
+    color: #fff;
+    padding: 12cpx 24cpx;
+    background: #0084fd;
+    top: 15cpx;
+    right: 20cpx;
+    border-radius: 8cpx;
+}
+
+.center {
+    border-top: 1px dashed #dcdcdc;
+    border-bottom: 1px dashed #dcdcdc;
+    padding: 20cpx;
+
+    .txt {
+        line-height: 50cpx;
+        font-size: 32cpx;
+        position: relative;
+        z-index: 2;
+    }
+
+    .img-compangs {
+        position: absolute;
+        right: 10cpx;
+        top: 50cpx;
+        width: 170cpx;
+        z-index: 1;
+        opacity: 0.8;
+    }
+}
+
+.order-other-btn {
+    padding: 15cpx 0;
+    flex-direction: row;
+
+    .order-item-btn {
+        flex-grow: 1;
+        height: 56cpx;
+        line-height: 56cpx;
+        text-align: center;
+        background: #fff;
+        border: 1px solid #0382ff;
+        font-size: 28cpx;
+        color: #0382ff;
+        border-radius: 8cpx;
+        margin: 0 10cpx;
+        overflow: hidden;
+        .origin-button{
+            padding: 0;
+            height: 55cpx;
+            box-sizing: border-box;
+            line-height: 55cpx;
+            text-align: center;
+            background: #fff;
+            font-size: 28cpx;
+            color: #0382ff;
+            border-radius: 0cpx;
+            border: none;
+            &::after{
+                border: none;
+            }
+        }
+        &.btn-disable {
+            color: #888;
+            border-color: #888;
+            .origin-button{
+                color: #888;
+            }
+        }
+    }
+}
+
+.member-mask {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 998;
+}
+
+.member-content {
+    z-index: 999;
+    width: 525cpx;
+    border-radius: 12cpx;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    padding: 30cpx;
+
+    .member-info {
+        width: 100%;
+    }
+
+    .item-input {
+        width: 100%;
+        border-radius: 7cpx;
+        line-height: 75cpx;
+        font-size: 29cpx;
+        margin-bottom: 20cpx;
+        position: relative;
+        flex-direction: row;
+
+        .item-name {
+            width: 37%;
+            text-align: center;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            -o-text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .icon-jiantou_xia {
+            color: #999;
+            position: absolute;
+            right: 15cpx;
+            top: 0;
+            font-size: 24cpx;
+            z-index: 12;
+        }
+
+        .selsectList {
+            width: 63%;
+            height: 100%;
+            height: 75cpx;
+            box-sizing: border-box;
+            border: 1px solid #999;
+            color: #999;
+            background: #fff;
+            padding-right: 30cpx;
+            padding-left: 10cpx;
+            position: relative;
+
+            .selsectListInfo {
+                width: 100%;
+                position: absolute;
+                top: 75cpx;
+                left: 0;
+                z-index: 14;
+                background: #fff;
+                border: 1px solid #ccc;
+                text-align: center;
+                max-height: 400cpx;
+                overflow: auto;
+
+                .li {
+                    width: 100%;
+                    padding: 0 10cpx;
+                }
+            }
+        }
+    }
+
+    .member-btn {
+        text-align: center;
+        color: #fff;
+        bottom: 0;
+        left: 0;
+        background: #fff;
+        width: 100%;
+        padding-top: 20cpx;
+
+        .save {
+            text-align: center;
+            display: block;
+            width: 100%;
+            background: #0084ff;
+            line-height: 80cpx;
+            font-size: 33cpx;
+            letter-spacing: 1cpx;
+            border-radius: 12cpx;
+        }
+    }
+}
+</style>
+<script cml-type="json">
+{
+    "base": {
+        "usingComponents": {
+            
+        }
+    }
+}
+</script>

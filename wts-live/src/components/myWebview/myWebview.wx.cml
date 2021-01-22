@@ -1,0 +1,36 @@
+<template>
+  <origin-web-view src="{{toSrc}}"></origin-web-view>
+</template>
+
+<script>
+
+class myWebview implements myWebviewInterface {
+  props = {
+    toSrc: String
+  }
+  data = {
+  }
+  watch ={
+  }
+  methods = {
+  }
+  created() {
+    console.log(this.toSrc);
+  }
+}
+
+export default new myWebview();
+</script>
+
+<style >
+@import "myWebview.less";
+</style>
+
+<script cml-type="json">
+{
+  "base": {
+    "usingComponents": {
+    }
+  }
+}
+</script>

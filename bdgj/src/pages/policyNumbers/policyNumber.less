@@ -1,0 +1,80 @@
+@import '../../less/main';
+.policy-count{
+    flex-direction: row;
+    align-items: center;
+    padding: 20cpx 0;
+    border-bottom: 1px solid #dfdfdf;
+    height: 110cpx;
+    background: #fff;
+    .count-item{
+        width: 33.33%; 
+        border-right: 1px solid #dfdfdf;
+        &:nth-last-of-type(1){
+            border-right: none;
+        }
+        .p1{
+            text-align: center;
+            font-size: 30cpx;
+            color: #ff6d00;
+        }
+        .p2{
+            text-align: center;
+            font-size: 22cpx;
+        }
+    }
+}
+
+.issort-content{
+    width: 750cpx;
+    border-bottom: 1px solid #dfdfdf;
+}
+
+.policyList{
+    background: #f5f5f5;
+}
+
+.carousel_content{
+    background: #f6f6f6;
+    
+    .carousel_item{
+        text-align: center;
+        border-right: 1px solid #dfdfdf;
+        flex-direction: row;
+        justify-content: center;
+        padding: 25cpx 30cpx;
+        &:nth-last-of-type(1){
+            border-right:none;
+        }
+        &.active{
+            background: #fff;
+            .cml-text{
+                border-bottom: 4cpx solid #0084ff;
+            }
+            
+        }
+        .cml-text{
+            padding: 0 10cpx;
+            padding-bottom: 5cpx;
+            border-radius: 2cpx;
+            text-align: center;
+        }
+    }
+}
+
+//上拉加载的空栏目
+#emptyDom{
+  font-size: 34cpx;
+  .empty-icon{
+    width: 185cpx;
+    display: block;
+    margin: 60cpx auto 20cpx;
+  }
+  .empty-tip{
+    text-align: center;
+    font-size: 34cpx;
+    color: #666;
+    .cml-view{
+        text-align: center;
+    }
+  }
+}

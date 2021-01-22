@@ -1,0 +1,85 @@
+.views {
+  width: 100%;
+  height: 100%;
+  background: #efefef;
+}
+.views .item_box {
+  display: flex;
+  flex-direction: row;
+  height: 102rpx;
+  border-bottom: 2rpx solid #efefef;
+  background: #fff;
+}
+.views .item_box .item_type {
+  margin-left: 30rpx;
+  width: 210rpx;
+  letter-spacing: 0;
+  height: 102rpx;
+  line-height: 102rpx;
+  font-size: 30rpx;
+  color: #0a0205;
+}
+.views .tips {
+  display: block;
+  margin: 56rpx 0 0 33rpx;
+  line-height: 50rpx;
+  font-size: 28rpx;
+  letter-spacing: 0rpx;
+  color: #666;
+}
+.views .bindInfo {
+  margin-left: 30rpx;
+  margin-top: 20rpx;
+  height: 26rpx;
+  line-height: 26rpx;
+  font-size: 24rpx;
+  color: #4580f6;
+}
+.views .bottom_box {
+  position: fixed;
+  bottom: 70rpx;
+  width: 100%;
+}
+.views .get_code {
+  margin: 20rpx 0;
+  padding: 0 10rpx;
+  min-width: 174rpx;
+  height: 62rpx;
+  line-height: 62rpx;
+  background-color: #ffffff;
+  border-radius: 8rpx;
+  font-size: 30rpx;
+  color: #4580f6;
+  box-sizing: border-box;
+}
+.views .got_code {
+  border: solid 1px #999;
+  color: #999;
+}
+.views .ungot_code {
+  border: solid 1px #4580f6;
+  color: #4580f6;
+}
+.views .my_loading {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.views .my_loading .loading_box {
+  width: 210rpx;
+  height: 100rpx;
+  line-height: 100rpx;
+  background: #444;
+  border-radius: 8rpx;
+  text-align: center;
+}
+.views .my_loading .loading_box .loading_img {
+  width: 50rpx;
+  height: 50rpx;
+  vertical-align: middle;
+}
+.views .my_loading .loading_box .loading_text {
+  color: #fff;
+  font-size: 26rpx;
+}

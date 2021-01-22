@@ -1,0 +1,90 @@
+<template>
+<page title="梧桐树核保助手">
+<view class="apps">
+<view class="fx-question">
+    <view class="fx-tips">请如实回答下列问题：</view>
+    <view class="fx-content">
+        <view class="wrapper">
+            <view class="questionItems" c-if="{{QUES_ILLS}}" c-for="{{QUES_ILLS}}" c-for-index="i" c-for-item="vals" c-key="i">
+                <view class="title" c-if="{{vals.children && vals.children.length>0}}">{{vals.content}}问题：</view>
+                <question-tree model="{{p}}" parentActive="-1" c-for="{{vals.children}}" c-for-index="s" c-for-item="p" c-key="s"></question-tree>
+            </view>
+        </view>
+    </view>
+    
+    <view class="fx-btns">
+        <view class="preBtn" c-bind:click="goPrev()">上一步</view>
+        <view class="nextBtn" c-bind:click="goNext()">确定</view>
+    </view>
+</view>
+</view>
+</page>
+</template>
+
+<script>
+import cml from 'chameleon-api';
+import store from '../store';
+import myApi from '../components/tools/tools.interface';
+import tools from '../api/tools.js';
+import notice from '../api/notice.js';
+import http from '../api/http.js';
+import regular from '../api/regular.js';
+class Question {
+    data={
+        QUES_ILLS:[],//疾病列表
+        hasMoreQueation:'',//是否还有未选择的问题
+    }
+    methods = {
+        //确定
+        goNext(){
+            var data=store.state.QUES_ILLS;
+            this.hasMoreQueation='';
+            this.checkMoreQuestion(data);
+            if(!this.hasMoreQueation){
+                cml.navigateTo({
+                    path: '/pages/issue'
+                })
+            }
+        },
+        //上一步
+        goPrev(){
+            cml.navigateBack(-1);
+        },
+        // 校验是否还有未选择的问题
+        checkMoreQuestion(data){
+            if(this.hasMoreQueation)return;
+            data.forEach((item,i)=>{
+                if(item.type==2 && item.choosed==2){
+                    this.hasMoreQueation=item.content;
+                    notice.alert('问题--"'+item.content+'"尚未选择，请您选择后再提交！');
+                    return false;
+                }
+                if(item.children && item.children.length>0)this.checkMoreQuestion(item.children);
+            })
+        }
+    }
+    mounted(){
+        console.log(store.state.QUES_ILLS);
+        this.QUES_ILLS=store.state.QUES_ILLS;
+        console.log(store.getters.getListANames);
+        
+    }
+}
+export default new Question();
+</script>
+<style scope>
+    @import "question.less";
+</style>
+<script cml-type="json">
+    {
+    "base":{
+      "usingComponents": {
+        "c-loading": "cml-ui/components/c-loading/c-loading",
+        "question-tree": "/components/questionTree/questionTree"
+      },
+      "navigationBarTitleText": "梧桐树核保助手",
+      "backgroundTextStyle": "dark",
+      "backgroundColor": "white"
+    }
+  }
+</script>

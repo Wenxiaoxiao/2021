@@ -1,0 +1,16 @@
+
+//私人定制相关
+https://mp.weixin.qq.com/cgi-bin/loginpage?t=wxm2-login&lang=zh_CN      
+wutongshu3399@163.com  
+wuts0715    
+
+AppID(ID):wxe83820da834838c9
+AppSecret:51398f0eb76dc9ca1b4650b91819796b
+
+//蜡烛宝贝相关
+账号：wutongshu7788@163.com
+密码：wuts0715
+
+appid:wxcf6de2f6fc4c5fd7
+AppSecret：bad10308f674b89246e2dce0b80a2ced
+

@@ -1,0 +1,68 @@
+.apps {
+    .list-box {
+        padding: 0 30cpx 0 20cpx;
+        margin-top: 30cpx;
+        .list-box-title {
+            font-family: FZLTCHK--GBK1-0;
+            font-size: 34cpx;
+            line-height: 36cpx;
+            color: #000000;
+            font-weight: bold;
+        }
+        .item-box {
+            flex-direction:row;
+            justify-content:
+            flex-start;flex-wrap:wrap;
+            .list-box-item {
+                margin-left: 30cpx;
+                margin-top: 20cpx;
+                width: 210cpx;
+                height: 52cpx;
+                text-align: center;
+                &:nth-child(3n+1) {
+                    margin-left: 0;
+                }
+            }
+        }
+    }
+    .encyclopedia-wrapper {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,.4);
+        .wrapper-box {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            background: #fff;
+            .wrapper-title {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                padding: 0 20cpx;
+                width: 100%;
+                height: 80cpx;
+                background: #e2e2e2;
+                text {
+                    font-size: 30cpx;
+                    height: 80cpx;
+                    line-height: 80cpx;
+                }
+            }
+            image {
+                padding: 0 8cpx;
+                margin-top: 26cpx;
+                width: 46cpx;
+                height: 30cpx;
+
+            }
+            .wrapper-content {
+                overflow-y: auto;
+                max-height: 900cpx;
+                min-height: 400cpx;
+                padding: 20cpx;
+            }
+        }
+    }
+}

@@ -1,0 +1,603 @@
+<template>
+<page title="梧桐树核保助手">
+<view class="apps">
+<view class="hb-consult">
+    <view class="wrapper">
+    <scroller 
+    class="wrapper-scroll"
+    scroll-direction="{{scrollDirection}}"
+    scroll-top="{{scrollTop}}"
+    bounce="{{false}}"
+    height="{{scrollView}}"
+  >
+        <view class="hotIll scrollheight">
+            <view class="title">
+                <image src="{{titleImg}}" class="titleImg"></image>
+                <text>常见疾病</text>
+            </view>
+            <span class="content">
+            <span class="item" c-for="{{hotIll}}" c-for-index="index" c-for-item="value" c-key="index">
+                <span>{{value.name}}</span>
+            </span>
+            </span>
+        </view>
+        <view class="content1 scrollheight">
+            <span class="item animated fadeInLeft">
+                <span class="left">
+                    <image src="{{imgsrc3}}"></image>
+                </span>
+                <span class="right">
+                    <image src="{{imgsrc2}}"></image>
+                    hi，你好，罹患疾病不知该投什么产品？告知疾病，梧桐君帮您筛选可承保的优质产品! 
+                </span>
+            </span>
+            <span class="item animated fadeInLeft">
+                <span class="left">
+                    <image src="{{imgsrc3}}"></image>
+                </span>
+                <span class="right">
+                    <image src="{{imgsrc2}}"></image>
+                    请先根据对于情况选择疾病名称，查看核保建议，建议仅供参考，最终核保结果以保险公司为准  
+                </span>
+            </span>
+            <span class="item animated fadeInLeft">
+                <span class="left">
+                    <image src="{{imgsrc3}}"></image>
+                </span>
+                <span class="right">
+                    <image src="{{imgsrc2}}"></image>
+                    
+                    <span class="content">
+                        <span class="item1" c-for="{{lookIll}}" c-for-index="index" c-for-item="value" c-key="index">
+                            <span>{{value.name}}</span>
+                        </span>
+                    </span>
+                    <view class="linkItem" c-bind:click="goIllList">点击选择疾病&nbsp;&gt;</view>
+                </span>
+            </span>
+        </view>
+        <view class="content2 animated fadeInRight scrollheight" c-if="{{questionJsons.length>0}}">
+            <span class="item">
+                <span class="left">
+                    <image src="{{imgsrc1}}"></image>
+                </span>
+                <span class="right">
+                    <image src="{{imgsrc4}}"></image>
+                    被保险人所患疾病：
+                    <span c-for="{{questionJsons}}" c-for-index="index" c-for-item="value" c-key="index">
+                        <span>- {{value}}</span>
+                    </span>
+                </span>
+            </span>
+        </view>
+        <view class="content1 animated fadeInLeft scrollheight" c-if="{{questionJson.length>0}}">
+            <span class="item">
+                <span class="left">
+                    <image src="{{imgsrc3}}"></image>
+                </span>
+                <span class="right">
+                    <image src="{{imgsrc2}}"></image>
+                    <view class="answer" c-for="{{questionJson}}" c-for-index="index" c-for-item="value" c-key="index">
+                        <view class="type">- {{value.content}}类问题：</view>
+                        <block c-for="{{value.children}}" c-for-index="s" c-for-item="p" c-key="s">
+                            <insure-tree class="ques" model="{{p}}"></insure-tree>
+                        </block>
+                    </view>
+                </span>
+            </span>
+        </view>
+        <view class="content1 animated fadeInLeft scrollheight" c-if="{{diseaseIds.length>0}}">
+            <span class="item">
+                <span class="left">
+                    <image src="{{imgsrc3}}"></image>
+                </span>
+                <span class="right">
+                    <image src="{{imgsrc2}}"></image>
+                    <span class="type1">针对上述疾病，</span>梧桐君会为根据每个人的不同情况为您进行量身定制的核保，请根据被保险人实际情况，如实回答下列几个问题！
+                </span>
+            </span>
+            <span class="item animated fadeInLeft">
+                <span class="left">
+                    <image src="{{imgsrc3}}"></image>
+                </span>
+                <span class="right">
+                    <image src="{{imgsrc2}}"></image>
+                    <span class="ques">请问被保险人的性别是：</span>
+                    <view class="sex">
+                        <view c-bind:click="choseSex(i)" c-for="{{sexData}}" c-for-index="i" c-for-item="value" c-key="i">
+                            <view c-if="{{value.chosed}}" class="active"><image src="{{value.src}}"></image></view>
+                            <view c-else><image src="{{value.src}}"></image></view>
+                            <text>{{value.text}}</text>
+                        </view>
+                    </view>
+                </span>
+            </span>
+        </view>
+        <view class="content2 animated fadeInRight scrollheight" c-if="{{sex != ''}}">
+            <span class="item">
+                <span class="left">
+                    <image src="{{imgsrc1}}"></image>
+                </span>
+                <span class="right">
+                    <image src="{{imgsrc4}}"></image>
+                    <span c-if="{{sex == '1'}}">男</span>
+                    <span c-if="{{sex == '2'}}">女</span>
+                </span>
+            </span>
+        </view>
+        <view class="content1 animated fadeInLeft scrollheight" c-if="{{sex != ''}}">
+            <span class="item">
+                <span class="left">
+                    <image src="{{imgsrc3}}"></image>
+                </span>
+                <span class="right">
+                    <image src="{{imgsrc2}}"></image>
+                    <span class="ques">请问被保险人的出生年份是：</span>
+                    <view class="year-select select-text">
+                        <view class="section">
+                            <picker bindchange="bindPickerChange" value="{{year.yearsIndex}}" range="{{year.yearArr}}">
+                                <view class="picker">
+                                    {{year.yearArr[year.yearsIndex]}}
+                                </view>
+                            </picker>
+                        </view>
+                    </view>
+                </span>
+            </span>
+        </view>
+        <view class="content2 animated fadeInRight scrollheight" c-if="{{year.year != ''}}">
+            <span class="item">
+                <span class="left">
+                    <image src="{{imgsrc1}}"></image>
+                </span>
+                <span class="right">
+                    <image src="{{imgsrc4}}"></image>
+                    <span>被保险人出生年份：{{year.year}}年</span>
+                </span>
+            </span>
+        </view>
+        <view class="content1 animated fadeInLeft scrollheight" style="display:none;" c-if="{{year.year != ''}}">
+            <span class="item">
+                <span class="left">
+                    <image src="{{imgsrc3}}"></image>
+                </span>
+                <span class="right">
+                    <image src="{{imgsrc2}}"></image>
+                    <span class="ques">你感兴趣的险种类型是：</span>
+                    <span class="content">
+                        <span class="item1" c-for="{{insureStyles}}" c-for-index="index" c-for-item="value" c-key="index" c-bind:click="choseStyle(value)">
+                            <span>{{value.label}}</span>
+                        </span>
+                    </span>
+                </span>
+            </span>
+        </view>
+        <view class="content2 animated fadeInRight scrollheight" style="display:none;" c-if="{{insureStyle != ''}}">
+            <span class="item">
+                <span class="left">
+                    <image src="{{imgsrc1}}"></image>
+                </span>
+                <span class="right">
+                    <image src="{{imgsrc4}}"></image>
+                    <span>{{insureStyle.label}}</span>
+                </span>
+            </span>
+        </view>
+        <view class="content1 animated fadeInLeft scrollheight" c-if="{{recommendProducts.length>0}}">
+            <span class="item">
+                <span class="left">
+                    <image src="{{imgsrc3}}"></image>
+                </span>
+                <span class="right">
+                    <image src="{{imgsrc2}}"></image>
+                    <span class="content">
+                        <span class="item2">
+                            根据您的健康状况，梧桐君为您 筛选出来可能可以承保的产品， 你可尝试投保，<span>投保前仍需仔细 阅读告知已确认是否可承保! </span>
+                        </span>
+                    </span>
+                </span>
+            </span>
+        </view>
+        <view class="content3 animated fadeInLeft scrollheight" c-if="{{recommendProducts.length>0}}">
+            <view class="title"><image src="{{lineImg}}"></image><span>重大疾病</span><image src="{{lineImg}}"></image></view>
+            <view class="itemWrapper" c-for="{{recommendProducts}}" c-for-index="index" c-for-item="value" c-key="index">
+                <view class="item" >
+                    <view class="left">
+                        <image src="{{value.productIco}}"></image>
+                    </view>
+                    <view class="right">
+                        <span class="name">{{value.name}}</span>
+                        <span class="productDesc">{{value.productDesc}}</span>
+                        <span class="fee"><span>￥ {{value.fee}} </span>起</span>
+                    </view>
+                </view>
+                <view class="advisory" c-if="{{value.infos.length>0}}">
+                    <view c-for="{{value.infos}}" c-for-index="m" c-for-item="item" c-key="m">
+                        <view class="title">{{item.title}}</view>
+                        <view class="content">{{item.content}}</view>
+                        <view c-if="{{questionShow === true}}" c-for="{{item.question}}" c-for-index="theindex" c-for-item="theval" c-key="theindex" class="questions">
+                            <view class="question">{{theval.content}}</view>
+                            <view c-if="{{theval.chosedType == '是'}}" class="answer yes">{{theval.chosedType}}</view>
+                            <view c-if="{{theval.chosedType != '是'}}" class="answer no">{{theval.chosedType}}</view>
+                        </view>
+                        <view c-if="{{questionShow === false}}" class="arrow" c-bind:click="questionShowOrNot(true)"><image src="{{arrowDown}}"></image></view>
+                        <view c-if="{{questionShow === true}}" class="arrow" c-bind:click="questionShowOrNot(false)"><image src="{{arrowUp}}"></image></view>
+                    </view>
+                </view>
+            </view>
+            <view class="footer" c-bind:click="goExpert">
+                <image src="{{footImg}}"></image>
+            </view>
+        </view>
+    </scroller>
+    </view>
+    <view class="footBtn" c-bind:click="reVerify" c-if="{{showReVerify}}">
+    重新核保
+    </view>
+<c-loading loading="{{consultLoading}}"></c-loading>
+</view>
+</view>
+</page>
+</template>
+    
+<script>
+import cml from 'chameleon-api';
+import store from '../store';
+import myApi from '../components/tools/tools.interface';
+import tools from '../api/tools.js';
+import notice from '../api/notice.js';
+import http from '../api/http.js';
+import regular from '../api/regular.js';
+class Consult {
+    data={
+        windowHeight:0,
+        scrollView:10,
+        scrollDirection: 'vertical',
+        scrollTop:0,
+        hotIll:[{name:'淋巴结肿大'},{name:'肺炎'},{name:'肺结核'},{name:'子宫附件疾病（盆腔炎、畸胎瘤、巧克力囊肿）'}],
+        lookIll:[],
+        // lookIll:[{name:'胆结石'},{name:'肾结石'},{name:'结石'},{name:'尿道结石'},{name:'胆管结石'}],
+        insureStyles:[{"label":"重疾","value": 1,},{"label":"医疗","value": 2,},{"label":"意外","value": 3,},{"label":"寿险","value": 4,}],
+        insureStyle:1,
+        illList:[],
+        questionShow:false,
+        questionJson:[],
+        questionJsons:[],
+        diseaseIds:[],
+        recommendProducts:[],
+        consultLoading:false,
+        pointList:[],
+        sex:'',
+        sexData:[{type:'1',text:'男',chosed:false,src:require("../assets/images/verifyinsurance/man.png")},{type:'2',text:'女',chosed:false,src:require("../assets/images/verifyinsurance/woman.png")}],
+        year:{
+            defaultIndex: 0,
+            yearsIndex: 0,
+            year:'',
+            yearArr:[]
+        },
+        imgsrc1:"",
+        imgsrc3:require("../assets/images/verifyinsurance/3.png"),
+        imgsrc2:require("../assets/images/verifyinsurance/2.png"),
+        imgsrc4:require("../assets/images/verifyinsurance/4.png"),
+        arrowDown:require("../assets/images/verifyinsurance/circle-arrow-down.png"),
+        arrowUp:require("../assets/images/verifyinsurance/circle-arrow-up.png"),
+        lineImg:require("../assets/images/verifyinsurance/line.png"),
+        footImg:require("../assets/images/verifyinsurance/foot.png"),
+        titleImg:require("../assets/images/verifyinsurance/1.png"),
+        triangle:require("../assets/images/verifyinsurance/triangle.png"),
+        showReVerify:false,//是否显示重新核保
+    }
+    methods = {
+      scrollToBottom(val){
+        let THAT = this;
+        wx.createSelectorQuery().selectAll('.scrollheight').boundingClientRect(function(rect) {
+            if(rect){
+                let scrollheight = 0;
+                //console.log("rect1",rect);
+                rect.map((item,index)=>{
+                    if(index === rect.length-1){
+
+                    }
+                    else{
+                        //console.log(item.height);
+                        scrollheight = scrollheight + item.height;
+                    }
+                })
+                //console.log("scrollheight",scrollheight);
+                let scrollHeight = cml.px2cpx(scrollheight)+cml.px2cpx(val);
+                THAT.scrollTop = scrollHeight;
+            }
+        }).exec()
+      },
+      goExpert(){//https://bx.wts999.com/m/customer/index.html
+        cml.navigateTo({
+            path: '/pages/webView'
+        })
+      },
+      //重新审核
+      reVerify(){
+        //console.log("store.state.QUES_ILLS",store.state.QUES_ILLS);
+        if(store.state.QUES_ILLS.length>0){//有数据的情况下 清空数据
+            store.state.QUES_ILLS = [];
+            //设置默认值
+            this.questionJsons = [];
+            this.questionJson = [];
+            this.diseaseIds = [];
+            this.recommendProducts = [];
+            this.sex = '';
+            this.year.year = "";
+            //this.insureStyle = "";
+            let date = new Date(),toYear = date.getFullYear();
+            this.year.yearsIndex = this.year.defaultIndex = toYear - 1940;
+            this.sexData.map(item=>{
+                item.chosed = false;
+            })
+        }
+        else{//没数据的情况下，进入选择疾病页面
+            cml.navigateTo({
+                path: '/pages/illList'
+            })
+        }
+        // console.log("store.state.QUES_ILLS",store.state.QUES_ILLS);
+      },
+      //跳转到疾病列表
+      goIllList(){
+        cml.navigateTo({
+            path: '/pages/illList'
+        })
+      },
+      //是否展示问题+答案
+      questionShowOrNot(val){
+          this.questionShow = val;
+      },
+      //选择性别
+      choseSex(index){
+          //this.sex = "";
+          //this.sex = this.sexData[index].type;
+          this.recommendProducts = [];
+          let sexData = this.sexData;
+          sexData.map((item,i)=>{
+              if(i == index){
+                sexData[i].chosed = true;
+              }
+              else{
+                sexData[i].chosed = false;
+              }
+          })
+          this.sex = sexData[index].type;
+          this.scrollToBottom(0);
+          this.getProductsList();
+      },
+    //选择出生年份
+    bindPickerChange: function(e) {
+        this.recommendProducts = [];
+        this.year.yearsIndex = this.year.defaultIndex = e.detail.value;
+        this.year.year = this.year.yearArr[e.detail.value];
+        this.scrollToBottom(0);
+        let THAT =this;
+        setTimeout(function(){
+            THAT.getProductsList();
+        },100)
+    },
+    //获取产品
+    getProductsList(){
+        let THAT = this;
+        //console.log(value);
+        //递归算法 找到与目标id相同的 item
+        var returnedItem; 
+        var findId = function(arr, id){
+            arr.forEach((item) => {
+                if(item.id==id)
+                {
+                    returnedItem = item;
+                    return item;
+                }
+                else if(item.children.length > 0)
+                {
+                    findId(item.children, id);                    
+                }                   
+            })
+        }
+        //递归算法 找到与目标id相同的 item 如果 该item 有parentid则向上查找到 最高层
+        var parentItem;
+        var findParentId = function(arr,id){
+            var tmp = findId(arr, id);
+            //console.log("returnedItem",returnedItem);
+            if(returnedItem.parentId !== "0"){
+                findParentId(arr,returnedItem.parentId);
+            }
+            else if(returnedItem.parentId === "0"){
+                parentItem = returnedItem;
+                return parentItem;
+            }
+        }
+        //递归算法 
+        var childItem = [];
+        var findChidId = function(arr){
+            arr.forEach((item)=>{
+                // console.log(item);
+                if(childItem.indexOf(item.id) == -1){
+                    childItem.push(item.id);
+                }
+                if(item.children.length>0){
+                    findChidId(item.children);
+                }
+            })
+        }
+        //找到该id下所有的问题
+        var quesList = [];
+        var findAllQues = function(item){
+            let tmpItem = {"content":'',"chosedType":''};
+            if(item.type === 2 && item.choosed === 1){
+                tmpItem.content = item.content;
+                item.children.map(item2=>{
+                    if(item2.choosed === 1 && item2.type === 3 && item2.parentId === item.id){
+                        tmpItem.chosedType = item2.content;
+                    }
+                })
+                quesList.push(tmpItem);
+            }
+            if(item.children.length>0){
+                item.children.forEach((item1)=>{
+                    findAllQues(item1);
+                })
+            }
+        }
+        // if(THAT.sex === ""){
+        //     notice.msg("请选择被保险人性别！");
+        // }
+        // else if(THAT.year.year === ""){
+        //     notice.msg("请选择被保险人出生年份！")
+        // }
+        // else if(THAT.insureStyle.value === ""){
+        //     notice.msg("请选择您感兴趣的险种类型！")
+        // }
+        // else 
+        if(THAT.year.year !== "" && THAT.insureStyle !== "" && THAT.sex !== ""){
+             //请求产品列表
+            http({
+                name: 'product.getRecommendProduct',
+                data: {
+                    "birthday":THAT.year.year,
+                    "diseaseIds":THAT.diseaseIds, 
+                    "policyType":[1],
+                    "sex":THAT.sex
+                },
+            }).then(res => {
+                console.log("成功!", res);
+                let recommendProducts = res.data;
+                //循环产品列表，通过infos里面的diseaseId匹配疾病列表里面的id 
+                //通过获得的id去匹配疾病列表里面 改id 的父级，祖父级 。。。 一直找到最高层
+                //循环遍历之后得到 匹配的疾病 病种 和 该疾病下 回答过的问题 和 答案
+                //赋值给该 infos item1["title"]=>病种  item1["question"]=>回答过的问题 和 答案
+                http({
+                url:'/api/allHealths',
+                method:"GET",
+                }).then(pointListdata =>{
+                    let pointList = pointListdata.data;
+                    recommendProducts.map((item,theindex1)=>{
+                    item.infos.map((item1,theindex)=>{
+                            //得到当前id所在的item
+                            var tmp = findId(pointList,item1.diseaseId);
+                            //得到最上面一层的父节点
+                            var tmp3 = findParentId(pointList,item1.diseaseId);
+                            //赋值
+                            item1["title"] = parentItem.content;
+                            let tmpArr = [];
+                            console.log(THAT.questionJson);
+                            THAT.questionJson.map(item2=>{
+                                console.log("item2",item2);
+                                if(item2.id === parentItem.id){
+                                    var tmp4 = findAllQues(item2);
+                                    //console.log("quesList",quesList);
+                                }
+                            })
+                            //console.log("quesList",quesList);
+                            item1["question"] = quesList;
+                        })
+                    })
+                    setTimeout(() => {
+                        THAT.recommendProducts = recommendProducts;
+                        THAT.consultLoading = false;
+                        THAT.$forceUpdate();
+                        THAT.scrollToBottom(15);
+                    }, 0);
+                })
+            }).catch(err => {
+                console.log(err);
+            })
+        }
+    },
+    //选择险种类型：
+    choseStyle(value){
+        this.consultLoading = true;
+        this.insureStyle = value;
+        this.scrollToBottom(0);
+        this.getProductsList();
+    },
+    //获取所有的疾病ID
+    getAllDiseaseIds(){
+        //递归算法 
+        var childItem = [];
+        var findAllId = function(arr){
+            arr.forEach((item)=>{
+                //console.log("item",item);
+                if(childItem.indexOf(item.id) === -1 && item.choosed === 1){
+                    childItem.push(item.id);
+                }
+                if(item.children.length>0){
+                    findAllId(item.children);
+                }
+            })
+        }
+        if(store.state.QUES_ILLS && store.state.QUES_ILLS instanceof Array){
+            let tmp = findAllId(store.state.QUES_ILLS);
+            //console.log("childItem",childItem);
+            this.diseaseIds = childItem;
+        }
+    },
+    //获取已选择的产品的一级名称
+    getListANames(){
+        if(store.state.QUES_ILLS && store.state.QUES_ILLS instanceof Array && store.state.QUES_ILLS.length>0){
+            let tmpArr = [];
+            store.state.QUES_ILLS.forEach(item=>{
+                if(item.choosed==1)tmpArr.push(item.content);
+            })
+            this.questionJsons = tmpArr;
+            this.questionJson=store.state.QUES_ILLS;
+            // console.log("questionJson",questionJson);
+            // console.log("store.state.QUES_ILLS",store.state.QUES_ILLS);
+            this.showReVerify=true;
+            this.scrollToBottom(0);
+        }
+    }
+}
+    mounted(){
+        //屏幕高度
+        let windowHeight = wx.getSystemInfoSync().windowHeight;
+        this.windowHeight = windowHeight;
+        //console.log("windowHeight",windowHeight);
+        let scrollView = cml.px2cpx(windowHeight) - 121;
+        //获取用户图像
+        let THAT = this;
+        THAT.scrollView = scrollView;
+        cml.getStorage('ico').then((data)=>{
+            //console.log(data);
+            this.imgsrc1 = data;
+            THAT.$forceUpdate();
+        })
+        
+        //年份 1940至今
+        let date = new Date(),toYear = date.getFullYear();
+        let yearArr = [];
+        for(let m =1940;m<=toYear;m++){
+            yearArr.push(m);
+        }
+        this.year.yearArr = yearArr;
+        this.year.yearsIndex = this.year.defaultIndex = toYear - 1940;
+    }
+    onShow(){
+        //获取疾病信息 包含父子关系
+        this.getListANames();
+        this.getAllDiseaseIds();
+    }
+}
+export default new Consult();
+</script>
+<style scope>
+    @import "../assets/css/animate.less";
+    @import "consult.less";
+</style>
+<script cml-type="json">
+    {
+    "base":{
+      "usingComponents": {
+        "c-loading": "cml-ui/components/c-loading/c-loading",
+        "insure-tree": "/components/insureTree/insureTree"
+      },
+      "navigationBarTitleText": "梧桐树核保助手",
+      "backgroundTextStyle": "dark",
+      "backgroundColor": "white"
+    }
+  }
+</script>

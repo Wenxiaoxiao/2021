@@ -1,0 +1,118 @@
+<template>
+  <view class="apps">
+    <view class="class-info">
+      <origin-video class="class-video" src="{{showVideoMsg.url}}" bindprogress="videoPro" controls="true" bindplay="addLearner" autoplay="{{false}}" style="width:100%;height:422cpx;"></origin-video>
+      <text class="class-title">{{showVideoMsg.briefTitle}}</text>
+      <text class="class-learn-amount">学习人数：{{showVideoMsg.count}}</text>
+    </view>
+    <view class="class-scroll">
+      <text class="sub-title">听课列表</text>
+      <view class="scroll-wrapper">
+        <scroller class="scroller" width="{{720}}" height="{{164}}" scroll-direction="horizontal">
+          <text class="{{currentIndex == index?'class-box active': 'class-box'}}" c-for="{{videoList}}" style="height: 164cpx;" c-bind:tap="toggleClass(index,$event)">{{item.title}}</text>
+        </scroller>
+      </view>
+    </view>
+    <view class="class-detail">
+      <text class="sub-title">课程介绍</text>
+      <my-richtext textMsg="{{showVideoMsg.introduce}}"></my-richtext>
+    </view>
+  </view>
+</template>
+<script>
+
+import api from '../../utils/api'
+import lifeCycle from '../../components/lifeCycle/lifeCycle.interface'
+import App from '../../app/app'
+
+class myLearn implements myLearnInterface {
+  data = {
+    imgSrc: require("../../assets/images/liveBanner.jpg"),
+    videoList: [],
+    showVideoMsg: Object,
+    currentIndex: 0,
+    isNewLearner: true
+  }
+
+  computed = {
+  }
+
+  methods = {
+    toggleClass(i,$event) {
+      this.currentIndex= i;
+      this.showVideoMsg= this.videoList[i];
+    },
+    addLearner() {
+      var _that= this;
+      if(this.isNewLearner) {
+        this.isNewLearner= false;
+        // 开始播放学习人数+1
+        _that.videoList[_that.currentIndex].count= _that.showVideoMsg.count = _that.showVideoMsg.count+1;
+        // 人数+1接口
+        api.addLearner(this.showVideoMsg.id,function(data) {
+        })
+      }
+    },
+    videoPro(e) {
+      console.log(e.detail.buffered);
+    },
+    ...lifeCycle
+  }
+  beforeCreate(query) {
+    console.log("learn");
+  }
+
+  created(query) {
+    var _that= this;
+    // 获取课程列表
+    api.getVideoList({
+      offset: 0,
+      pageSize: 5
+    },function(data) {
+      data.map(function(item) {
+        item.briefTitle= item.title.length>20?item.title.slice(0,19)+'...':item.title
+      })
+      _that.videoList= data;
+      _that.showVideoMsg= data[0];
+    })
+  }
+
+  beforeMount(query) {
+  }
+
+  onShow() {
+    console.log("learn1");
+  }
+
+  mounted() {
+    console.log("learn2");
+  }
+
+  onHide() {
+    console.log("learn2");
+  }
+
+  beforeDestroy() {
+    this.showVideoMsg.url= '';
+    console.log(this.showVideoMsg);
+  }
+
+  destroyed() {
+  }
+}
+
+export default new myLearn();
+</script>
+
+<style >
+@import "myLearn.less";
+</style>
+
+<script cml-type="json">
+{
+  "base": {
+    "usingComponents": {
+    }
+  }
+}
+</script>

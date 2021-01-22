@@ -1,0 +1,128 @@
+{
+	"mode": "history",
+	"pages": [
+		
+		{
+			"path": "pages/index/index",
+	        "style" : {
+	            "navigationBarTitleText":"梧桐树保险大学"
+	        }
+		},
+		{
+			"path": "pages/live/live",
+		    "style" : {
+		        "navigationBarTitleText":"直播课堂"
+		    }
+		},
+		{
+			"path": "pages/planDetail/planDetail",
+		    "style" : {
+		        "navigationBarTitleText":"方案设计"
+		    }
+		},
+		{
+			"path": "pages/liveDetail/liveDetail",
+		    "style" : {
+		        "navigationBarTitleText":"直播课堂"
+		    }
+		},
+		{
+			"path": "pages/myplan/myplan",
+	        "style" : {
+	            "navigationBarTitleText":"方案设计"
+	        }
+		},
+		{
+			"path": "pages/appointAdviser/appointAdviser",
+	        "style" : {
+	            "navigationBarTitleText":"顾问预约"
+	        }
+		},
+		{
+			"path": "pages/inExpert/inExpert",
+	        "style" : {
+	            "navigationBarTitleText":"顾问详情"
+	        }
+		},
+		{
+			"path": "pages/unExpert/unExpert",
+	        "style" : {
+	            "navigationBarTitleText":"专家详情"
+	        }
+		},
+		{
+			"path": "pages/qanda/qanda",
+	        "style" : {
+	            "navigationBarTitleText":"保险问答"
+	        }
+		},
+		{
+			"path": "pages/learn/learn",
+	        "style" : {
+	            "navigationBarTitleText":"课程学习"
+	        }
+		},
+		{
+			"path": "pages/gaurd/gaurd",
+	        "style" : {
+	            "navigationBarTitleText":"守护平凡"
+	        }
+		},
+		{
+			"path": "pages/article/article",
+	        "style" : {
+	            // "navigationBarTitleText":"文章列表"
+	        }
+		},
+		{
+			"path": "pages/webView",
+	        "style" : {
+	            //"navigationBarTitleText":"外链页"
+	        }
+		},
+		{
+			"path": "pages/encyclopedia/encyclopedia",
+	        "style" : {
+	            "navigationBarTitleText":"保险百科"
+	        }
+		},
+		{
+			"path": "pages/encyclopediaDetail/encyclopediaDetail",
+	        "style" : {
+	            "navigationBarTitleText":"保险百科"
+	        }
+		},
+		{
+			"path": "pages/qaDetail/qaDetail",
+	        "style" : {
+	            "navigationBarTitleText":"保险问答"
+	        }
+		},
+		{
+			"path": "pages/glcpDetail/glcpDetail",
+	        "style" : {
+	            //"navigationBarTitleText":"超市攻略测评详情"
+	        }
+		},
+		{
+			"path":"pages/shpfDetail/shpfDetail",
+			"style":{}
+		},
+		{
+			"path":"pages/cpcpDetail/cpcpDetail",
+			"style":{}
+		},
+		{
+			"path": "pages/pay/pay",
+	        "style" : {
+	            "navigationBarTitleText":"我的支付"
+	        }
+		}
+	],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "梧桐树保险大学",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8"
+	}
+}

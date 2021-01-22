@@ -1,0 +1,167 @@
+<template>
+  <view class="views" c-if="{{hasData}}">
+    <scroller height="{{scrollHeight}}" scroll-direction="{{'vertical'}}" scroll-top="{{scrollTo}}" c-bind:onscroll="scrollPos">
+      <image src="{{imgSrc}}" class="title"></image>
+      <view c-for="{{policyData}}" c-for-item="l" c-for-index="i" class="item_box">
+        <text class="item_szm">{{initials[i]}}</text>
+        <view c-for="{{l}}" c-for-item="j" class="item">
+          <view class="item_content">
+            <view style="flex-direction:row;">
+              <view class="item_msg">
+                <text class="item_name">{{j.shortName}}</text>
+                <text class="item_num">{{j.tellPhone}}</text>
+              </view>
+              <image class="item_img" src="{{j.logoImg}}"></image>
+            </view>
+            <text class="item_call iconfont icon-callout" c-bind:click="makingCall(j.tellPhone)"></text>
+          </view>
+        </view>
+      </view>
+    </scroller>
+    <view class="right_box">
+      <view c-for="{{initials}}" c-for-index="i" data-pos="{{posArr[i]}}" c-bind:click="toPos(i,$event)" class="{{currentIndex==i?'active right_item': 'right_item'}}">{{item}}</view>
+      <!-- <view class="right_item active">A</view>
+      <view data-pos="1000" class="right_item" c-bind:click="toPos">D</view>
+      <view class="right_item">F</view> -->
+    </view>
+  </view>
+</template>
+
+<script>
+
+  import cml from 'chameleon-api';
+	import http from '../../api/http.js';
+  import tools from '../../api/tools';
+  import notice from '../../api/notice.js';
+    
+class VertifyPolicy   {
+
+  data = {
+    // 保险公司数据
+    imgSrc: "https://bx.wts999.com/m/xcxStatic/bdgj/vertify_banner.jpg",
+    policyData: [],
+    initials: [], // 首字母
+    posArr: [148], // 每个字母起始位置
+    currentIndex: 0, // 当前区间
+    scrollHeight: 0,
+    scrollTo: 0,
+    hasData: false
+  }
+
+  computed = {
+  }
+
+  watch  = {
+  }
+
+  methods = {
+    toPos(i,e) {
+      this.scrollTo= e.target.dataset.pos;
+      this.currentIndex= i
+    },
+    scrollPos(e) {
+      var _p= e.detail.scrollTop;
+      console.log(e.detail);
+      for(var i=0;i<this.posArr.length;i++) {
+        if(this.posArr[i]<_p&&_p<this.posArr[i+1]) {
+          this.currentIndex= i;
+        }
+      }
+    },
+    makingCall(tel) {
+			tools.makingCall(tel);
+    }
+  }
+
+  beforeCreate(query) {
+    var that= this;
+		notice.showloading("加载中...");
+    http({
+      name: "v_policy",
+      data: {
+        pageNum: 1,
+        pageSize: 999
+      }
+    }).then(function(res) {
+      // 公司数据
+      var sortData= {};
+      // 公司首字母
+      var _initials= [];
+      // 提出logo的url地址
+      res.data.map(function(item) {
+        if(JSON.parse(item.logo).length) {
+          item.logoImg= (JSON.parse(item.logo))[0]['url'];
+        }
+        if(item.initials) {
+            // 首次添加该首字母
+            if(sortData[item.initials]) {
+                sortData[item.initials].push(item);
+            }else {
+                _initials.push(item.initials);
+                sortData[item.initials]= [item];
+            }
+        }
+      })
+      // 首字母排序
+      _initials.sort();
+      _initials.map(function(item,i) {
+        that.policyData.push(sortData[item]);
+        // 每个字母起始位置
+        that.posArr.push(sortData[item].length*150+48+that.posArr[i]);
+      })
+      that.initials= _initials;
+      notice.hideloading();
+      that.hasData= true;
+    }).catch(function(res) {
+      console.log(res);
+    })
+  }
+
+  created(query) {
+			cml.getSystemInfo().then((info) => {
+				if(info.env == 'weex') {
+					this.scrollHeight =  Number(info.viewportHeight)  - 88;
+				} else {
+          this.scrollHeight =  Number(info.viewportHeight);
+				}
+			})
+  }
+
+  beforeMount(query) {
+  }
+
+  onShow() {
+  }
+
+  mounted() {
+  }
+
+  onHide() {
+  }
+
+  beforeDestroy() {
+  }
+
+  destroyed() {
+  }
+}
+
+export default new VertifyPolicy();
+</script>
+
+<style lang="less">
+  @import './vertifyPolicy.less';
+</style>
+
+<script cml-type="json">
+{
+  "base": {
+    "usingComponents": {}
+  },
+  "wx": {
+    "navigationBarTitleText": "家庭保单智能管家",
+    "backgroundTextStyle": "dark",
+    "backgroundColor": "#E2E2E2"
+  }
+}
+</script>

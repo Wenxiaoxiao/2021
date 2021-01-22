@@ -1,0 +1,88 @@
+<script cml-type="interface">
+interface LifecycleInterfaceInterface {
+  getMsg(msg: String): String;
+}
+
+</script>
+
+
+
+<script cml-type="web">
+
+class Method implements LifecycleInterfaceInterface {
+  getMsg(msg) {
+    return 'web:' + msg;
+  }
+}
+
+export default new Method();
+</script>
+
+<script cml-type="weex">
+
+class Method implements LifecycleInterfaceInterface {
+  getMsg(msg) {
+    return 'weex:' + msg;
+  }
+}
+
+export default new Method();
+</script>
+
+<script cml-type="wx">
+import store from '../../store/';
+class Method implements LifecycleInterfaceInterface {
+  getMsg(msg) {
+    return 'wx:' + msg;
+  }
+
+  onShareAppMessage(res) {
+    
+    if (res.from === 'button') {
+      // 来自页面内转发按钮
+    }
+    return {
+      title: store.state.share.title,
+      path: store.state.share.path,
+      imageUrl:store.state.share.imageUrl
+    }
+  }
+}
+
+export default new Method();
+</script>
+
+<script cml-type="alipay">
+import store from '../../store';
+class Method implements LifecycleInterfaceInterface {
+  
+  getMsg(msg) {
+    return 'alipay:' + msg;
+  }
+  onShareAppMessage(res) {
+    return {
+        title: store.state.share.title,
+        path: store.state.share.path,
+        bgImgUrl:"https://bx.wts999.com/m/xcxStatic/shrepolicyZfb.jpg"
+    };
+    
+  }
+}
+
+export default new Method();
+</script>
+
+<script cml-type="baidu">
+
+class Method implements LifecycleInterfaceInterface {
+  getMsg(msg) {
+    return 'baidu:' + msg;
+  }
+}
+
+export default new Method();
+</script>
+
+
+
+

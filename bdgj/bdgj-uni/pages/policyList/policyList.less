@@ -1,0 +1,130 @@
+@import '../../less/main';
+view {
+	box-sizing: border-box;
+}
+.policyListContainer{
+	height:100vh;
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+	.orList{
+	  flex:1;
+	  display: flex;	
+	}
+}
+.policy-count {
+	position: relative;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	padding: 20rpx 0;
+	border-bottom: 1px solid #dfdfdf;
+	height: 110rpx;
+	background: #fff;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	.nonebox {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+	}
+	.count-item {
+		width: 33.33%;
+		border-right: 1px solid #dfdfdf;
+		&:nth-last-of-type(1) {
+			border-right: none;
+		}
+		.p1 {
+			text-align: center;
+			font-size: 30rpx;
+			color: #ff6d00;
+		}
+		.p2 {
+			text-align: center;
+			font-size: 28rpx;
+		}
+	}
+}
+
+.issort-content {
+	width: 750rpx;
+	height: 100rpx;
+
+	&.borderNone {
+		border-bottom: 1px solid #dfdfdf;
+	}
+}
+
+
+.policyList {
+	background: #f5f5f5;
+	padding: 0;
+}
+
+.carousel_content {
+	white-space: nowrap;
+	background: #f6f6f6;
+
+	.carousel_item {
+		box-sizing: content-box;
+		display: inline-block;
+		height: 100rpx;
+		border-right: 1px solid #dfdfdf;
+		flex-direction: row;
+		justify-content: center;
+		text-align: center;
+      
+		text {
+			width: 100%;
+			height: 100rpx;
+			overflow: hidden;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+			line-height: 100rpx;
+			box-sizing: border-box;
+			display: inline-block;
+			align-items: center;
+			justify-content: center;
+			border-bottom: 6rpx solid #f6f6f6;
+			border-radius: 2rpx;
+			display: flex;
+		}
+		&:last-child {
+			text {
+				line-height: 0;
+			}
+		}
+		&:nth-last-of-type(1) {
+			border-right: none;
+		}
+		&.active {
+			background: #fff;
+			text {
+				border-bottom: 6rpx solid #0084ff;
+				border-radius: 3rpx;
+			}
+		}
+	}
+}
+
+//上拉加载的空栏目
+#emptyDom {
+	padding-top: 60rpx;
+	font-size: 34rpx;
+	.empty-icon {
+		width: 185rpx;
+		display: block;
+		margin: 0 auto 20rpx;
+	}
+	.empty-tip {
+		text-align: center;
+		font-size: 34rpx;
+		color: #666;
+		view {
+			text-align: center;
+		}
+	}
+}

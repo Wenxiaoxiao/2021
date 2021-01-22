@@ -1,0 +1,448 @@
+<template>
+	<page title="快速理赔">
+		<view class="myclaims-box">
+			<view class="box box1">
+				<view class="top-title">
+					<view c-if="{{mainDate.id}}" class="text marb-cecece">保单号:{{mainDate.policyNo}}</view>
+					<view class="text">险种名称: {{mainDate.insuranceProductName}}</view>
+				</view>
+			</view>
+			<view class="main-tit"><text class="main-titles">出险人信息</text></view>
+			<view class="box">
+				<view c-if="{{!insureder}}" class="list-form">
+					<text class="list-left">出险人姓名:</text>
+					<text class="list-right">{{mainDate.insurederName}}</text>
+				</view>
+
+                <view c-else class="list-form">
+					<text class="list-left">出险人姓名:</text>
+					<view class="select-box select-right" >
+                        <view>
+						<view class="select_title" c-catch:click="checkNameTap()">{{checkName}}</view>
+						<view class="select_option" c-show="{{isCheckName}}">
+							<view c-catch:click="changeName(item.insurederName,index)" class="option_item {{item.insurederName == checkName?'active':''}}" c-for="{{insureder}}">{{item.insurederName}}</view>
+						</view>
+                        </view>
+                    </view>
+				</view>
+
+				<view class="list-form radio-height noBorder" id="dangerType">
+					<text class="list-left">出险类型:</text>
+					<view class="list-radios clearfix">
+						<view c-for="{{typeTxt}}" c-for-index="i" c-for-item="value" class="radios-box" c-catch:click="inputClick(i)">
+							<checkbox cstyle="border-radius:50%;" checkedIcon="https://bx.wts999.com/m/xcxStatic/active-chackbox.png" checked="{{value.check}}" label="{{value.text}}">{{value.type}}</checkbox>
+						</view>
+					</view>
+				</view>
+			</view>
+			<view class="box">
+				<view class="list-form noBorder">
+					<text class="list-left">出险经过描述:</text>
+					<textarea show-count="false" rows="{{10}}" c-model="{{claimPass}}" class="textarea dangerRemark needsclick" placeholder="请描述出险经过"></textarea>
+				</view>
+			</view>
+			<view class="main-tit"><text class="main-titles">联系人</text></view>
+			<view class="box">
+				<view class="list-form left-baodan" c-if="{{!mainDate.isGiftProduct}}">
+					<text class="list-left">您是保单的:</text>
+					<view c-bind:tap="changeradio(1)" class="lz-radio call-radio {{contantType == 1?'actives':''}}"><view class="select_readio_icon"></view><view class="select_readio_title">投保人</view></view>
+					<view c-bind:tap="changeradio(2)" class="lz-radio call-radio {{contantType == 2?'actives':''}}"><view class="select_readio_icon"></view><view class="select_readio_title">其他</view></view>
+				</view>
+				<view class="list-form left-baodan" c-if="{{mainDate.isGiftProduct}}">
+					<text class="list-left">您的信息:</text>
+					<view c-bind:tap="changeradio(1)" class="lz-radio call-radio {{contantType == 1?'actives':''}}"><view class="select_readio_icon"></view><view class="select_readio_title">默认</view></view>
+					<view c-bind:tap="changeradio(2)" class="lz-radio call-radio {{contantType == 2?'actives':''}}"><view class="select_readio_icon"></view><view class="select_readio_title">其他</view></view>
+				</view>
+				<view class="policy-call call-box" c-if="{{mainDate.isGiftProduct && contantType==1}}">
+					<view class="list-form">
+						<text class="list-left">姓名:</text>
+						<text class="list-right">{{mainDate.insurederName}}</text>
+					</view>
+					<view class="list-form">
+						<text class="list-left">手机号码:</text>
+						<text class="list-right">{{mainDate.insurederMobile}}</text>
+					</view>
+				</view>
+
+                <view class="policy-call call-box" c-if="{{!mainDate.isGiftProduct && contantType==1}}">
+					<view class="list-form">
+						<text class="list-left">姓名:</text>
+						<text class="list-right">{{mainDate.policyholderName}}</text>
+					</view>
+					<view class="list-form">
+						<text class="list-left">手机号码:</text>
+						<text class="list-right">{{mainDate.policyholderMobile}}</text>
+					</view>
+				</view>
+				<view class="notAll-call call-box" c-if="{{contantType==2}}">
+					<view class="list-form">
+						<text class="list-left">姓名:</text>
+						<input c-model="{{contantName}}" cstyle="height: 90cpx;border: none;" type="text" class="list-input input-less contactName" placeholder="请填写姓名"></input>
+					</view>
+					<view class="list-form">
+						<text class="list-left">手机号码:</text>
+						<input c-model="{{mobile}}" cstyle="height: 90cpx;border: none;" type="text" class="list-input input-less contactMobile" placeholder="请填写电话"></input>
+					</view>
+				</view>
+
+			</view>
+
+			<!-- 联系人 end -->
+			<!--顶部提示-->
+			<view class="main-tit margin-template" c-show="{{hasClaimType}}"><text class="main-titles">理赔提示</text><text class="main-titles-desc">(请您保管好下列资料)</text></view>
+			<view class="box margin-none" c-show="{{hasClaimType}}">
+				<view class=" promp-common" c-show="{{typeTxt[0].check}}">
+					<view class="list-form marb-e3e3e3">
+						<text style="text-align:center;display:block;">【医疗】</text>
+					</view>
+					<view class="left-yuan">正式收据，门诊/住院费用清单，社保结算单</view>
+
+					<view class="left-yuan">相关检查及检验报告</view>
+
+					<view class="left-yuan">意外事故证明（公安机关等机构出具的资料）等</view>
+				</view>
+				<view class=" promp-common" c-show="{{typeTxt[1].check}}">
+					<view class="list-form marb-e3e3e3">
+						<text style="text-align:center;display:block;">【重疾】</text>
+					</view>
+					<view class="left-yuan">（门诊，住院）病例</view>
+
+					<view class="left-yuan">相关检查及检验报告 </view>
+
+					<view class="left-yuan">病理组织检验报告（恶性肿瘤理赔），相关检查及检验报告</view>
+
+					<view class="left-yuan">意外事故证明（公安机关等机构出具的资料）等</view>
+				</view>
+				<view class=" promp-common" c-show="{{typeTxt[2].check}}">
+					<view class="list-form marb-e3e3e3">
+						<text style="text-align:center;display:block;">【残疾】</text>
+					</view>
+					<view class="left-yuan">（门诊，住院）病例</view>
+
+					<view class="left-yuan">相关检查及检验报告 </view>
+
+					<view class="left-yuan">意外事故证明（公安等机构出具的资料）等</view>
+
+					<view class="left-yuan">鉴定报告（如有）等</view>
+				</view>
+				<view class=" promp-common"  c-show="{{typeTxt[3].check}}">
+					<view class="list-form marb-e3e3e3">
+						<text style="text-align:center;display:block;">【身故】</text>
+					</view>
+					<view class="left-yuan">（门诊，住院）病例</view>
+
+					<view class="left-yuan">相关检查及检验报告</view>
+
+					<view class="left-yuan">意外事故证明（公安机关等机构出具的资料）等</view>
+
+					<view class="left-yuan">鉴定报告（如有）等</view>
+
+					<view class="left-yuan">死亡证明，户口注销证明，殡葬/火化证明</view>
+				</view>
+				<view class="promp-common" c-show="{{typeTxt[4].check}}">
+					<view class="list-form marb-e3e3e3">
+						<text style="text-align:center;display:block;">【家财损失】</text>
+					</view>
+					<view class="left-yuan">公安机关开具的保安证明，金额超过5000需提供立案证明</view>
+
+					<view class="left-yuan">房产证复印件、出险照片、房产原装修合同、发票</view>
+
+					<view class="left-yuan">出险后维修合同、发票</view>
+
+					<view class="left-yuan">家电、家具原购买合同、发票</view>
+				</view>
+				<view class="promp-common" c-show="{{typeTxt[5].check}}">
+					<view class="list-form marb-e3e3e3">
+						<text style="text-align:center;display:block;">【其他】</text>
+					</view>
+					<view class="left-yuan">依照具体赔案情况由保险人要求提供的证明材料</view>
+				</view>
+				<view class="bottom-btn-div">
+				<form report-submit="true" report-submit-timeout="10000" onSubmit="submitBtn" bindsubmit="submitBtn">
+					<origin-button form-type="submit" class="wts-btn-big bottom-fixed">提交</origin-button>
+				</form>
+				</view>
+			</view>
+		</view>
+	</page>
+</template>
+
+<script>
+	import cml from 'chameleon-api';
+    import tools from '../../api/tools.js';
+	import notice from '../../api/notice.js';
+	import http from '../../api/http.js';
+	import util from '../../components/util/util.interface'
+	var vm = null;
+	class onlineClaims {
+		data = {
+			isCheckName:false,
+			indexNa:0,
+			// name: "", //出险人姓名
+			typeTxt: [{
+					text: "医疗",
+					type: "1",
+					check: true
+				},
+				{
+					text: "重疾",
+					type: "2",
+					check: false
+				},
+				{
+					text: "残疾",
+					type: "3",
+					check: false
+				},
+				{
+					text: "身故",
+					type: "4",
+					check: false
+				},
+				{
+					text: "家财损失",
+					type: "5",
+					check: false
+				},
+				{
+					text: "其他",
+					type: "6",
+					check: false
+				}
+			], //出险类型
+			mainDate: {}, //主数据
+			insureder: [], //多被保险人数据
+			hasClaimType: true, //是否选择类型
+			checkName: 0, //选择多被保险人姓名
+			claimPass: "", //出险经过
+			mobile: "", //联系人手机号
+			contantName: "", //联系人姓名
+			contantType: "1", //联系人类型 1投保人 2其他
+			clickFlag: true,
+			policyNo:""
+		}
+		beforeCreate() {
+			util.hideShareMenu();
+		}
+		methods = {
+			//显示隐藏成员信息
+			checkNameTap(){
+				this.isCheckName = !this.isCheckName;
+			},
+
+			//修改成员
+			changeName(name,i){
+				this.checkName = name;
+				this.indexNa = i;
+				this.checkNameTap();
+			},
+
+			//单选相关事件
+			changeradio(type){
+				this.contantType = type;
+			},
+			policyDetail() {
+				// 取到路由带过来的参数
+				http({
+					name:'P_claimsDetail',
+					data: {
+						policyNo: this.policyNo,
+					},
+					contentType:"form"
+				})
+				.then(data => {
+					if(data.httpCode!=200) return;
+					vm.mainDate = data.data.data;
+					if(vm.mainDate.policyholderName.indexOf("梧桐树") > -1) vm.mainDate.isGiftProduct = true;
+					vm.insureder = data.data.insureder;
+					vm.addInsureder(data.data.insureder);
+				})
+				.catch(error => {
+					notice.hideloading();
+					console.log(error);
+				});
+			},
+			addInsureder(insureders) {
+				//处理多被保险人数据
+				var insureder = insureders;
+				var mainDate = vm.mainDate;
+				if(insureder && insureder.length > 0) {
+					var newDatr = {
+						insurederName: mainDate.insurederName,
+						insurederMobile: mainDate.insurederMobile,
+					}
+					insureder.unshift(newDatr);
+					vm.insureder = insureder;
+					vm.checkName = insureder[0].insurederName;
+				}
+				notice.hideloading();
+			},
+			inputClick(i) {
+				for (var k=0;k<this.typeTxt.length;k++) {
+					this.typeTxt[k].check = false;
+				}
+				this.typeTxt[i].check = !this.typeTxt[i].check;
+				this.checkType();
+			},
+			checkType() {
+				var typeTxt = this.typeTxt;
+				var type = false;
+				for(var k=0; k<typeTxt.length;k++) {
+					if(typeTxt[k].check) {
+						type = true;
+						break;
+					}
+				}
+				this.hasClaimType = type;
+			},
+			submitBtn(event) {
+				console.log(event);
+				var  isGiftProduct = this.mainDate.isGiftProduct;
+				if(!this.checkVal()) return;
+				var insureder = this.insureder;
+				var mainDate = this.mainDate;
+				var dangerType = this.getDangerType();
+				let obj = {
+					insuranceProductName: mainDate.insuranceProductName, //产品名称
+					insuranceProductId: mainDate.insuranceProductId, //产品id
+					policyNo: mainDate.policyNo, //保单id
+					dangerName: this.insureder && this.insureder.length > 0 ? this.insureder[this.indexNa].insurederName : this.mainDate.insurederName, //出险人姓名
+					dangerType: dangerType, //出险类型
+					dangerRemark: this.claimPass, //出险描述
+					contactMobile: this.contantType == 1 ? (!isGiftProduct ? mainDate.policyholderMobile : mainDate.insurederMobile) : this.mobile, //联系人手机
+					contactName: this.contantType == 1 ? (!isGiftProduct ? mainDate.policyholderName : mainDate.insurederName) : this.contantName, //联系人姓名
+					relationship: this.contantType == 1 ? (!isGiftProduct ? '投保人' : '默认') : '其他', //联系人姓名
+				};
+				console.log(obj);
+				if(this.clickFlag) {
+					this.clickFlag = false;
+					http({
+					name:'P_addClaim',
+					data: obj
+					})
+                    .then(data => {
+                        if(data.httpCode!=200){
+							vm.clickFlag = true;
+							return;
+						};
+						if(event.detail.formId && event.detail.formId.indexOf(" ")<0){
+							cml.getSystemInfo().then(info => {
+								http({
+									name:info.env == 'wx' ? 'wxminiSendMessage' : 'aliminiSendMessage',
+									data:{
+										formId:event.detail.formId,
+										orderId:"claimSettle"+vm.policyNo
+									}
+								}).then(res =>{
+									console.log(res);
+									cml.showToast({
+										message: "您的理赔申请已提交，理赔专员会尽快与您联系。",
+										duration: 1000
+									})
+									setTimeout(function() {
+										vm.clickFlag = true;
+										cml.navigateBack(-1);
+									}, 1000);
+								}).catch(err =>{
+									console.log(err);
+									cml.showToast({
+										message: "您的理赔申请已提交，理赔专员会尽快与您联系。",
+										duration: 1000
+									})
+									setTimeout(function() {
+										vm.clickFlag = true;
+										cml.navigateBack(-1);
+									}, 1000);
+								})
+							})
+						}else{
+							cml.showToast({
+								message: "您的理赔申请已提交，理赔专员会尽快与您联系。",
+								duration: 1000
+							})
+							setTimeout(function() {
+								vm.clickFlag = true;
+								cml.navigateBack(-1);
+							}, 1000);
+						}
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+				}
+			},
+			getDangerType() {
+				var datas = this.typeTxt;
+				var type = '[';
+				for(var k=0; k<datas.length;k++) {
+					if(datas[k].check) {
+						type += datas[k].type + ','
+					}
+				}
+				type = type.slice(0, type.length - 1) + ']';
+				return type;
+			},
+			checkVal() {
+				console.log(this.mobile);
+				if(this.claimPass == "") {
+                    cml.showToast({
+                            message: "请填写出险描述",
+                            duration: 1000
+                        })
+					return false;
+				}
+
+				if(this.contantType == 2) {
+					if(this.contantName == "") {
+                        cml.showToast({
+                            message: "请填写联系人姓名",
+                            duration: 1000
+                        })
+						return false;
+					}
+					if(this.mobile == "" || !tools.isPhone(this.mobile)) {
+                        cml.showToast({
+                            message: "请正确填写联系人手机号",
+                            duration: 1000
+                        })
+						return false;
+					}
+				}
+				return true;
+			}
+		}
+
+		created(query) {
+			vm = this;
+			this.policyNo = query.orderNo;
+		}
+
+		mounted() {
+			notice.showloading("加载中");
+			this.policyDetail();
+		}
+	}
+	export default new onlineClaims();
+</script>
+<style lang="less" scoped>
+	@import "../../iconfont/iconfont";
+	@import "./onlineClaims.less";
+	.cml-checkbox-checked{
+		border-radius: 50%;
+		overflow: hidden;
+	}
+	.inner-icon{
+      border-radius: 50%;
+    }
+</style>
+<script cml-type="json">
+	{
+		"base": {
+			"usingComponents": {
+			},
+			"navigationBarTitleText": "快速理赔",
+			"backgroundTextStyle": "dark",
+			"backgroundColor": "#fff"
+		}
+	}
+</script>

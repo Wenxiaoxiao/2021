@@ -1,0 +1,148 @@
+
+.contact-layer-box{
+    .showMask{
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 998;
+        background-color: rgba(0,0,0,.5);
+    }
+    .contact-layer {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(0,-60%);
+        width: 603cpx;
+        height: 540cpx;
+        background-color: #fff;
+        border-radius: 8cpx !important;
+        margin-left: -301cpx;
+        z-index: 1000;
+        .title,
+        .title2 {
+            height: 140cpx;
+            line-height: 140cpx;
+            text-align: center;
+            font-size: 49cpx;
+            font-weight: 900;
+            border-top-left-radius: 8cpx !important;
+            border-top-right-radius: 8cpx !important;
+            color: #ff6000;
+            background: url('../../assets/images/contact-bg.png') no-repeat center;
+            span {
+                font-weight: 100
+            }
+        }
+        .msg {
+            padding-top: 10cpx;
+            font-size: 32cpx;
+            .msg-box {
+                flex-direction: row;
+                justify-content: center;
+                margin-top: 23cpx;
+                .msg-key {
+                    font-size: 30cpx;
+                    width: 164cpx;
+                    display: inline-block;
+                    text-align: right;
+                    padding-right: 8cpx;
+                    height: 80cpx;
+                    line-height: 80cpx;
+                }
+                .msg-value {
+                    display: inline-block;
+                    
+                }
+            }
+            .msg-box-time {
+                position: relative;
+                .key-time {
+                    width: 356cpx;
+                    text-align: center;
+                    position: relative;
+                    padding: 0;
+                    .arrow {
+                        position: absolute;
+                        right: 8cpx;
+                        top: 50%;
+                        width: 25cpx;
+                        transform: translateY(-50%);
+                    }
+                }
+                .select-box {
+                    position: absolute;
+                    width: 356cpx;
+                    left: 2.5rem;
+                    border: 1cpx solid #ccc;
+                    background: #fff;
+                    .select-value {
+                        height: 45cpx;
+                        line-height: 45cpx;
+                        text-align: center;
+                    }
+                }
+            }
+        }
+        .submit {
+            margin: 38cpx auto;
+            width: 526cpx;
+            height: 80cpx;
+            background-color: #ff9c00;
+            border-radius: 8cpx;
+            color: #fff;
+            font-size: 36cpx;
+            line-height: 80cpx;
+            text-align: center;
+        }
+    }
+    .reseve-fade-enter-active {
+        transition: all .2s;
+        -webkit-transition: all .2s;
+        -moz-transition: all .2s;
+        -ms-transition: all .2s;
+        -o-transition: all .2s;
+    }
+    .reseve-fade-enter, .reseve-fade-leave-to{
+        transform: scale(0);
+        opacity: .3;
+    }
+}
+
+.tagBox{
+    .tag-backdrop{
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,.5);
+        z-index: 999;
+    }
+    .tagBlock{
+        width: 680cpx;
+        position: fixed;
+        left: 50%;
+        top: 20%;
+        margin-left: -320cpx;
+        z-index: 1001;
+        img{
+            width:100%;
+            display:block;
+        }
+    }
+    .tag-enter-active {
+        transition: all .1s;
+        -webkit-transition: all .1s;
+        -moz-transition: all .1s;
+        -ms-transition: all .1s;
+        -o-transition: all .1s;
+    }
+    .tag-enter, .tag-leave-to
+        /* .slide-fade-leave-active 用于 2.1.8 以下版本 */ {
+        transform: scale(0);
+    }
+}

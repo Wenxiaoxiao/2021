@@ -1,0 +1,118 @@
+<template>
+  <page title="保单智能管家">
+    <view class="chameleon-content" style="height:{{scrollHeight}}cpx;">
+      <scroller
+        scroll-direction="vertical"
+        bottom-offset="{{20}}"
+        height="{{scrollHeight}}"
+      >
+        <component shareid="{{shareId}}" is="{{currentCom}}"></component>
+      </scroller>
+    </view>
+
+    <view class="footer-zhanwei">
+      <c-tabbar c-model="{{currentCom}}"
+                tabbar="{{tabbar}}"></c-tabbar>
+    </view>
+  </page>
+</template>
+
+<script>
+  import cml from 'chameleon-api';
+  import tools from '../../api/tools.js';
+	import notice from '../../api/notice.js';
+	import http from '../../api/http.js';
+  class Index {
+    data = {
+      scrollHeight: -1,
+      shareId:"",
+      currentCom: 'policyList',
+      tabbar: {
+        tabbarStyle: "height:100cpx;",
+        textStyle: "font-size: 24cpx;color:#b1b1b1;",
+        selectedTextStyle: "font-size: 24cpx;color:#00a2ff;",
+        list: [
+          {
+            compName: 'policyList',
+            text: '保单管理',
+            icon: require('../../assets/images/policy1.jpg'),
+            iconStyle:"width:40cpx;height:40cpx;",
+            selectedIcon:require('../../assets/images/policy2.jpg'),
+          },
+          {
+            compName: 'mine',
+            text: '我的保单',
+            icon: require('../../assets/images/me1.jpg'),
+            iconStyle:"width:40cpx;height:40cpx;",
+            selectedIcon:require('../../assets/images/me2.png'),
+          }
+        ]
+      }
+    }
+    methods = {
+    }
+
+    beforeCreate(puery){
+			
+      tools.login()
+      .then(res=>{
+        console.log(res);
+      })
+      .catch(err=>{
+        console.log(err);
+      })
+
+      this.currentCom = puery.currentCom || "mine";
+      this.shareId = puery.userId || "";
+		}
+
+    mounted() {
+      cml.getSystemInfo().then((info) => {
+        if (info.env == 'weex') {
+          this.scrollHeight = Number(info.viewportHeight) - 100 - 88;
+        } else {
+          this.scrollHeight = Number(info.viewportHeight) - 100;
+        }
+      })
+    }
+  }
+  export default new Index();
+</script>
+<style scoped>
+  .chameleon-content {
+    width: 750cpx;
+    overflow-x: hidden;
+  }
+  .content-main {
+    width: 3750cpx;
+    background: #9F8A60;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+  }
+
+  .footer-zhanwei {
+    width: 750cpx;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #fff;
+    border-top: 2cpx solid #E6E6E6;
+  }
+
+</style>
+<script cml-type="json">
+  {
+    "base":{
+      "usingComponents": {
+        "policyList": "../policyList/policyList",
+        "mine": "../minePolicy/minePolicy",
+        "c-tabbar": "cml-ui/components/c-tabbar/c-tabbar"
+      },
+      "navigationBarTitleText": "保单智能管家",
+      "backgroundTextStyle": "dark",
+      "backgroundColor": "#fff"
+    }
+  }
+</script>

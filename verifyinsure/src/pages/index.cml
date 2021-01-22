@@ -1,0 +1,156 @@
+<template>
+<page title="梧桐树核保助手">
+<view class="apps">
+<view class="hb-index">
+<image src="{{bgImg}}" class="indexBg"></image>
+<view class="text1">健康确认&nbsp;&nbsp;无痕核保</view>
+<view class="text2">给您更安心的保险选择</view>
+<view class="text3">核保只需一分钟，大数据帮您筛选可投保产品</view>
+<view class="text3">保险公司不留底</view>
+<view class="bigsmall">
+    <view class="text4"></view>
+    <view class="text5">
+    <image src="{{btnImg}}" class="btnImg"></image>
+    <view>
+      <origin-button class="text" open-type="getUserInfo" bindgetuserinfo="getInfoCallback"  ></origin-button>
+    </view>
+    </view>
+</view>
+<view class="text6">核保结果仅供参考，不作为保险公司最终核保结论</view>
+<c-loading loading="{{indexLoading}}"></c-loading>
+</view>
+</view>
+</page>
+</template>
+    
+<script>
+import cml from 'chameleon-api';
+import store from '../store';
+import myApi from '../components/tools/tools.interface';
+import tools from '../api/tools.js';
+import notice from '../api/notice.js';
+import http from '../api/http.js';
+import regular from '../api/regular.js';
+
+import lifeCycle from '../components/lifeCycle/lifeCycle.interface';
+class Index {
+    data={
+        userInfo:{},
+        loginInfo:{},
+        code:'',
+        session:'',
+        indexLoading:false,
+        btnImg:require("../assets/images/verifyinsurance/btn.png"),
+        bgImg:require("../assets/images/verifyinsurance/indexBg.png"),
+    }
+    methods = {
+      ...lifeCycle,
+      //获取用户授权回调
+      getInfoCallback(e){
+      console.log('e',e);
+      if(e.detail && e.detail.errMsg == "getUserInfo:ok") {
+        this.userInfo = e.detail.userInfo;
+        cml.setStorage('ico',e.detail.userInfo.avatarUrl);
+        this.indexLoading = true;
+        this.goLogin(this.code);
+        }else{
+          notice.msg("您拒绝了授权");
+        }
+      },
+      //跳转我的定制页
+      goConsult(){
+        console.log('userInfo',this.userInfo);
+        console.log(this.session);
+        let userInfo={};
+        userInfo["city"] = this.userInfo["city"];
+        userInfo["country"] = this.userInfo["country"];
+        userInfo["ico"] = this.userInfo["avatarUrl"];
+        userInfo["nick"] = this.userInfo["nickName"];
+        userInfo["province"] = this.userInfo["city"];
+        userInfo["sex"] = this.userInfo["gender"];
+        let params = {
+          session:this.session,
+          auth:userInfo
+        };
+        cml.setStorage('session',this.session);
+        this.userAuth(params);
+      },
+      //userAuth post
+      userAuth(param){
+        http({
+          name: 'user.userAuth',
+          data: param
+        }).then(res => {
+          console.log("=成功!", res);
+            cml.navigateTo({
+              path: '/pages/consult'
+            })
+        }).catch(err => {
+          //console.log('=err',err);
+        })
+      },
+      //登录 
+      goLogin(code){
+        http({
+          name: 'login.getInfo',
+          data: {
+            code: code
+          }
+        }).then(res => {
+          console.log("成功!", res);
+          this.session = res.data.session;
+          this.indexLoading = false;
+          this.goConsult();
+        }).catch(err => {
+          console.log('err',err);
+          this.session = err.data.session;
+          this.indexLoading = false;
+          this.goConsult();
+        })
+      },
+      //获取微信code
+    getWxCode() {
+      let _THAT = this;
+        return new Promise(function (resolve, reject) {
+            wx.login({
+                success(res) {
+                    console.log('WX_Login', res)
+                    if (res.code) {
+                        _THAT.code  = res.code;
+                        //_THAT.getUserInfo();//获取用户信息
+                        resolve(res.code);
+                    } else {
+                        reject("获取code失败");
+                    }
+                },
+                fail(e) {
+                    reject(e);
+                }
+            })
+        });
+    },
+    }
+    beforeCreate(params){
+      this.getWxCode();
+    }
+    mounted(){
+       store.state.QUES_ILLS = [];
+    }
+}
+export default new Index();
+</script>
+<style scope>
+    @import "index.less";
+</style>
+<script cml-type="json">
+    {
+    "base":{
+      "usingComponents": {
+        "c-loading": "cml-ui/components/c-loading/c-loading"
+      },
+      "navigationBarTitleText": "梧桐树核保助手",
+      "backgroundTextStyle": "dark",
+      "backgroundColor": "white"
+    }
+  }
+</script>

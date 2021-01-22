@@ -1,0 +1,148 @@
+<template>
+  <view class="auth-tool">
+    <view class="full" c-bind:click="showMsg()" c-if="{{ !loadUserinfo }}">{{text}}</view>
+    <origin-button class="full" open-type="getUserInfo" bindgetuserinfo="getInfoCallback"
+        c-else-if="{{ needAuth }}" >{{text}}</origin-button>
+    <origin-button class="full" open-type="getPhoneNumber" bindgetphonenumber="getTelCallback"
+        c-else-if="{{ needTel && needAuthTel }}">{{text}}</origin-button>
+    <view class="full" c-bind:click="ok" c-else-if="{{!needTel || !needAuthTel }}">{{text}}</view>
+  </view>
+</template>
+
+<script>
+import myApi from '../../components/tools/tools.interface';
+import notice from '../../api/notice.js';
+import store from '../../store';
+
+class AuthTool implements AuthToolInterface {
+  props = {
+    text: String,
+    needAuthTel: Boolean,
+    userinfo: Object
+  }
+  data = {
+    needAuth:false,
+    loadUserinfo:false,
+    needTel:false,
+  }
+  watch ={
+    userinfo:{
+      handler(data){
+        this.loadUserinfo = true;
+        if(data.needAuth){
+          this.needAuth = true;
+        }else{
+          this.needAuth = false;
+        }
+        if(data.id) {
+          this.needTel = false;
+        }else{
+          this.needTel = true;
+        }
+      },
+      deep: true
+    }
+  }
+  methods = {
+    ok() {
+      this.$cmlEmit("ok", {
+        isAuthTel: this.needAuthTel
+      });
+    },
+    //获取用户授权回调
+    getInfoCallback(e){
+      if(e.detail && e.detail.errMsg == "getUserInfo:ok") {
+        myApi.showLoading();
+        myApi.getAppUserinfoByIv().then(data =>{
+          myApi.hideLoading();
+          this.loadUserinfo = true;
+          this.needAuth = false;
+          if(!this.needAuthTel){//不需要授权手机号
+            this.ok();
+            return;
+          }
+          if(!data.id){
+            notice.msg("授权成功");
+            this.needTel = true;
+          }else{
+            this.needTel = false;
+            this.ok();
+          }
+        }).catch(e =>{
+          console.log("获取用户信息失败",e);
+          myApi.hideLoading();
+          this.needAuth = true;
+        })
+        
+      }else{
+        notice.msg("您拒绝了授权");
+      }
+    },
+    getTelCallback(e){
+      console.log(e)
+      if(e.detail && e.detail.errMsg == "getPhoneNumber:ok") {
+        myApi.showLoading();
+        const params = {
+          serverCode: store.state.serverCode,
+          iv:e.detail.iv,
+          encryptedData:e.detail.encryptedData
+        }
+        console.log(params)
+        myApi.register(params).then(data =>{
+          this.needTel = false;
+          this.ok();
+        }).catch(e =>{
+          console.log(e);
+          myApi.hideLoading();
+        });
+      }else{
+        notice.msg("您拒绝了授权");
+      }
+    },
+    showMsg(){
+      if(!this.loadUserinfo) {
+        notice.msg("正在获取用户信息,请稍后重试");
+        return;
+      }
+    }
+  }
+  beforeCreate() {
+    console.log("beforeCreate");
+  }
+
+  created() {
+    console.log("created");
+  }
+
+  beforeMount() {
+    console.log("beforeMount");
+  }
+
+  mounted() {
+    console.log("mounted");
+  }
+
+  beforeDestroy() {
+    console.log("beforeDestroy");
+  }
+  
+  destroyed() {
+    console.log("destroyed");
+  }
+}
+
+export default new AuthTool();
+</script>
+
+<style >
+@import "authTool.less";
+</style>
+
+<script cml-type="json">
+{
+  "base": {
+    "usingComponents": {
+    }
+  }
+}
+</script>

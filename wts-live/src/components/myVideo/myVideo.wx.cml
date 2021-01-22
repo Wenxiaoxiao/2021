@@ -1,0 +1,45 @@
+<template>
+  <origin-video id="myVideo" class="class-video" src="{{videoSrc}}" bindprogress="videoPro" controls="true" bindplay="newLearner" autoplay="{{false}}"></origin-video>
+</template>
+
+<script>
+
+import myApi from '../../components/tools/tools'
+
+class myVideo implements myVideoInterface {
+  props = {
+    videoSrc: String
+  }
+  data = {
+    ctx: myApi.createVideoContext("myVideo"),
+  }
+  watch ={
+  }
+  methods = {
+    newLearner() {
+      var _that= this;
+      this.$cmlEmit("newlearner",{
+        ctx: _that.ctx
+      })
+    },
+    videoPro(e) {
+      console.log(e.detail.buffered);
+    }
+  }
+}
+
+export default new myVideo();
+</script>
+
+<style >
+@import "myVideo.less";
+</style>
+
+<script cml-type="json">
+{
+  "base": {
+    "usingComponents": {
+    }
+  }
+}
+</script>

@@ -1,0 +1,38 @@
+<script cml-type="interface">
+import store from '../../store';
+interface LifeCycleInterface {
+  onShareAppMessage(): void;
+}
+</script>
+<script cml-type="wx">
+class Method implements LifeCycleInterface {
+  onShareAppMessage() {
+    console.log("shareChannel", store.state.channel);
+    return {
+      title: store.state.shareText,
+      imageUrl: store.state.shareImg,
+      path: '/pages/index?c=' + store.state.channel
+    };
+  }
+}
+export default new Method();
+</script>
+
+<script cml-type="alipay">
+class Method implements LifeCycleInterface {
+  onShareAppMessage(e) {
+    console.log("shareChannel", store.state.channel, e);
+    return {
+      title: store.state.shareText,
+      bgImgUrl: store.state.shareImg,
+      path: '/pages/index?c=' + store.state.channel
+    };
+  }
+}
+export default new Method();
+</script>
+
+
+
+
+

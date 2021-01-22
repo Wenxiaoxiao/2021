@@ -1,0 +1,111 @@
+<template>
+  <view class="apps">
+    <scroller height="{{-1}}">
+      <view class="list-box" c-for="{{strategyData}}" data-id="{{item.id}}" c-bind:tap="strategyDetail(index)">
+        <image src="{{item.banner}}"></image>
+        <view class="list-item">
+          <text class="list-item-title">{{item.title}}</text>
+          <text class="list-item-detail">{{item.introduce}}</text>
+        </view>
+      </view>
+    </scroller>
+  </view>
+</template>
+<script>
+
+import cml from 'chameleon-api'
+import api from '../../utils/api'
+import lifeCycle from '../../components/lifeCycle/lifeCycle.interface'
+import App from '../../app/app'
+
+class strategy   {
+
+  data = {
+    strategyData: [],
+    toStrategyUrl: "",
+    toStrategyDetail: false
+  }
+
+  computed = {
+  }
+
+  watch  = {
+  }
+
+  methods = {
+    strategyDetail(i) {
+      var _that= this;
+      this.toStrategyUrl= this.strategyData[i].url;
+      // 跳转到攻略详情webview
+      cml.navigateTo({
+        path: '/pages/webview/webview',
+        query: {
+          urlStr: _that.toStrategyUrl
+        }
+      })
+    },
+    ...lifeCycle
+  }
+  beforeCreate(query) {
+  }
+
+  created(query) {
+    var _that= this;
+    api.getStrategy(function(data) {
+      if(JSON.stringify(data)=="{}") return false;
+      data.map(function(item) {
+        if(item.url.indexOf("?")>-1) {
+          item.url+= '&comeFrom=xcx';
+        }else {
+          item.url+= '?comeFrom=xcx';
+        }
+        if(item.introduce.length>30) {
+          item.introduce= item.introduce.slice(0,26)+'...';
+        }
+      })
+      console.log(data);
+      _that.strategyData= data;
+    })
+  }
+
+  beforeMount(query) {
+  }
+
+  onShow() {
+  }
+
+  mounted() {
+  }
+
+  onHide() {
+  }
+
+  beforeDestroy() {
+  }
+
+  destroyed() {
+  }
+}
+
+export default new strategy();
+</script>
+
+<style>
+  @import './strategy.less';
+</style>
+
+<script cml-type="json">
+{
+  "base": {
+    "usingComponents": {
+      "my-richtext": "/src/components/myRichtext/myRichtext",
+      "my-webview": "/src/components/myWebview/myWebview"
+    }
+  },
+  "wx": {
+    "navigationBarTitleText": "梧桐树保险课堂-cml",
+    "backgroundTextStyle": "dark",
+    "backgroundColor": "#E2E2E2"
+  }
+}
+</script>

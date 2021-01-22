@@ -1,0 +1,562 @@
+<template>
+	<page title="保单详情">
+		<!--主体部分-->
+		<view class="w-body policyMyDetail policyDetail {{ishare|| policyDate.status==0?'bottom0':''}}">
+			
+			<view class="view-container">
+				<view class="policyStatus">
+					<view class="iconfont">
+						<image c-if="policyDate.statusIcon" src="{{policyDate.statusIcon}}" class="icon-status"></image>
+					</view>
+					<view class="name">{{policyDate.statusTitle}}</view>
+					<view class="text">{{policyDate.statusDesc}}</view>
+				</view>
+				<view class="listInfoBox">
+					<view class="policy-04-list">
+						<view class="dlBox">
+							<view class="dlheader">
+								<text class="item-title">保障详情</text>
+							</view>
+							<view class="dd">
+								<view class="ulListBox">
+									<!-- 保单号 -->
+									<view c-if="{{policyDate.policyNo && policyDate.policyNo.length>5}}">
+										保单号：<text>{{policyDate.policyNo}}</text>
+									</view>
+									<!-- 产品名称 -->
+									<view c-if="{{policyDate.policyName}}">产品名称：<text class="policyName">{{policyDate.policyName}}</text></view>
+									<!-- 保障额度 -->
+									<view c-if="{{policyDate.guaranteeQuota && policyDate.guaranteeQuota!=0 && policyDate.guaranteeQuota!='0.00' && policyDate.isPlat == 1}}">
+										保障额度：<text class="total">{{policyDate.policyLimit}}</text>
+									</view>
+									<view>
+										缴费期限：<text class="total">{{policyDate.paymentMyType}}</text>
+									</view>
+									<block c-if="{{policyDate.status!='-2' && policyDate.status!='-3'}}">
+
+									</block>
+									<view c-if="{{policyDate.guaranteeStartTime && policyDate.guaranteeEndTime}}">
+										保障期限：<text class="timer">{{policyDate.guaranteeStartTime}}至{{policyDate.guarateeType== 1?'终身':policyDate.guaranteeEndTime}}</text>
+									</view>
+								</view>
+								<image mode="widthFix" mode="widthFix" c-if="{{policyDate.companyLogo && policyDate.companyLogo.length > 0}}" src="{{policyDate.companyLogo[0].url}}" alt="" class="img-compangs"></image>
+							</view>
+						</view>
+					</view>
+					<view class="policy-04-list">
+						<view class="dlBox">
+							<view class="dlheader">
+								<!-- 投保人信息 -->
+								<text class="item-title">投保人信息</text>
+							</view>
+							<view class="dd">
+								<view class="ulListBox ">
+									<!-- 投保人姓名 -->
+									<view c-if="{{policyDate.holderName}}">{{policyDate.isGiftProduct?"机构名称":"投保人姓名"}} ：<text class="IDInfo">{{policyDate.holderName}}</text></view>
+									<!-- 证件类型 -->
+									<view c-if="{{policyDate.holderCardType && !policyDate.isGiftProduct}}">证件类型：<text class="IDType">{{policyDate.holderCardType}}</text></view>
+									<!-- 证件号码 -->
+									<view c-if="{{policyDate.holderIdcard1 && !policyDate.isGiftProduct}}">证件号码：<text class="IDNumber">{{policyDate.holderIdcard1}}</text></view>
+									<view c-if="{{policyDate.holderMobile1}}">手机号码：<text class="cellPhone">{{policyDate.holderMobile1}}</text></view>
+									<view c-if="{{policyDate.holderEmail}}">电子邮箱：<text class="Email">{{policyDate.holderEmail}}</text></view>
+								</view>
+							</view>
+						</view>
+					</view>
+					<!-- 被保险人信息 -->
+					<view class=" policy-04-list" id="insures">
+						<block c-if="{{insureder && insureder.length == 1}}">
+							<!-- 单被保险人 -->
+							<view class="dlBox dlBoxDown2">
+								<view class="dlheader">
+									<text class="item-title">被保险人信息</text>
+								</view>
+								<view class="dd">
+									<view class="ulListBox">
+										<!-- 与投保人关系 -->
+										<view c-if="{{!policyDate.isGiftProduct}}">与投保人关系：<text class="IDInfo">{{insureder[0].insuranceRelationship}}</text></view>
+										<block c-if="{{insureder[0].relationship != 1}}">
+											<!-- 被保险人姓名 -->
+											<view>被保险人姓名：<text class="customerName">{{insureder[0].insurederName}}</text></view>
+											<!-- 证件类型 -->
+											<view>证件类型:
+												<text class="IDType"> {{insureder[0].insurederCardType}}</text>
+											</view>
+											<!-- 证件号码 -->
+											<view c-if="{{insureder[0].insurederIdcard1}}">证件号码：<text class="IDNumber">{{insureder[0].insurederIdcard1}}</text></view>
+											<!-- 电子邮箱 -->
+											<view c-if="{{insureder[0].insurederEmail}}">电子邮箱：<text class="Email">{{insureder[0].insurederEmail}}</text></view>
+											<!-- 手机号码 -->
+											<view c-if="{{insureder[0].insurederMobile2 && insureder[0].insurederMobile2!='111****1111'}}">手机号码：<text>{{insureder[0].insurederMobile2}}</text></view>
+										</block>
+
+										<view c-if="{{insureder[0].BusinessSite}}">车牌号：<text>{{insureder[0].BusinessSite}}</text></view>
+									</view>
+								</view>
+							</view>
+						</block>
+
+						<!-- 多被保险人 -->
+						<block c-else-if="{{insureder.length >1}}">
+							<view class="dlBox dlBoxDown2">
+								<view class="dlheader">
+									<text class="item-title">被保险人信息（共{{insureder.length}}人）</text>
+								</view>
+								<view c-for="{{insureder}}" class="dd">
+									<view class="insurederNum"><text class="spans">{{index+1}}</text></view>
+									<view class="ulListBox ">
+										<view c-if="{{item.relationship}}">与投保人关系：<text class="IDInfo">{{item.insuranceRelationship}}</text></view>
+										<view>被保险人姓名：<text class="customerName">{{item.insurederName}}</text></view>
+										<view c-if="{{item.insurederCardType}}">证件类型: <text class="IDType">{{item.insurederCardType}}</text></view>
+										<view c-if="{{item.insurederIdcard1}}">证件号码：<text class="IDNumber">{{item.insurederIdcard1}}</text></view>
+									</view>
+								</view>
+							</view>
+						</block>
+
+					</view>
+					<!-- 收益人信息 -->
+					<view class=" policy-04-list" id="beneficiarys">
+						<block c-if="{{!beneficiary}}">
+							<view class="dlBox dlBoxDown3">
+								<view class="dlheader">
+									<text class="item-title">受益人信息</text>
+								</view>
+								
+								<view class="dd">
+									<view class="ulListBox ">
+										<view>受益人：<text class="IDInfo">法定受益人</text></view>
+									</view>
+								</view>
+							</view>
+						</block>
+
+						<block c-else>
+							<view class="dlBox dlBoxDown3">
+								<view class="dlheader">
+									<text class="item-title">受益人信息（共{{beneficiary.length}}人）</text>
+								</view>
+								<view c-for="{{beneficiary}}" class="dd">
+									<view class="insurederNum"><text class="spans">{{index+1}}</text></view>
+									<view class="ulListBox ">
+										<view>受益人：<text class="IDInfo">指定受益人</text></view>
+										<view>受益人姓名：<text class="IDInfo">{{item.beneficiaryName}}</text></view>
+										<view>与被保险人关系：<text class="IDInfo">{{item.insuranceRelationship}}</text></view>
+										<view>受益比例：<text class="IDInfo">{{item.beneficiaryScale}}%</text></view>
+										<view>证件号码：<text class="IDInfo">{{item.beneficiaryIdcard1}}</text></view>
+									</view>
+								</view>
+							</view>
+						</block>
+
+					</view>
+					<!-- 附加险 -->
+					<view c-if="{{additionalList && additionalList.length>0}}" class="policy-04-list" id="additionalList">
+						<view class="dlBox dlBoxDown3">
+							<view class="dlheader">
+								<text class="item-title">附加险信息</text>
+							</view>
+							<view class="dd">
+								<view class="ulListBox">
+									<view c-for="{{additionalList}}">{{item.attr}}：<text class="IDInfo">{{item.amount}}</text></view>
+								</view>
+							</view>
+						</view>
+					</view>
+					<view c-if="{{policyComment}}" class=" policy-04-list market-comment">
+						<view class="dlBox dlBoxDown3 commentList">
+							<view class="dlheader">
+								<text class="item-title margin-right-10">我的评论</text>
+								<view></view>
+							</view>
+							<view class="break" style="line-height:1.2;padding:8px 15px;color:#666;">
+								{{policyComment.comment}}
+							</view>
+						</view>
+					</view>
+				</view>
+			</view>
+			<view class="bottom-btns" id="btnId" c-if="{{ !ishare && policyDate.status!=-1 && policyDate.status!=-2 }}">
+				<view class="btn wts-btn-free {{ bdStatus }} {{ isPdfUrl }}" c-catch:click="checkPDF(policyDate)">电子保单</view>
+				<view class="btn wts-btn-free {{interestHide?'':'btn-disable'}}" c-catch:click="policyRight()">保障权益</view>
+				<view class="btn wts-btn-free {{policyDate.status==1?'':'btn-disable'}}" c-catch:click="makingCall()">申请退保</view>
+				<!--<view class="btn wts-btn-free {{policyDate.isResearched==0 || policyDate.isResearched == 2?'':'btn-disable'}}" c-catch:click="backOnline()">在线回访</view>-->
+			</view>
+		</view>
+	</page>
+</template>
+
+<script>
+	import cml from 'chameleon-api';
+	import notice from '../../api/notice.js';
+	import http from '../../api/http.js';
+	import store from '../../store/';
+	import filter from '../../api/filter';
+	import tools from '../../api/tools';
+	import util from '../../components/util/util.interface';
+	var vm;
+	class policyDetail {
+		data = {
+			//保单数据
+			policyDate: {},
+			//产品评论
+			policyComment: null,
+			//保单号
+			policyNo: '',
+			//被保险人
+			insureder: [],
+			// 受益人
+			beneficiary: null,
+			// 附加险
+			additionalList: null,
+			// 账户价值
+			policyValue: null,
+			//模板数据
+			startPolicyJson: null,
+			// 流程
+			productProcess: null,
+			//支付信息
+			payDatas: null,
+			//保障权益显示开关
+			interestHide: false,
+			ishare: false,
+			//系统信息
+			os:""
+		}
+		computed = {
+			bdStatus(){
+				return this.policyDate.status==1 ? '' : 'btn-disable';
+			},
+
+			isPdfUrl(){
+				if(this.policyDate.isPlat == 0)
+				{
+					return this.policyDate.bdUrl ? '' : 'btn-disable';
+				}
+				return '';
+			}
+		}
+		beforeCreate() {
+			util.hideShareMenu();
+		}
+		methods = {
+			//查看电子保单
+			checkPDF(item){
+				if(item.status!=1){
+					return;
+				}
+				if(item.isPlat == 0)
+				{
+					return cml.getSystemInfo().then(info => {
+						if(info.env == 'alipay')
+						{
+							if(item.bdUrl)
+							{
+								store.state.PDFUrl = item.bdUrl;
+								cml.navigateTo({
+									path: "/pages/webView"
+								});
+							}
+						}
+						else
+						{
+							item.bdUrl && vm.showPdf(item.bdUrl);
+						}
+					});
+				}
+				notice.showloading("加载中");
+				http({
+				name: "P_verifyBdurlExist",
+				data: {policyNo:item.policyNo}
+				}).then(data => {
+					notice.hideloading();
+					if(data.httpCode!=200)return;
+					var url = store.state.domain[store.state.dev] + "/tools/bdurl/api/downloadPolicy?policyNo="+item.policyNo +"&WTS_TOKEN_A="+store.state.token; 
+					store.state.PDFUrl = url;
+					if(vm.os == "ios"){
+						cml.navigateTo({
+							path: "/pages/webView"
+						});
+					}else{
+						cml.getSystemInfo().then (info => {
+                        if (info.env == 'wx') 
+                        {
+                            vm.showPdf(url, item);
+                        }
+                        else
+                        {
+                            cml.navigateTo({
+                                path: "/pages/webView"
+                            });
+                        }
+                    });
+					}
+				})
+				.catch(err=>{
+					notice.hideloading();
+				})
+			},
+
+			//显示电子保单
+			showPdf(url,item){
+				// if(vm.policyDate.PdfPath){
+				// 	return tools.openDocument(this.policyDate.PdfPath);
+				// }
+				notice.showloading("加载中");
+				tools.downloadFile(url)
+				.then(path=>{
+					vm.policyDate.PdfPath = path;
+					console.log(path);
+					tools.openDocument(vm.policyDate.PdfPath)
+					.then(res=>{
+						notice.hideloading();
+					})
+					.catch(err=>{
+						notice.hideloading();
+						console.log(err);
+					})
+				})
+			},
+
+			//保障权益
+			policyRight(){
+				if(!this.interestHide){
+					return;
+				}
+				cml.navigateTo({
+					path: '/pages/protectRight/protectRight',
+					query: {
+						id:this.policyDate.policyNo,
+						policy:this.policyDate.policy,
+						isPlat:this.policyDate.isPlat,
+					}
+				})
+			},
+			policyDetail() {
+				http({
+						name: 'P_wtPolicyDetail',
+						contentType: "form",
+						data: {
+							pid: this.pid
+						}
+					})
+					.then(function(data, e) {
+						if(data.httpCode!=200) return;
+						if(!vm.ishare && data.data.policysDetail.bdUrl)
+						{
+							
+						}
+						// 保单信息
+						//订单数据处理
+						//data.data.policysDetail.statusIcon = filter.statusIcon(data.data.policysDetail.status);
+						data.data.policysDetail.statusIcon = filter.newStatusIcon(data.data.policysDetail.status);
+						data.data.policysDetail.statusTitle = filter.policyMyStatus(data.data.policysDetail.status);
+						data.data.policysDetail.statusDesc = filter.policyMyStatusDesc(data.data.policysDetail.status);
+						data.data.policysDetail.policyLimit = filter.policyLimit(data.data.policysDetail);
+						data.data.policysDetail.paymentMyType = filter.paymentMyType(data.data.policysDetail);
+						if(data.data.policysDetail.guaranteeStartTime && data.data.policysDetail.guaranteeEndTime) {
+							data.data.policysDetail.guaranteeStartTime = filter.timeNum(data.data.policysDetail.guaranteeStartTime, 10);
+							data.data.policysDetail.guaranteeEndTime = filter.timeNum(data.data.policysDetail.guaranteeEndTime, 10);
+						}
+
+						if(data.data.policysDetail.holderCardType) {
+							data.data.policysDetail.holderCardType = filter.holderIdentifyType(data.data.policysDetail.holderCardType);
+						}
+
+						if(data.data.wtPolicysPlatInsureds) {
+							for(var i = 0; i < data.data.wtPolicysPlatInsureds.length; i++) {
+								var item = data.data.wtPolicysPlatInsureds[i];
+								if(item.relationship) {
+									item.insuranceRelationship = filter.insuranceRelationship(item.relationship);
+								}
+								if(item.insurederCardType) {
+									item.insurederCardType = filter.holderIdentifyType(item.insurederCardType);
+								}
+
+							}
+						}
+
+						vm.policyDate = data.data.policysDetail;
+						if(vm.policyDate.holderName.indexOf("梧桐树") > -1) vm.policyDate.isGiftProduct = true;
+						// 产品评论
+						vm.policyComment = data.data.policyComment
+						// //判断保障权益是否存在
+						if(data.data.wtPolicysPlatGuaratees instanceof Array && data.data.wtPolicysPlatGuaratees.length > 0) {
+							vm.interestHide = true;
+							vm.wtPolicysPlatGuaratees = data.data.wtPolicysPlatGuaratees
+						}
+						// // 更多数据信息处理
+						vm.insureChange(data);
+					})
+					.catch(error => {
+						console.log(error);
+					});
+			},
+
+			/**更多数据信息处理 */
+			insureChange(data) {
+				//银行数据
+				this.bankCard = data.data.bankCard;
+				//账户价值
+				if(data.data.policyValue) this.policyValue = data.data.policyValue;
+				//被保人信息
+				this.insureder = data.data.wtPolicysPlatInsureds;
+				//是否有收益人
+				if(data.data.wtPolicysPlatBeneficiaries && data.data.wtPolicysPlatBeneficiaries.length > 0) {
+					for(var i = 0; data.data.wtPolicysPlatBeneficiaries.length; i++) {
+						var item = data.data.wtPolicysPlatBeneficiaries[i];
+						if(!item){
+							break;
+						}else if(item.relationship) {
+							item.insuranceRelationship = filter.insuranceRelationship(item.relationship);
+						}
+					}
+					this.beneficiary = data.data.wtPolicysPlatBeneficiaries;
+				}
+
+				//是否存在附加险
+				if(data.data.wtPolicysPlatAdditions instanceof Array && data.data.wtPolicysPlatAdditions.length > 0) this.additionalList = data.data.wtPolicysPlatAdditions;
+			},
+
+			//拨打电话
+			makingCall(){
+				if(this.policyDate.status!=1){
+					return;
+				}
+				cml.getSystemInfo().then(info => {
+					if(info.os == 'ios')
+					{
+						tools.makingCall(store.state.KFPhoneNumber);
+					}
+					else
+					{
+						util.showModal({
+							content: '如您退保，将失去现有的保障，请您慎重考虑，如需退保，请拨打24小时客服热线400-9955-788',
+							success: function(res){
+								if (res.confirm) {
+									tools.makingCall(store.state.KFPhoneNumber);
+								}
+							}
+						});
+					}
+				});
+			},
+			//在线回访
+			backOnline(){
+				var process = this.policyDate.startPolicyJson.process,
+					pid = this.policyDate.pid,
+					policyVisitUrl = this.policyDate.policyVisitUrl || '',
+					policy = true;
+				if (process && process.payReturn > 0 && this.policyDate.status != 0) {
+					if (process.payReturn == 1 || process.payReturn == 3) {
+						util.showToast({
+							title: "为了更好维护您的保障权益，本产品有《在线回访》流程，将在3秒钟后跳转至在线回访页面...", 
+							duration: 3000
+						})
+					} else if (process.payReturn == 2) {
+						util.showToast({
+							title: "即将进入温馨提示,将在3秒后跳转...", 
+							duration: 3000
+						});
+					}else if(process.payReturn == 4){
+						var name = this.policyDate.company ? this.policyDate.company+"客服":'我司';
+						util.showModal({
+							content: '是否继续完成电子回访问卷?如果您希望接受电话回访，可点击取消，"'+name+'"会在3-5个工作日内通过电话给您回访，请您注意接听。',
+							success: function(res){
+								if(res.confirm)
+								{
+									cml.navigateTo({
+										path: '/pages/webView',
+										query: {
+											url: `${store.state.domain[store.state.dev]}/m/market/inline-visit.html?id=${pid}&policy=${policy}`
+										}
+									})
+								}
+								else{
+									cml.navigateTo({
+										path: '/pages/minePolicy/minePolicy'
+									})
+								}
+							}
+						});
+						//util.showToast("是否继续完成电子回访问卷?如果您希望接受电话回访，可点击取消，"+name+"会在3-5个工作日内通过"+phone+"电话回访您，请您注意接听。",['继续','取消'],function(){
+						return;
+					}
+					else{
+						cml.navigateTo({
+							path: '/pages/minePolicy/minePolicy'
+						})
+						return;
+					}
+					setTimeout(function(){
+						var url = store.state.domain[store.state.dev];
+						if (process.payReturn == 1) {
+							url = url + "/m/market/inline-visit.html?id=" + pid + "&policy=" + policy + "";
+						} 
+						else if (process.payReturn == 2) {
+							url = url + "/m/market/inline-visit2.html?id=" + pid + "&policy=" + policy + "";
+						}
+						else if (process.payReturn == 3 && policyVisitUrl) {
+							//保险公司提供的在线回访 
+							url = url + "/m/jump.html?url="+ encodeURIComponent(policyVisitUrl);
+						}
+						cml.navigateTo({
+							path: '/pages/webView',
+							query: {
+								url: url
+							}
+						})
+					}, 3000)
+				}
+
+				
+			}
+		}
+
+		created(puery) {
+			vm = this;
+			let { pid, ishare } = puery;
+			this.pid = pid;
+			// var share = false;
+			// if(puery.ishare){
+			// 	share = JSON.parse(puery.ishare);
+			// }
+			this.ishare = ishare && JSON.parse(ishare);
+			cml.getSystemInfo().then((info) => {
+				this.os = info.os;
+			})
+		}
+
+		mounted() {
+			this.policyDetail();
+
+		}
+	}
+	export default new policyDetail();
+</script>
+
+<style lang="less" scoped>
+	@import "./policyDetail.less";
+	.policyMyDetail {
+		height: 100%;
+		padding-bottom: 49px;
+		&.bottom0 {
+			padding-bottom: 0;
+		}
+		.bottom-btns {
+			height: 50px;
+		}
+	}
+</style>
+<script cml-type="json">
+	{
+		"base": {
+			"usingComponents": {
+				
+			},
+			"navigationBarTitleText": "保单详情",
+			"backgroundTextStyle": "dark",
+			"backgroundColor": "#fff"
+		}
+	}
+</script>

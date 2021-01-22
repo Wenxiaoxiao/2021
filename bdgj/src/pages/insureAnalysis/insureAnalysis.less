@@ -1,0 +1,156 @@
+.views {
+    width: 100%;
+    height: 100%;
+    background: #f5f5f5;
+    .nonData {
+        height: calc(100% - 100cpx);
+    }
+    .insure_nav_box {
+        .insure_nav {
+            padding: 0 20cpx;
+            height: 85cpx;
+            line-height: 85cpx;
+            text-align: center;
+            font-size: 32cpx;
+            background: #eee;
+            border-right: solid 2cpx #e5e5e5;
+            border-bottom: 5cpx solid transparent;
+            &.active {
+                border-bottom: 5cpx solid #4580f6;
+                background: #fff;
+                color: #4580f6;
+            }
+            &:last-child {
+                border-right: none;
+            }
+        }
+    }
+    .insure_box {
+        margin: 30cpx 20cpx 0;
+        border-radius: 10cpx;
+        .insure_box_1 {
+            background: #fff;
+            .insure_msg {
+                padding: 40cpx 30cpx 27cpx;
+                border-bottom: 2cpx solid #eee;
+                .insure_name {
+                    margin-bottom: 30cpx;
+                    font-size: 40cpx;
+                    height: 40cpx;
+                    line-height: 40cpx;
+                }
+                .insure_a {
+                    display: flex;
+                    justify-content: space-between;
+                    flex-direction: row;
+                    .insure_a_box {
+                        flex-direction: row;
+                        .a1 {
+                            font-size: 26cpx;
+                            color: #000000;
+                        }
+                        .b1 {
+                            font-size: 26cpx;
+                            color: #4580f6;
+                        }
+                    }
+                }
+            }
+            .insure_rate {
+                padding: 50cpx 30cpx 0;
+                border-bottom: 2cpx solid #eee;
+                .insure_item {
+                    margin-bottom: 50cpx;
+                    .insure_type {
+                        width: 94cpx;
+                        font-size: 30cpx;
+                        line-height: 30cpx;
+                        color: #000000;
+                        vertical-align: top;
+                    }
+                    .rate_box {
+                        margin-left: 40cpx;
+                        margin-right: 18cpx;
+                        width: 418cpx;
+                        height: 30cpx;
+                        line-height: 30cpx;
+                        background-color: #eeeeee;
+                        border-radius: 15cpx;
+                        vertical-align: top;
+                        overflow: hidden;
+                        .rate {
+                            padding-right: 12cpx;
+                            height: 30cpx;
+                            line-height: 30cpx;
+                            background-image: linear-gradient(270deg, #4580f6 0%, #00a8ff 100%), linear-gradient(#ffa200, #ffa200);
+                            border-radius: 15cpx;
+                            text-align: right;
+                            font-size: 22cpx;
+                            color: #fff;
+                            overflow: hidden;
+                        }
+                        .zero_rate {
+                            padding-right: 0;
+                        }
+                    }
+                    .insure_amount {
+                        vertical-align: top;
+                        font-size: 30cpx;
+                        line-height: 30cpx;
+                    }
+                    .insure_professor,
+                    .insure_info {
+                        margin-top: 22cpx;
+                        font-size: 26cpx;
+                        line-height: 42cpx;
+                        color: #888888;
+                    }
+                    .insure_info {
+                        width: 503cpx;
+                        margin-left: 26cpx;
+                    }
+                }
+            }
+            .to_prefessor {
+                margin: 25cpx auto 37cpx;
+                width: 430cpx;
+                height: 145cpx;
+            }
+            .kefu {
+                position: absolute;
+                top: 25cpx;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 430cpx;
+                height: 145cpx;
+                background: transparent;
+                border: 0cpx solid transparent;
+                z-index: 9;
+                &::after {
+                    width: 0;
+                    height: 0;
+                    border: none;
+                }
+            }
+        }
+    }
+    .fr {
+        display: flex;
+        flex-direction: row;
+    }
+    
+  .empty-icon{
+    width: 185cpx;
+    height: 153cpx;
+    display: block;
+    margin: 160cpx auto 20cpx;
+  }
+  .empty-tip{
+    text-align: center;
+    font-size: 34cpx;
+    color: #666;
+    .cml-view{
+        text-align: center;
+    }
+  }
+}

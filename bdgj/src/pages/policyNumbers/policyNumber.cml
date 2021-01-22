@@ -1,0 +1,180 @@
+<template>
+<page title='{{pageInfo.name}}' height="100%">
+    <view class="policyList">
+        <view class="policyNumbers">
+            <view class="iconfont icon-baodanyangben"></view>
+            <view class="policyNumbers_info">{{pageInfo.name}}({{total}}张)</view>
+        </view>
+        <!--订单列表-->
+        <view class="policyList" c-show="{{ loadingState }}">
+            <list height="{{scrollHeight}}">
+                <block c-if="{{total>0}}">
+                    <block c-for="{{orders}}" c-for-index="index" c-for-item="itemdata">
+                        <policylistitem c-bind:actiondetail="actionDetail" c-bind:changerelations="changeMemberRelations" hidesort="{{true}}" itemdata="{{itemdata}}" issort="{{isSort}}" iconishide="{{iconIsHide}}"></policylistitem>
+                    </block>
+                    <block c-if="{{orders.length>=total}}">
+                        <view class="noData">--暂无更多数据--</view>
+                    </block>
+                </block>
+                <block c-else>
+                    <view id="emptyDom">
+                        <view class="mescroll-empty">
+                            <image mode="widthFix" mode="widthFix" class="empty-icon" src="https://bx.wts999.com/m/xcxStatic/noClaims.png"></image>
+                            <view class="empty-tip">您还没有在梧桐树保险网购买过保单!</view>
+                        </view>
+                    </view>
+                </block>
+            </list>
+        </view>
+    </view>
+</page>
+</template>
+
+<script>
+// import _ from 'lodash';
+import cml from 'chameleon-api';
+import notice from '../../api/notice.js';
+import http from '../../api/http.js';
+import store from '../../store/';
+import filter from '../../api/filter';
+import tools from '../../api/tools';
+import util from '../../components/util/util.interface';
+var vm = null;
+class policyNumber {
+    data = {
+        scrollHeight: -1,
+        userId: '',
+        pageInfo: {},
+        orders: [], //保单列表初始化
+        total: 0, //总个数
+        loadingState: false,
+        iconIsHide: false
+    };
+    beforeCreate() {
+        util.hideShareMenu();
+    }
+    created(query) {
+        vm = this;
+        this.pageInfo = query;
+        this.pageInfo.name = decodeURI(query.name);
+        this.userId = store.state.WTS_USER_XCX.id;
+        cml.getSystemInfo().then((info) => {
+            if (info.env == 'weex') {
+                this.scrollHeight = Number(info.viewportHeight) - 90 - 88;
+            } else {
+                this.scrollHeight = Number(info.viewportHeight) - 90;
+            }
+        })
+        vm.getOrderListData()
+    }
+
+    onShow() {
+        if (store.state.hasComMit) {
+            store.state.hasComMit = false;
+            this.orders = [];
+            vm.getOrderListData()
+        }
+    }
+
+    mounted() {
+
+
+    }
+
+    methods = {
+        //查看保单详情的点击事件
+        actionDetail(e) {
+            if (e.detail.item.policyNo == 0) return notice.msg("您的保单正在生成中，如有疑问，请联系你的专属顾问！");
+            cml.navigateTo({
+                path: '/pages/policyDetail/policyDetail',
+                query: {
+                    pid: e.detail.item.pid,
+                    ishare: this.iconIsHide
+                }
+            })
+        },
+        //修改成员分信息
+        changeMemberRelations() {
+            this.page.num = 1;
+            this.orders = [];
+            vm.getOrderListData()
+        },
+        //获取订单列表数据
+        getOrderListData() {
+            var name = 'p_validPolicy';
+            if (this.pageInfo.type == 2) {
+                name = 'p_needPayPolicy';
+            }
+            notice.showloading("加载中...");
+            http({
+                    name: name,
+                    data: {
+                        userId: this.userId
+                    }
+                })
+                .then(data => {
+                    notice.hideloading();
+                    vm.loadingState = true;
+                    if (data.httpCode != 200) return;
+                    vm.total = data.total || 0;
+                    if (data.total > 1000) {
+                        vm.total = 0;
+                        data.data = []
+                    }
+                    vm.orders = data.data || [];
+                })
+                .catch(error => {
+                    notice.hideloading();
+                    notice.alert("请求超时!")
+                    console.log(error);
+                });
+        },
+    }
+}
+export default new policyNumber();
+</script>
+<style lang="less" scoped>
+@import "../../iconfont/iconfont";
+@import "./policyNumber.less";
+
+.policyNumbers {
+    background: #0084ff;
+
+    padding: 0 22cpx;
+    flex-direction: row;
+    align-items: center;
+    height: 90cpx;
+
+    .policyNumbers_info {
+        margin-left: 15cpx;
+        line-height: 90cpx;
+        color: #fff;
+        font-size: 30cpx;
+    }
+
+    .icon-baodanyangben {
+        color: #fff;
+        font-size: 23px;
+    }
+
+}
+
+.noData {
+    width: 100%;
+    text-align: center;
+    padding: 30cpx 0;
+    color: #333;
+}
+</style>
+<script cml-type="json">
+{
+    "base": {
+        "usingComponents": {
+            "policylistitem": "../../components/policyList"
+        },
+        "navigationBarTitleText": "",
+        "backgroundTextStyle": "dark",
+        "backgroundColor": "#fff"
+    }
+}
+</script>

@@ -1,0 +1,121 @@
+// 定位
+.justify-center{
+    flex-direction:row;
+    justify-content:center;
+}
+.justify-between{
+    flex-direction:row;
+    justify-content:space-between;
+}
+.fl{
+    flex-direction:row;
+    justify-content:flex-start;
+    align-items:flex-end;
+}
+.fr{
+    flex-direction:row;
+    justify-content:flex-end;
+    align-items:flex-end;
+}
+.fc{
+    flex-direction:row;
+    justify-content:center;
+}
+
+.line-one{
+    lines:1;
+}
+.line-two{
+    lines:2;
+}
+
+// 字号
+.f-24{
+    .font(24);
+}
+.f-26{
+    .font(26);
+}
+.f-28{
+    .font(28);
+}
+.f-30{
+    .font(30);
+}
+.f-32{
+    .font(32);
+}
+
+// 颜色
+.c-f{
+    color: #ffffff;
+}
+.c-0{
+    color: #000000 !important;
+}
+.c-red{
+    color: #ff4c61;
+}
+.c-base {
+    color:@baseColor;
+}
+
+.apps {
+    background: #fff;
+    overflow: auto;
+}
+
+.footer {
+    color: #fff;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 750cpx;
+    height: 100cpx;
+    display: flex;
+    flex-direction: initial;
+    background-color: #fff;
+}
+
+.footer-item {
+    font-size: 28cpx;
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: 0%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 900;
+    background-color: inherit;
+    font-size: inherit;
+    color: inherit;
+    border-radius: 0;
+    padding: 0;
+    line-height: 1;
+    border:0;
+}
+.footer-item:active {
+    opacity: 0.7;
+}
+
+.center {
+    justify-content: center;
+    align-items: center;
+}
+.inline-box {
+    flex-direction: initial;
+}
+.inline-box-item {
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: 0%;
+    align-items: center;
+    justify-content: center;
+    display: inline-flex;
+}
+.text-btn {
+    color: #0084ff;
+}
+.text-btn:active {
+    opacity: 0.7;
+}

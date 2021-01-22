@@ -1,0 +1,328 @@
+/**
+ * 这里编写 sass 之后，可在 vue 的 style 标签中通过 @import 相对路径引入
+ * 注意 style 标签的 lang 属性需要设置为 less/sass
+ */
+.wrapper {
+  flex-direction: row;
+  justify-content: space-around;
+}
+.container {
+  width: 750rpx;
+  min-height: 1000rpx;
+}
+/*margin值*/
+/*上*/
+.margin-top-10 {
+  margin-top: 10rpx !important;
+}
+.margin-top-20 {
+  margin-top: 20rpx !important;
+}
+.margin-top-30 {
+  margin-top: 30rpx !important;
+}
+.margin-top-40 {
+  margin-top: 40rpx !important;
+}
+/*左*/
+.margin-left-10 {
+  margin-left: 10rpx !important;
+}
+.margin-left-20 {
+  margin-left: 20rpx !important;
+}
+.margin-left-30 {
+  margin-left: 30rpx !important;
+}
+.margin-left-40 {
+  margin-left: 40rpx !important;
+}
+/*右*/
+.margin-right-10 {
+  margin-right: 10rpx !important;
+}
+.margin-right-20 {
+  margin-right: 20rpx !important;
+}
+.margin-right-30 {
+  margin-right: 30rpx !important;
+}
+.margin-right-40 {
+  margin-right: 40rpx !important;
+}
+/*下*/
+.margin-bottom-10 {
+  margin-bottom: 10rpx !important;
+}
+.margin-bottom-20 {
+  margin-bottom: 20rpx !important;
+}
+.margin-bottom-30 {
+  margin-bottom: 30rpx !important;
+}
+.margin-bottom-40 {
+  margin-bottom: 40rpx !important;
+}
+/*padding值*/
+/*上*/
+.padding-top-10 {
+  padding-top: 10rpx !important;
+}
+.padding-top-20 {
+  padding-top: 20rpx !important;
+}
+.padding-top-30 {
+  padding-top: 30rpx !important;
+}
+.padding-top-40 {
+  padding-top: 40rpx !important;
+}
+/*左*/
+.padding-left-10 {
+  padding-left: 10rpx !important;
+}
+.padding-left-20 {
+  padding-left: 20rpx !important;
+}
+.padding-left-30 {
+  padding-left: 30rpx !important;
+}
+.padding-left-40 {
+  padding-left: 40rpx !important;
+}
+/*右*/
+.padding-right-10 {
+  padding-right: 10rpx !important;
+}
+.padding-right-20 {
+  padding-right: 20rpx !important;
+}
+.padding-right-30 {
+  padding-right: 30rpx !important;
+}
+.padding-right-40 {
+  padding-right: 40rpx !important;
+}
+/*下*/
+.padding-bottom-10 {
+  padding-bottom: 10rpx !important;
+}
+.padding-bottom-20 {
+  padding-bottom: 20rpx !important;
+}
+.padding-bottom-30 {
+  padding-bottom: 30rpx !important;
+}
+.padding-bottom-40 {
+  padding-bottom: 40rpx !important;
+}
+.active {
+  color: #4680f6;
+}
+.justify-center {
+  flex-direction: row;
+  justify-content: center;
+}
+.justify-between {
+  flex-direction: row;
+  justify-content: space-between;
+}
+.fl {
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-end;
+}
+.fr {
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+.fc {
+  flex-direction: row;
+  justify-content: center;
+}
+.line-one {
+  lines: 1;
+}
+.line-two {
+  lines: 2;
+}
+.f-24 {
+  font-size: 24rpx;
+  line-height: 36rpx;
+}
+.f-26 {
+  font-size: 26rpx;
+  line-height: 39rpx;
+}
+.f-28 {
+  font-size: 28rpx;
+  line-height: 42rpx;
+}
+.f-30 {
+  font-size: 30rpx;
+  line-height: 45rpx;
+}
+.f-32 {
+  font-size: 32rpx;
+  line-height: 48rpx;
+}
+.c-f {
+  color: #ffffff;
+}
+.c-0 {
+  color: #000000;
+}
+image {
+  height: auto;
+}
+.market-comment .middle {
+  background-color: #fff;
+  border-top: 1px solid #ececec;
+  padding: 15rpx 30rpx;
+  height: 80rpx;
+  font-size: 30rpx;
+  line-height: 50rpx;
+  flex-direction: row;
+}
+.market-comment .middle .xxs {
+  display: inline-block;
+  position: relative;
+  padding-top: 3rpx;
+}
+.market-comment .middle .xx {
+  display: inline-block;
+  width: 40rpx;
+  height: 40rpx;
+  margin-left: 15rpx;
+  background: url("https://bx.wts999.com/m/resource/xcxStatic/xx.png") no-repeat;
+  background-size: 100% 100%;
+}
+.market-comment .middle .xx.active {
+  background: url("https://bx.wts999.com/m/resource/xcxStatic/xx-active.png") no-repeat;
+  background-size: 100% 100%;
+}
+.market-comment #send {
+  width: 100%;
+  margin-top: 100rpx;
+  height: 100rpx;
+  line-height: 100rpx;
+  text-align: center;
+  font-size: 40rpx;
+  background-color: #0084ff;
+  color: #fff;
+}
+.market-comment .titles {
+  font-size: 36rpx;
+  line-height: 90rpx;
+  padding-left: 30rpx;
+  background-color: #fff;
+  border-bottom: 1px solid #ececec;
+}
+.market-comment .getMore {
+  width: 100%;
+  display: block;
+  background-color: #fff;
+  text-align: center;
+  line-height: 80rpx;
+  font-size: 30rpx;
+  color: #666;
+  border-top: 1px solid #ececec;
+  margin-bottom: 10rpx;
+}
+.market-comment .commentList .commentLi {
+  background-color: #fff;
+  width: 100%;
+  padding: 15rpx 30rpx;
+  font-size: 30rpx;
+  margin-bottom: 20rpx;
+}
+.market-comment .commentList .commentLi:last-child {
+  margin-bottom: 0;
+}
+.market-comment .commentList .commentLi .head {
+  position: relative;
+  padding-left: 100rpx;
+}
+.market-comment .commentList .commentLi .headImg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+}
+.market-comment .commentList .commentLi .name {
+  font-size: 30rpx;
+  line-height: 40rpx;
+}
+.market-comment .commentList .commentLi .timeAndLevel {
+  font-size: 26rpx;
+  line-height: 35rpx;
+}
+.market-comment .commentList .commentLi .timeAndLevel .time {
+  padding-right: 10rpx;
+  position: relative;
+  top: 3px;
+  border-right: 1px solid #ececec;
+  padding-right: 8px;
+  margin-right: 5px;
+  color: #666;
+}
+.market-comment .commentList .commentLi .timeAndLevel .xx {
+  line-height: 34rpx;
+  margin-right: 5px;
+}
+.market-comment .commentList .commentLi .content {
+  font-size: 32rpx;
+  margin-top: 10px;
+  word-break: break-all;
+}
+.market-comment .commentList .xx {
+  display: inline-block;
+  margin-right: 5px;
+}
+.market-comment .commentList .xx:after {
+  content: "\e6c4";
+  font-family: "iconfont";
+  display: inline-block;
+  font-size: 28rpx;
+  color: #0084ff;
+  vertical-align: middle;
+}
+.market-comment .allComments {
+  font-size: 32rpx;
+  background-color: #fff;
+  line-height: 90rpx;
+  border-bottom: 1px solid #ececec;
+  padding-left: 30rpx;
+}
+.market-comment .productsLevel {
+  background-color: #fff;
+  margin-bottom: 20rpx;
+  padding: 15rpx 30rpx;
+}
+.market-comment .productsLevel .p1 {
+  font-size: 38rpx;
+  line-height: 60rpx;
+  margin-bottom: 5px;
+}
+.market-comment .productsLevel .p2 {
+  font-size: 30rpx;
+  line-height: 45rpx;
+}
+.market-comment .productsLevel .xx {
+  position: relative;
+  top: -2px;
+}
+.market-comment .notMore {
+  display: none;
+  width: 100%;
+  font-size: 30rpx;
+  color: #666;
+  line-height: 90rpx;
+  text-align: center;
+}
+.market-comment .notMore.active {
+  display: block;
+}

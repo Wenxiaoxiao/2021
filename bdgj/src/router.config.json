@@ -1,0 +1,105 @@
+{
+	"mode": "history",
+	"routes": [
+		{
+			"url": "/policyList",
+			"path": "/pages/policyList/policyList",
+			"name": "保单管理"
+		},
+		{
+			"url": "/claimProgress",
+			"path": "/pages/claimProgress/claimProgress",
+			"name": "理赔进度"
+		},
+		{
+			"url": "/appointAdviser",
+			"path": "/pages/appointAdviser/appointAdviser",
+			"name": "顾问预约"
+		},
+		{
+			"url": "/vertifyPolicy",
+			"path": "/pages/vertifyPolicy/vertifyPolicy",
+			"name": "保单验真"
+		},
+		{
+			"url": "/unExpert",
+			"path": "/pages/unExpert/unExpert",
+			"name": "保险专家"
+		},
+		{
+			"url": "/inExpert",
+			"path": "/pages/inExpert/inExpert",
+			"name": "保险顾问"
+		},
+		{
+			"url": "/bindPolicy",
+			"path": "/pages/bindPolicy/bindPolicy",
+			"name": "绑定保单"
+		},
+		{
+			"url": "/minePolicy",
+			"path": "/pages/minePolicy/minePolicy",
+			"name": "我的服务"
+		},
+		{
+			"url": "/insureAnalysis",
+			"path": "/pages/insureAnalysis/insureAnalysis",
+			"name": "保障分析"
+		},
+		{
+			"url": "/orderList",
+			"path": "/pages/orderList/orderList",
+			"name": "其他订单类型查询"
+		}, 
+		{
+			"url": "/policyDetail",
+			"path": "/pages/policyDetail/policyDetail",
+			"name": "保单详情"
+		}, {
+			"url": "/protectRight",
+			"path": "/pages/protectRight/protectRight",
+			"name": "保障权益"
+		}, {
+			"url": "/sendComment",
+			"path": "/pages/sendComment/sendComment",
+			"name": "评价商品"
+		},{
+			"url": "/familyMember",
+			"path": "/pages/familyMember/familyMember",
+			"name": "我的家庭成员"
+		},{
+			"url": "/onlineClaims",
+			"path": "/pages/onlineClaims/onlineClaims",
+			"name": "快速理赔"
+		},{
+			"url": "/authorizationPage",
+			"path": "/pages/authorizationPage/authorizationPage",
+			"name": "微信授权"
+		},
+		{
+			"url": "/BDmobile",
+			"path": "/pages/BDmobile/BDmobile",
+			"name": "绑定手机号"
+		},
+		{
+			"url": "/invitation",
+			"path": "/pages/invitation/invitation",
+			"name": "保单邀请"
+		},
+		{
+			"url": "/policyNumber",
+			"path": "/pages/policyNumbers/policyNumber",
+			"name": "续费保单总数"
+		},
+		{
+			"url": "/familyTotalPremium",
+			"path": "/pages/familyTotalPremium/familyTotalPremium",
+			"name": "今年家庭总保费"
+		},
+		{
+			"url": "/MyProject",
+			"path": "/pages/webView",
+			"name": "保单预览"
+		}
+	]
+}

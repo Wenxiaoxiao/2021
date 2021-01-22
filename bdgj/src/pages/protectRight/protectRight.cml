@@ -1,0 +1,106 @@
+<template>
+	<page title="保障权益">
+		<view class="body-container cp-details view-container">
+			<view class="w cp-details-01">
+				<view class="w-box-c">
+					<view class="cp-title-01">
+						保障权益/金额
+					</view>
+					<view class="main-uls">
+						<view class="ul-content">
+							<view class="ul-contents active">
+								<view class="contents-btn {{!value.isShow?'':'add-title-class'}}" c-for="{{mainDatas}}" c-for-index="i" c-for-item="value" c-catch:click="showDetail(i)">
+									<view class="li-title clearfix">
+										<view class="clearfix line-class li-title-div">
+											<text class="line-class-text">{{value.attr}}</text>
+											<text class="line-class-text-active">{{value.amount}}</text>
+										</view>
+										<view class="lz-fs-26 lz-col-666 content-des">{{value.detail}}</view>
+									</view>
+								</view>
+							</view>
+						</view>
+					</view>
+				</view>
+			</view>
+		</view>
+	</page>
+</template>
+
+<script>
+	import cml from 'chameleon-api';
+	import http from '../../api/http.js';
+	import store from '../../store/';
+	import tools from '../../api/tools';
+	import util from '../../components/util/util.interface';
+	var vm;
+	class protectRight {
+		data = {
+			mainDatas: [], //主数据
+			id: "",
+			isPlat: "",
+			policy: null
+		}
+		beforeCreate() {
+			util.hideShareMenu();
+		}
+		methods = {
+			showDetail(i) {
+				if(!this.mainDatas[i].detail) return;
+                // tools.setData(this,{"this.mainDatas[i].isShow":!this.mainDatas[i].isShow})
+				this.mainDatas[i].isShow = !this.mainDatas[i].isShow;
+			},
+			getDatas() {
+				//获取页面数据
+				var name, param;
+				if(this.policy) {
+					name = "P_policyInterest";
+					param = {
+						policyNo: this.id,
+						isPlat: this.isPlat,
+					};
+				} else {
+					name = "P_orderInterest";
+					param = {
+						orderId: this.id,
+						asc: true,
+						pageSize: 50
+					};
+				}
+
+				http({
+						name: name,
+						data: param
+					})
+					.then(function(data, e) {
+						if(data.httpCode!=200) return;
+                        for(var i=0;i<data.data.length;i++){
+                            data.data[i].isShow = false;
+                        }
+						vm.mainDatas = data.data;
+					})
+					.catch(error => {
+						console.log(error);
+					});
+			}
+		}
+
+		created(query) {
+			vm = this;
+			this.isPlat = query.isPlat;
+			this.id = query.id;
+			this.policy = query.policy;
+		}
+
+		mounted() {
+			vm.getDatas();
+		}
+	}
+	export default new protectRight();
+</script>
+<style lang="less" scoped>
+	@import "./protectRight.less";
+</style>
+<script cml-type="json">
+	{ "base":{ "usingComponents": { }, "navigationBarTitleText": "", "backgroundTextStyle": "dark", "backgroundColor": "#fff" } }
+</script>

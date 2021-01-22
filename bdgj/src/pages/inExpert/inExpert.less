@@ -1,0 +1,281 @@
+.inExpert{
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    position: relative;
+    .view-container{
+        height: 100%;
+        overflow-y: scroll;
+        -webkit-overflow-scrolling: touch;
+    }
+    .agent-card{
+        width: 100%;
+        position: relative;
+        overflow: hidden;
+        .agent-top{
+            width: 120%;
+            height: 140cpx;
+            background-color: #0088ff;
+            border-radius:0 0 50% 50%;
+            margin-left: -10%;
+}
+        .card{
+            width: 710cpx;
+            border: 2cpx solid #dcdcdc;
+            border-radius: 5cpx;
+            background-color: #fff;
+            position: relative;
+            margin: 0 auto;
+            min-height: 170cpx;
+            margin-top: -100cpx;
+            overflow: hidden;
+            .card-pic{
+                position: absolute;
+                width: 120cpx;
+                height: 120cpx;
+                border-radius: 100%;
+                border: 1px solid #dbdbdb;
+                left: 20cpx;
+                top: 30cpx;
+            }
+            .icon-card{
+                width: 72cpx;
+                height: 94cpx;
+                position: absolute;
+                right: 15cpx;
+                top: -2cpx;
+            }
+            .card-content{
+                padding-top: 40cpx;
+                padding-left: 165cpx;
+                padding-right: 20cpx;
+                padding-bottom: 20cpx;
+                min-height: 170cpx;
+                .name{
+                    flex-direction: row;
+                    font-size: 38cpx;
+                    font-weight: 700;
+                    width: 450cpx;
+                    line-height: 1;
+                    overflow: hidden;
+                    .tag{
+                        padding-left: 15cpx;
+                        margin-left: 10cpx;
+                        font-size: 30cpx;
+                        font-weight: 400;
+                        color: #ff5500;
+                        border-left: 2cpx solid #ff5500;
+                        height: 40cpx;
+                        line-height: 40cpx;
+                    }
+                }
+                .content{
+                    margin-top: 22cpx;
+                    font-size: 30cpx;
+                    color: #000;
+                }
+                .dest{
+                    margin-top: 20cpx;
+                    font-size: 30cpx;
+                    color: #666;
+                }
+            }
+            .cred-num{
+                flex-direction: row;
+                min-height: 60cpx;
+                line-height: 1.2;
+                background-color: #fff4ec;
+                color: #ff7200;
+                font-size: 26cpx;
+                padding: 15cpx 20cpx;
+                .iconfont{
+                    font-size: 38cpx;
+                    vertical-align: middle;
+                }
+                .bank_num {
+                    font-size: 26cpx;
+                }
+            }
+        }
+    }
+    .comment-box{
+        padding: 20cpx 20cpx 30cpx;
+        .comment-title{
+            font-weight: 900;
+            font-size: 34cpx;
+            line-height: 1.5;
+        }
+        .comment_more{
+            font-size: 32cpx;
+            text-align: center;
+            color: #9c9c9c;
+            border-bottom: 0
+        }
+        .comment-list{
+            .comment-item{
+                padding: 20cpx;
+                border-bottom: 2cpx solid #dcdcdc;
+                &:last-child{
+                    border-bottom: 0;
+                }
+            }
+            .user-msg{
+                flex-direction: row;
+                height: 60cpx;
+                line-height: 60cpx;
+                .user-img{
+                    width: 60cpx;
+                    height: 60cpx;
+                    border-radius: 100%;
+                    border: 2cpx solid #dcdcdc;
+                    display: inline-block;
+                    vertical-align: -webkit-baseline-middle;
+                    vertical-align: middle;
+                    margin-right: 15cpx;
+                }
+                .user-name{
+                    font-size: 30cpx;
+                    color: #000;
+                    display: inline-block;
+                    height: 60cpx;
+                    line-height: 60cpx;
+                    
+                }
+            }
+            .user-content{
+                font-size: 28cpx;
+                color: #666;
+                padding-top: 10cpx;
+            }
+        }
+    }
+    .content-box{
+        padding: 20cpx 20cpx 30cpx;
+        .content-title{
+            font-weight: 900;
+            font-size: 34cpx;
+            line-height: 1.5;
+        }
+        .content-detail{
+            padding-top: 15cpx;
+            font-size: 28cpx;
+            color: #000;
+        }
+    }
+    .bottom-blank{
+        width: 100%;
+        height: 100cpx;
+    }
+    .btn-bottom{
+        width: 100%;
+        height: 120cpx;
+        padding: 20cpx 25cpx;
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        background-color: #fff;
+        border-top: 2cpx solid #dcdcdc;
+        flex-direction: row;
+        justify-content: space-between;
+        .btn{
+            width: 340cpx;
+            height: 80cpx;
+            line-height: 80cpx;
+            text-align: center;
+            color: #fff;
+            font-size: 32cpx;
+            border-radius: 40cpx;
+            &.btn1{
+                background-color: #ff7200;
+            }
+            &.btn2{
+                background-color: #4587f6;
+            }
+        }
+    }
+    .comment-input{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,.5);
+        z-index: 998;
+        .comment-mask{
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+        .comment-content{
+            flex-direction: row;
+            padding: 30cpx 20cpx;
+            background-color: #fff;
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            z-index: 999;
+            transition: all .3s;
+            .inputAreas{
+                width: 78%;
+                height: 180cpx;
+                border: 2cpx solid #ddd;
+                border-radius: 6cpx;
+                .c_user_text{
+                    
+                }
+            }
+            .right{
+                width: 20%;
+                height: 180cpx;
+                position: relative;
+                #sendMsg{
+                    background-color: #eee;
+                    color: #fff;
+                    font-size: 30cpx;
+                    width: 90%;
+                    text-align: center;
+                    height: 60cpx;
+                    line-height: 60cpx;
+                    position: absolute;
+                    right: 0;
+                    bottom: 10cpx;
+                    border-radius: 6cpx;
+                    background: #307aff;
+                }
+            }
+        }
+        .slide-fade-enter-active {
+            transition: all .2s;
+        }
+        .slide-fade-enter, .slide-fade-leave-to{
+            transform: translateY(100%);
+            opacity: .3;
+        }
+    }
+    
+    #emptyDom {
+        margin-bottom: 20cpx;
+        flex-direction: row;
+        justify-content: center;
+        color: #888;
+        .a1 {
+            width: 30cpx;
+            height: 30cpx;
+        }
+        .a2 {
+            margin-left: 16cpx;
+            height: 30cpx;
+            line-height: 30cpx;
+            font-size: 26cpx;
+        }
+        .a3 {
+            height: 30cpx;
+            line-height: 30cpx;
+            font-size: 26cpx;
+        }
+    }
+}
+.inExpert{
+    padding-bottom: 60cpx;
+}

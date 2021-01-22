@@ -1,0 +1,53 @@
+@import '../../less/main';
+.policyShare{
+    .share-list{
+          display: inline-block;
+          width: 100%;
+          margin-right:15rpx;
+          text-align: center;
+          padding: 0 30rpx;
+          background-color: #fff;
+          
+          .list-line{
+              padding:30rpx 0;
+              position: relative;
+              flex-direction: row;
+              align-items: center;
+              &:last-child{
+                  border-bottom: 0;
+              }
+          }
+          .iconfont{
+            position: absolute;
+            color: #fff;
+            width:40rpx;
+            height:40rpx;
+            line-height:40rpx;
+            font-size:50rpx;
+            border-radius:20rpx;
+            -webkit-border-radius:20rpx;
+            -moz-border-radius:20rpx;
+            -ms-border-radius:20rpx;
+            -o-border-radius:20rpx;
+            right: 0;
+            top: 50%;
+            margin-top:-20rpx;
+            color: #0084ff;
+          }
+          .images{
+              width:120rpx;
+              height:120rpx;
+              border-radius: 50%;
+              border: 1px solid #ddd;
+          }
+          .name{
+            max-width:400rpx;
+            font-size:28rpx;
+            padding-left:20rpx;
+            overflow: hidden;
+            text-overflow:ellipsis;
+            white-space: nowrap;
+            color: #000
+          }
+      }
+    }   

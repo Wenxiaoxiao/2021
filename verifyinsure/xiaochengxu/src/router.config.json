@@ -1,0 +1,36 @@
+{
+    "mode": "history",
+    "domain": "https://ai-test.wts9999.net",
+    "routes": [
+        {
+            "url": "/cml/wx/index",
+            "path": "/pages/index",
+            "name": "梧桐树核保助手"
+        },
+        {
+            "url": "/cml/wx/illList",
+            "path": "/pages/illList",
+            "name": "选择疾病"
+        },
+        {
+            "url": "/cml/wx/consult",
+            "path": "/pages/consult",
+            "name": "梧桐树核保助手"
+        },
+        {
+            "url": "/cml/wx/question",
+            "path": "/pages/question",
+            "name": "问答"
+        },
+        {
+            "url": "/cml/wx/webView",
+            "path": "/pages/webView",
+            "name": "预约核保专家"
+        },
+        {
+            "url": "/cml/wx/issue",
+            "path": "/pages/issue",
+            "name": "问答"
+        }
+    ]
+}

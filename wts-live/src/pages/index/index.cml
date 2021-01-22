@@ -1,0 +1,203 @@
+<template>
+    <view>
+        <view style="height:{{viewPortHeight}}cpx;margin-top:80cpx;">
+          <!-- learn -->
+          <view class="learn-view" c-show="{{currentComp=='learn'}}">
+            <view class="class-info">
+              <view class="video-wrap">
+                <my-video c-if="{{showVideo}}" videoSrc="{{showVideoMsg.url}}" c-bind:newlearner="addLearner" style="width:100%;height:422cpx;"></my-video>
+              </view>
+              <text class="class-title">{{showVideoMsg.briefTitle}}</text>
+              <text class="class-learn-amount">学习人数：{{showVideoMsg.count}}</text>
+            </view>
+            <view class="class-scroll">
+              <text class="sub-title">听课列表</text>
+              <view class="scroll-wrapper">
+                <scroller class="scroller" width="{{720}}" height="{{164}}" scroll-direction="horizontal">
+                  <text class="{{currentIndex == index?'class-box active': 'class-box'}}" c-for="{{videoList}}" style="height: 164cpx;" c-bind:tap="toggleClass(index,$event)">{{item.title}}</text>
+                </scroller>
+              </view>
+            </view>
+            <view class="class-detail">
+              <text class="sub-title">课程介绍</text>
+              <my-richtext textMsg="{{showVideoMsg.introduce}}"></my-richtext>
+            </view>
+          </view>
+          <details c-if="{{currentComp=='details'}}" style="height:100%;"></details>
+          <!-- <learn c-else-if="{{currentComp=='learn'}}"></learn> -->
+          <encyclopedia c-else-if="{{currentComp=='encyclopedia'}}"></encyclopedia>
+          <strategy c-else-if="{{currentComp=='strategy'}}"></strategy>
+        </view>
+        <c-tabbar 
+            c-bind:onclick='handleTabbarClick' 
+            c-model="{{currentComp}}"  
+            tabbar="{{tabbar}}"
+        ></c-tabbar>
+    </view>
+</template>
+
+<script>
+
+import cml from 'chameleon-api'
+import api from '../../utils/api'
+import lifeCycle from '../../components/lifeCycle/lifeCycle.interface'
+import App from '../../app/app'
+
+class Index   {
+  data = {
+    viewPortHeight:0,
+    currentComp:'details',
+    showLearn: false,
+    // learn data
+    ctx: null,
+    showVideo: true,
+    imgSrc: require("../../assets/images/liveBanner.jpg"),
+    videoList: [],
+    showVideoMsg: Object,
+    currentIndex: 0,
+    tabbar:{
+      "tabbarStyle":"height:80cpx;background-color:#f3f4f6",//tabbar最外层的样式支持自定义
+      "tabLineStyle":"background-color:#0084ff;width:120cpx;height:5cpx;margin-left:34cpx;margin-top:-5cpx;",//自定义tabline的高度和背景色
+      "textStyle":"color:#000000;font-size:30cpx;", //文案默认style ,可以这里控制文案的大小，样式等
+      "selectedTextStyle":"color:#0084ff;font-size:30cpx;",//文案被选择style
+      "position":"top", //tabbar的位置 top/bottom
+      "useFixedLayout":true,  //是否通过fixed布局进行tabbar的布局
+      "list":[
+        { 
+          "compName":"details",
+          "text": "在线直播"
+        },
+        {
+          "compName":"learn",
+          "text": "课程学习"
+        },
+        {
+          "compName":"encyclopedia",
+          "text": "保险百科"
+        },
+        {
+          "compName":"strategy",
+          "text": "必读攻略"
+        }
+      ]
+    }
+  }
+
+  computed = {
+  }
+
+  watch  = {
+  }
+
+  methods = {
+    handleTabbarClick(e) {
+      var _that= this;
+      if(e.detail.compName=='learn') {
+        _that.showVideo= true;
+        // 获取课程列表
+        api.getVideoList({
+          offset: 0,
+          pageSize: 5
+        },function(data) {
+          data.map(function(item) {
+            item.isNewLearner= true;
+            item.briefTitle= item.title.length>20?item.title.slice(0,19)+'...':item.title;
+          })
+          _that.videoList= data;
+          _that.currentIndex= 0;
+          _that.showVideoMsg= data[0];
+        })
+      }else {
+        _that.showVideo= false;
+      }
+    },
+    // learn methods
+    toggleClass(i,$event) {
+      if(this.ctx) {
+        this.showVideo= false;
+        this.currentIndex= i;
+        this.showVideoMsg= this.videoList[i];
+        this.showVideo= true;
+      }else {
+        this.currentIndex= i;
+        this.showVideoMsg= this.videoList[i];
+      }
+    },
+    addLearner(e) {
+      this.ctx= e.detail.ctx;
+      var _that= this;
+      if(this.showVideoMsg.isNewLearner) {
+          this.showVideoMsg.isNewLearner= false;
+          // 开始播放学习人数+1
+          _that.videoList[_that.currentIndex].count= _that.showVideoMsg.count = _that.showVideoMsg.count+1;
+          // 人数+1接口
+          api.addLearner(this.showVideoMsg.id,function(data) {
+        })
+      }
+    },
+    videoPro(e) {
+      console.log(e.detail.buffered);
+    },
+    ...lifeCycle
+  }
+  beforeCreate(query) {
+  }
+
+  created(query) {
+    cml.getSystemInfo().then(info => {
+        this.viewPortHeight = Number(info.viewportHeight) - 80;
+    });
+ }
+
+  beforeMount(query) {
+  }
+
+  onShow() {
+    if(this.currentComp=='learn') {
+      this.showVideo= true;
+    }
+  }
+
+  mounted() {
+  }
+
+  onHide() {
+    if(this.currentComp=='learn') {
+      this.showVideoMsg.isNewLearner= true;
+      this.showVideo= false;
+    }
+  }
+
+  beforeDestroy() {
+  }
+
+  destroyed() {
+  }
+}
+
+export default new Index();
+</script>
+
+<style>
+  @import './index.less';
+</style>
+
+<script cml-type="json">
+{
+  "base": {
+    "usingComponents": {
+      "c-tabbar": "cml-ui/components/c-tabbar/c-tabbar",
+      "details": "/src/pages/details/details",
+      "encyclopedia": "/src/pages/encyclopedia/encyclopedia",
+      "strategy": "/src/pages/strategy/strategy",
+      "my-richtext": "/src/components/myRichtext/myRichtext",
+      "my-video": "/src/components/myVideo/myVideo"
+    }
+  },
+  "wx": {
+    "navigationBarTitleText": "梧桐树保险大学",
+    "backgroundTextStyle": "dark",
+    "backgroundColor": "#E2E2E2"
+  }
+}
+</script>

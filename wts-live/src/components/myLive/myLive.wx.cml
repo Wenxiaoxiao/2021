@@ -1,0 +1,97 @@
+<template>
+  <origin-live-player hidden='{{false}}' id="myVideo" class='myvideo slide-image' autoplay="{{true}}" src="{{videoSrc}}" bindfullscreenchange="bindfullscreenchange" binderror="error">
+      <origin-cover-view wx:if="{{isFull}}" class='icon-full fulled' bindtap="bindSwitchControls">
+        <origin-cover-image class='icon-pause' src="{{imgSrc}}" />
+      </origin-cover-view>
+      <origin-cover-view wx:else class='icon-full nofull ' bindtap="bindSwitchControls">
+        <origin-cover-image class='icon-pause' src="{{imgSrc}}" />
+      </origin-cover-view>
+  </origin-live-player>
+</template>
+
+<script>
+
+class myLive implements myLiveInterface {
+  props = {
+    isHiddenVideo: Boolean,
+    videoSrc: String
+  }
+  data = {
+    isFull: false,
+    video: null,
+    chatStatus: true,
+    imgSrc: require('../../assets/images/quanp@2x.png')
+  }
+  watch ={
+  }
+  methods = {
+    bindSwitchControls(){
+      var _self= this;
+      _self.video= wx.createLivePlayerContext("myVideo",this);
+
+      if(_self.isFull){
+        _self.chatStatus= false;
+        _self.video.exitFullScreen();
+
+        _self.$cmlEmit("closeChat", {
+          closeChat: _self.chatStatus
+        })
+      }
+      else
+      {
+        _self.chatStatus= true;
+        
+        _self.video.requestFullScreen({
+          direction: 90,
+          complete: function(res) {
+            console.log(res);
+          }
+        });
+        
+        this.$cmlEmit("closeChat", {
+          closeChat: _self.chatStatus
+        })
+      }
+    },
+    bindfullscreenchange(e){
+      this.isFull= e.detail.fullScreen || false;
+    },
+    error(e) {
+      console.error('live-player error:', e.detail.errMsg)
+    }
+  }
+  beforeCreate() { 
+  }
+
+  created() {
+    // this.video= wx.createLivePlayerContext("myVideo");
+  }
+
+  beforeMount() {
+  }
+
+  mounted() {
+  }
+
+  beforeDestroy() {
+  }
+  
+  destroyed() {
+  }
+}
+
+export default new myLive();
+</script>
+
+<style >
+@import "myLive.less";
+</style>
+
+<script cml-type="json">
+{
+  "base": {
+    "usingComponents": {
+    }
+  }
+}
+</script>

@@ -1,0 +1,309 @@
+<template>
+<page title='{{pageInfo.name}}' height="100%">
+	<view class="policyList">
+		<view class="poilcy_mask" c-if="{{loading}}" style="height:{{totalHeight}}cpx;"></view>
+
+    <view class="policyNumbers"><view class="iconfont icon-baodanyangben"></view><view class="policyNumbers_info">{{pageInfo.name}}({{pageInfo.type}}元)</view></view>
+        <!-- 成员列表 
+		<view class="issort-content {{relationsClass}}">
+			<scroller class="carousel_content" scroll-direction="horizontal" width="{{-1}}">
+				<container direction="row">
+					<block c-for="{{relations}}" c-for-index="index" c-for-item="item">
+						<view c-if="{{item.id}}" style="width:{{relationsWidth}}" c-catch:click="isSortClick('1',item)" class="carousel_item {{insurederId==item.id?'active':''}}"><text>{{item.realName}}</text></view>
+						<view  style="width:{{relationsWidth}}" c-else c-catch:click="isSortClick('0',item)" class="carousel_item {{insurederId==item.id?'active':''}}"><text>{{item.realName}}</text></view>
+					</block>
+				</container>
+			</scroller>
+		</view>-->
+		<!--订单列表-->
+		<view class="policyList" c-show="{{loadingState}}">
+			<list height="{{scrollHeight}}">
+				<block c-if="{{total>0}}">
+					<block c-for="{{orders}}" c-for-index="index" c-for-item="order">
+						<view class="order-ul-li">
+							<view class="head">
+								<view class="title">{{order.policyName}}</view>
+							</view>
+							<view class="center">
+								<view class="txt" style="color:#ff7204;">应交保费：{{order.policyFee}}元</view>
+                                <view class="txt">交费日期：{{order.payTime}}</view>
+							</view>
+						</view>
+					</block>
+					<block c-if="{{orders.length>=total}}">
+					<view class="noData">--暂无更多数据--</view>
+					</block>
+				</block>
+				<block c-else>
+					<view id="emptyDom">
+						<view class="mescroll-empty">
+							<image mode="widthFix" mode="widthFix" class="empty-icon" src="https://bx.wts999.com/m/xcxStatic/noClaims.png"></image>
+							<view class="empty-tip">您还没有在梧桐树保险网购买过保单!</view>
+						</view>
+					</view>
+				</block>
+			</list>
+		</view>
+	</view>
+	</page>
+</template>
+
+<script>
+	// import _ from 'lodash';
+	import cml from 'chameleon-api';
+	import notice from '../../api/notice.js';
+	import http from '../../api/http.js';
+	import store from '../../store/';
+	import filter from '../../api/filter';
+	import tools from '../../api/tools';
+	import util from '../../components/util/util.interface'
+	var vm = null;
+	class policyNumber {
+		data = {
+			relationsWidth:"750cpx",
+			scrollHeight:-1,
+			relationsClass:"",
+			userId:'',
+			isSort:"0",
+			insurederId: "", //当前请求分类的列表
+			relations: [], //成员列表初始化
+			pageInfo:{},
+			orders: [], //保单列表初始化
+			total: 20, //总个数
+			loadingState: false
+		};
+		beforeCreate() {
+			util.hideShareMenu();
+		}
+		created(query) {
+			vm = this;
+			this.pageInfo = query;
+			this.pageInfo.name = decodeURI(query.name);
+			this.userId = store.state.WTS_USER_XCX.id;
+			cml.getSystemInfo().then((info) => {
+				if(info.env == 'weex') {
+					this.scrollHeight = Number(info.viewportHeight) - 90 - 88;
+				} else {
+					this.scrollHeight = Number(info.viewportHeight) - 90;
+				}
+			})
+
+			vm.getOrderListData()
+				// this.getRelations(function(){
+				//     vm.getOrderListData()
+				// });
+		}
+
+		mounted() {
+			
+			
+		}
+
+		methods = {
+            //获取成员分类数据
+			// getRelations(callback) {
+			// 	http({
+			// 			name: 'P_bind_newRelations',
+			// 			data: {
+			// 				userId: this.userId
+			// 			}
+			// 		})
+			// 		.then(data => {
+			// 			vm.relationsClass = "";
+			// 			if(data.httpCode!=200) return;
+			// 			if(!data.data.hasNoSortPolicy && data.data.relations.length > 0) {
+			// 				// 被邀请人查看
+			// 				vm.relations = data.data.relations;
+			// 				vm.isSort = 1
+			// 				vm.insurederId = vm.relations[0].id;
+			// 			} else {
+			// 					vm.relations = [{
+			// 						birthday: "",
+			// 						cards: [],
+			// 						id: "",
+			// 						realName: "未分类",
+			// 						relationType: "",
+			// 						sex: null,
+			// 						userId: ""
+			// 					}]
+			// 					vm.relations.push.apply(vm.relations, data.data.relations);
+			// 			}
+
+			// 			if(vm.relations.length<3){
+			// 					vm.relationsWidth = (750/vm.relations.length)+"cpx";
+			// 				}else{
+			// 					vm.relationsWidth = "auto";
+			// 				}
+			// 			callback();
+			// 		})
+			// 		.catch(error => {
+			// 			notice.alert("请求超时!")
+			// 			console.log(error);
+			// 		});
+			// },
+			timeString(content, length) { //截取时间
+				if (!content) {
+				return "";
+				}
+				content = content.trim();
+				if (content.length > length) {
+					var first = content.toString().substring(0, length);
+					content = first;
+				}
+				return content;
+			},
+			//获取订单列表数据
+			getOrderListData() {
+        		var name = 'p_yearPayPolicy';
+				notice.showloading("加载中...");
+				http({
+						name: name,
+						data: {userId:this.userId}
+					})
+					.then(data => {
+						notice.hideloading();
+						vm.loadingState = true;
+						vm.orders = [];
+						if(data.httpCode!=200) return;
+						vm.total = data.total;
+						if(data.total > 1000) {
+							vm.total = 0;
+							data.data = []
+						}
+						for(var i=0;i<data.data.length;i++){
+							var item = data.data[i];
+							item.payTime = vm.timeString(item.payTime,10);
+						}
+						vm.orders = data.data;
+					})
+					.catch(error => {
+						notice.hideloading();
+						notice.alert("请求超时!")
+						console.log(error);
+					});
+			},
+
+            //查询保单参数处理
+			// policyParams() {
+			// 	var params = {
+			// 		isSort: this.isSort, //是否已分类 0未分类 1 已分类
+			// 		userId: this.userId,
+			// 		insurederId: this.insurederId
+			// 	}
+			// 	if(this.insurederId) {
+			// 		this._index = _.findIndex(this.relations, ['id', this.insurederId])
+			// 		if(this.relations[this._index].cards && this.relations[this._index].cards.length > 0) {
+
+			// 			this.isSort = 1;
+			// 			params.insurederIdentifyNumbers = "";
+			// 			for(var j = 0; j < this.relations[this._index].cards.length; j++) {
+			// 				if(j == 0) {
+			// 					params.insurederIdentifyNumbers = this.relations[this._index].cards[j].cardNo;
+			// 				} else {
+			// 					params.insurederIdentifyNumbers += "," + this.relations[this._index].cards[j].cardNo;
+			// 				}
+			// 			}
+			// 		}
+			// 	}
+			// 	return params
+			// },
+            //成员分类切换的点击事件
+			// isSortClick(para1, para2) {
+			// 	if(vm.insurederId == para2.id) return;
+			// 	vm.isSort = para1;
+			// 	vm.insurederId = para2.id;
+			// 	vm.orders = [];
+			// 	this.getOrderListData()
+			// }
+		}
+	}
+	export default new policyNumber();
+</script>
+<style lang="less" scoped>
+@import "../../iconfont/iconfont";
+	@import "./familyTotalPremium.less";
+	.poilcy_mask{
+		width: 100%;
+		height: 100%;
+		top: 0;
+		left: 0;
+		z-index: 100;
+		position: fixed;
+	}
+  .policyNumbers{
+    background: #0084ff;
+    
+    padding:0 22cpx;
+    flex-direction: row;
+    align-items: center;
+    height: 90cpx;
+    .policyNumbers_info{
+      margin-left: 15cpx;
+      line-height: 90cpx;
+      color: #fff;
+      font-size: 30cpx;
+    }
+    .icon-baodanyangben{
+       color: #fff;
+       font-size: 23px;
+    }
+    
+  }
+	.noData{
+		width: 100%;
+		text-align: center;
+		padding: 30cpx 0;
+		color: #333;
+	}
+
+	.order-ul-li {
+		background: #fff;
+		margin-bottom: 10cpx;
+		border-bottom: 1px solid #dcdcdc;
+	}
+	
+	.head {
+		position: relative;
+		.title {
+			height: 80cpx;
+			line-height: 80cpx;
+			font-size: 34cpx;
+			font-weight: 900;
+			lines:1;
+			padding: 0 20cpx;
+		}
+	}
+	
+	.buyToo {
+		position: absolute;
+		font-size: 28cpx;
+		color: #fff;
+		padding: 12cpx 24cpx;
+		background: #0084fd;
+		top: 15cpx;
+		right: 20cpx;
+		border-radius: 8cpx;
+	}
+	
+	.center {
+		border-top: 1px dashed #dcdcdc;
+		padding: 20cpx;
+		.txt {
+			line-height: 50cpx;
+			font-size: 32cpx;
+			position: relative;
+			z-index: 2;
+		}
+		.img-compangs {
+			position: absolute;
+			right: 10cpx;
+			top: 50cpx;
+			width: 170cpx;
+			z-index: 1;
+			opacity: 0.8;
+		}
+	}
+</style>
+<script cml-type="json">
+	{ "base":{ "usingComponents": {}, "navigationBarTitleText": "", "backgroundTextStyle": "dark", "backgroundColor": "#fff" } }
+</script>

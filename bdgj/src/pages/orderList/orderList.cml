@@ -1,0 +1,162 @@
+<template>
+	<view class="policyList" c-show="{{ loadingState }}">
+		<scroller height="{{ scrollHeight }}" bottom-offset="{{ 100 }}" c-bind:scrolltobottom="getOrderListData">
+			<block c-if="{{orders.length>0}}">
+				<block c-for="{{orders}}" c-for-index="index" c-for-item="itemdata">
+					<policylistitem c-bind:actiondetail="actionDetail" c-bind:changerelations="changeMemberRelations" hidesort="{{true}}" itemdata="{{itemdata}}" issort="{{isSort}}"></policylistitem>
+				</block>
+
+				<block c-if="{{orders.length>=total}}">
+					<view class="noData">--暂无更多数据--</view>
+				</block>
+			</block>
+			<block c-else>
+				<view id="emptyDom">
+					<view class="mescroll-empty">
+						<image mode="widthFix" mode="widthFix" class="empty-icon" src="https://bx.wts999.com/m/xcxStatic/noClaims.png"></image>
+						<view c-if="{{insuranceType == 'inputPolicy'}}" class="empty-tip">请联系您的专属客服，帮您录入其他平台保单！</view>
+						<view c-else class="empty-tip">您还没有在梧桐树保险网购买过保单！</view>
+					</view>
+				</view>
+			</block>
+		</scroller>
+	</view>
+</template>
+
+<script>
+	// import _ from 'lodash';
+	import cml from 'chameleon-api';
+	import notice from '../../api/notice.js';
+	import http from '../../api/http.js';
+	import store from '../../store/';
+	import filter from '../../api/filter';
+	import tools from '../../api/tools';
+	import util from '../../components/util/util.interface';
+	var vm = null;
+	class policyList {
+		data = {
+			userId:"",
+			isSort: 1,
+			effectiveStatus:"",
+			insuranceType:"",
+			scrollHeight: -1,
+			orders: [], //保单列表初始化
+			page: {
+				size: 20, //页容量
+				num: 0, //页码(从1开始)
+			},
+			total: 0, //总个数
+			maxPage: 99, // 总页数
+			loadingState: false
+		};
+		beforeCreate() {
+			util.hideShareMenu();
+		}
+		created(puery) {
+			vm = this;
+			//userId
+			this.userId = store.state.WTS_USER_XCX.id;
+			var status = "";
+			if(puery.status){
+				status = puery.status.replace(/\.+/g,',');
+			}
+			var type = "";
+			if(puery.type){
+				type = puery.type.replace(/\.+/g,',');
+			}
+			this.effectiveStatus = status;
+			this.insuranceType = type;
+		}
+
+		mounted() {
+			cml.getSystemInfo().then((info) => {
+				if(info.env == 'weex') {
+					this.scrollHeight = Number(info.viewportHeight)  - 88;
+				} else {
+					this.scrollHeight = Number(info.viewportHeight);
+				}
+			})
+			this.getOrderListData();
+		}
+
+		methods = {
+			//查看保单详情的点击事件
+			actionDetail(e){
+				if(e.detail.item.policyNo == 0) return notice.msg("您的保单正在生成中，如有疑问，请联系你的专属顾问！");
+				cml.navigateTo({
+					path: '/pages/policyDetail/policyDetail',
+					query: {
+						pid: e.detail.item.pid
+					}
+				})
+			},
+			//获取订单列表数据
+			getOrderListData(e) {
+				if(this.orders.length && this.orders.length>=this.total){
+					return;
+				}
+				// 发送请求后页码++
+				this.page.num++;
+				// 最大页不请求
+				if(this.maxPage==0||this.page.num>this.maxPage) return false;
+				notice.showloading("加载中");
+				
+				var params = {
+					userId:this.userId,
+					effectiveStatus:this.effectiveStatus,
+					insuranceType:this.insuranceType,
+					pageSize:this.page.size,
+					pageNum:this.page.num
+				};
+				http({
+						name: 'P_classifyPolicy',
+						data: params
+					})
+					.then(data => {
+						notice.hideloading();
+						vm.loadingState = true;
+						if(data.httpCode!=200) return;
+						vm.total = data.data.total;
+						// 总页数
+						vm.maxPage= Math.ceil(vm.total/vm.page.size);
+						if(data.data.total > 1000) {
+							vm.total = 0;
+							data.data.data = []
+						}
+						if(this.page.num == 1) {
+							vm.orders = data.data.data;
+						} else {
+							vm.orders = vm.orders.concat(data.data.data);
+						}
+					})
+					.catch(error => {
+						notice.hideloading();
+						console.log(error);
+					});
+			},
+		}
+	}
+	export default new policyList();
+</script>
+<style lang="less" scoped>
+	@import "./orderList.less";
+	.noData{
+		width: 100%;
+		text-align: center;
+		padding: 30cpx 0;
+		color: #333;
+	}
+</style>
+<script cml-type="json">
+	{
+		"base": {
+			"usingComponents": {
+				"policylistitem": "../../components/policyList"
+			},
+			"navigationBarTitleText": "家庭保单智能管家",
+			"backgroundTextStyle": "dark",
+			"backgroundColor": "#fff",
+			"defaultTitle": "家庭保单智能管家"
+		}
+	}
+</script>

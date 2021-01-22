@@ -1,0 +1,166 @@
+<template>
+  <page title="绑定手机号" height="100%">
+  <c-loading loading="{{loading}}"></c-loading>
+    <view class="apps">
+      <view class="top-panel center">
+        <view class="logo">
+          <view class="logo-img"></view>
+        </view>
+        <view class="logo-text">梧桐树保险网</view>
+      </view>
+      <view class="logo-panel">
+        <view class="input-item inline-box">
+          <view class="input-img input-img1"></view>
+          <input placeholder="请输入手机号" type="text" cstyle="border:0;font-size:28cpx" placer-holder-color="#999" 
+              c-model="{{phone}}" ></input>
+        </view>
+        <view class="input-item inline-box">
+          <view class="input-img input-img2"></view>
+          <input placeholder="请输入验证码" type="text" cstyle="border:0;font-size:28cpx" placer-holder-color="#999" 
+              c-model="{{code}}" ></input>
+          <view class="text-btn" c-bind:click="getCode" c-if="{{timerIndex == timerSize}}">获取验证码</view>
+          <view class="text-btn active" c-if="{{timerIndex != timerSize}}">{{timerIndex}}s后重新发送</view>
+        </view>
+        <button btn-style="height: 90cpx;background-color: #4581f6;border-radius: 20cpx;margin-top:100cpx;" 
+            text-style="color:#fff;" c-bind:click="submit()">登录</button>
+      </view>
+    </view>
+    
+  </page>
+</template>
+
+<script>
+  import cml from 'chameleon-api';
+  import store from '../../store/';
+  import notice from '../../api/notice.js';
+  import http from '../../api/http.js';
+  import tools from '../../api/tools.js';
+
+
+  const TIMERSIZE = 120;// 倒计时总时长 秒
+
+  class Login {
+    data = {
+      loading:false,
+      phone:"",
+      code:"",
+      backUrl:"",
+      isOk:false,
+      timerIndex: TIMERSIZE, //倒计时当前计数
+      timerSize: TIMERSIZE//倒计时总时长
+    }
+    watch = {
+      phone(){
+        this.checkSubmit(false);
+      },
+      code(){
+        this.checkSubmit(false);
+      }
+    }
+    methods = {
+      //验证提交状态
+      checkSubmit(showError){
+        this.isOk = true;
+        if(!this.phone){
+          this.isOk = false;
+          showError && notice.msg("请输入手机号");
+          return;
+        }
+        if(!tools.isPhone(this.phone)){
+          this.isOk = false;
+          showError && notice.msg("请输入正确格式的手机号");
+          return;
+        }
+        if(!this.code){
+          this.isOk = false;
+          showError && notice.msg("请输入验证码");
+          return;
+        }
+      },
+      // 获取验证码
+      getCode(){
+        if(!this.phone){
+          notice.msg("请输入手机号");
+          return;
+        } 
+        if(!tools.isPhone(this.phone)){
+          notice.msg("请输入正确格式的手机号");
+          return;
+        }
+        if(this.timerIndex != TIMERSIZE){
+          return;
+        }
+        this.timerIndex--;
+        this.timer = setInterval(_=>{
+          this.timerIndex--;
+        },1000);
+
+        http({
+          name:'getPhoneCode',
+          url:"/captcha/send/captext?phone="+this.phone,
+        }).then(res=>{
+          
+        }).catch(e=>{
+          notice.msg("验证码发送失败");
+          this.clearTimer();
+        })
+        
+      },
+      // 清除倒计时
+      clearTimer(){
+        clearInterval(this.timer);
+        this.timerIndex = TIMERSIZE;
+      },
+      
+      submit(){
+        this.checkSubmit(true);
+        if(!this.isOk){
+          return;
+        }
+        const params = {
+          captch:this.code,
+          phone:this.phone
+        }
+        this.loading = true;
+        http({
+					name:'p_xcx_BDMobile',
+					data: params
+					})
+          .then(data => {
+              if(data.httpCode!=200) return;
+              store.state.WTS_USER_XCX = data.data;
+              store.state.token = data.token;
+              cml.redirectTo ({
+                path: "/pages/policyList/policyList",
+              });
+          })
+          .catch(error => {
+              console.log(error);
+          });
+      }
+      
+    }
+    destroyed() {
+      this.clearTimer();
+    }
+    mounted() {
+      
+    }
+  }
+  export default new Login();
+</script>
+<style lang="less" scoped>
+  @import "BDmobile.less";
+</style>
+<script cml-type="json">
+  {
+    "base":{
+      "usingComponents": {
+        "c-loading": "cml-ui/components/c-loading/c-loading"
+      },
+      "navigationBarTitleText": "绑定手机号",
+      "backgroundTextStyle": "dark",
+      "backgroundColor": "#fff"
+  }
+  }
+</script>

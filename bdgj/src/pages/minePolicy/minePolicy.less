@@ -1,0 +1,237 @@
+@import '../../less/main';
+page{
+  background: #f5f5f5;
+}
+.person-center-top {
+      position: relative;
+      width: 100%;
+      .person-title{
+        padding: 25cpx;
+        background-color: #FFF;
+        .person-title-desc{
+            font-size: 30cpx;
+            line-height: 32cpx;
+            border-left: 3px solid #0382ff;
+            color: #000;
+            padding-left:10cpx; 
+            flex-direction: row;
+            align-items:center;
+
+            .setting{
+              width: 36cpx;
+              margin-left: 20cpx;
+            }
+        }
+      }
+      .person-list{
+          flex-direction: row;
+          flex-wrap:wrap;
+          background-color: #FFF;
+      }
+      .person-li{
+          width: 170cpx;
+          text-align: center;
+          position: relative;
+          padding-bottom: 30cpx;
+          align-items: center;
+          .icon-chuyidong{
+            position: absolute;
+            width: 40cpx;
+            height: 40cpx;
+            line-height: 40cpx;
+            right: 15cpx;
+            top: 0;
+            background: #fff;
+            border-radius: 50%;
+            border: none;
+          }
+          .person-li-img{
+            display:block;
+              width: 140cpx;
+              height: 140cpx;
+              border-radius: 50%;
+              margin-bottom: 5px;
+              border: 1px solid #ddd;
+              &.addImg{
+                  border:1px solid #fff;
+              }
+          }
+          .name{
+            width: 100%;
+            font-size: 26cpx;
+            color: #000;
+            text-align: center;
+          }
+          &.sharePerson{
+            position: relative;
+            .shareBtn{
+              width: 100%;
+              height: 190cpx;
+              position: absolute;
+              left: 0;
+              top: 0;
+            }
+          }
+      }
+      .li-w{
+          width: 160cpx;
+      }
+
+      .vip_service {
+        margin-top: 7cpx;
+        background: #FFF;
+        .vip_service_content {
+          margin-top: 15cpx;
+          margin-bottom: 30cpx;
+          flex-direction: row;
+          justify-content: space-around;
+          .vip_service_box {
+            width: 104cpx;
+            .vip_service_img {
+              margin-bottom: 20cpx;
+              height: 68cpx;
+              width: 104cpx;
+            }
+            text {
+              font-size: 26cpx;
+              line-height: 30cpx;
+              letter-spacing: 0;
+            }
+          }
+        }
+      }
+
+      .title{
+      background-color: #fff;
+      font-size: 30cpx;
+      line-height: 90cpx;
+      position: relative;
+      margin: 18cpx 0 0;
+      border-bottom: 2cpx solid #efefef;
+      padding-left: 30cpx;
+      .kf{
+        width: 200cpx;
+        position: absolute;
+        right: 0;
+        top: 16%;
+      }
+    }
+    //列表栏
+    .box {
+      position: relative;
+      padding: 20cpx 20cpx;
+      background-color: #fff;
+      margin-bottom: 20cpx;
+      &.padd0 {
+        padding: 0 20cpx;
+      }
+      
+      .li-cross {
+        width: 50%;
+        float: left;
+        height: 130cpx;
+        text-align: center;
+        color: #000;
+        &:first-child {
+          border-right: 1px solid #ececec;
+        }
+        .icons {
+          display: block;
+          width: 82cpx;
+          height: 80cpx;
+          margin: 0 auto 3px;
+        }
+        .item-e-title {
+          font-size: 30cpx;
+          line-height: 40cpx;
+        }
+      }
+      .li-vertical {
+        position: relative;
+        height: 90cpx;
+        line-height: 90cpx;
+        display: block;
+        color: #000;
+        border-bottom: 1px solid #ececec;
+        padding-left: 75cpx;
+        font-size: 30cpx;
+        &:last-child {
+          border-bottom: none;
+        }
+        .icons-left {
+          position: absolute;
+          left: 5px;
+          top: 50%;
+          margin-top: -20cpx;
+          width: 40cpx;
+          height: 40cpx !important;
+        }
+        .icons-right {
+          position: absolute;
+          right: 5px;
+          top: 0;
+          font-size: 30cpx;
+        }
+      }
+    }
+    .kf-layer{
+      width: 750cpx;
+      height: 100%;
+      position: fixed;
+      left: 50%;
+      top: 0;
+      margin-left: -375cpx;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 998;
+      .kf-box{
+        position: absolute;
+        top: 28%;
+        left: 50%;
+        margin-left: -275cpx;
+        width: 550cpx;
+        padding: 200cpx 0 0;
+        background-color: #fff;
+        border-radius: 5px;
+        .auther{
+          position: absolute;
+          width: 280cpx;
+          top: -110cpx;
+          left: 50%;
+          transform: translateX(-50%);
+          z-index: 3;
+        }
+        .bac{
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          z-index: 1;
+        }
+        .text{
+          font-size: 30cpx;
+          color: #000;
+          padding: 20cpx 0;
+          .text-content{
+            text-align: center;
+          }
+
+        }
+        .btns{
+          flex-direction: row;
+          .btn{
+            width: 50%;
+            height: 100cpx;
+            line-height: 100cpx;
+            font-size: 34cpx;
+            text-align: center;
+            float: left;
+            border-top: 1px solid #dddddd;
+          }
+          .call{
+            color: #0382ff;
+            border-left: 1px solid #dddddd;
+          }
+        }
+      }
+    }
+    }

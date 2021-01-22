@@ -1,0 +1,55 @@
+<template>
+  <app store="{{store}}" router-config="{{routerConfig}}"></app>
+</template>
+
+<script>
+import store from '../store/index.js'
+import routerConfig from '../router.config.json';
+import cml from 'chameleon-api';
+import myApi from '../components/tools/tools.interface';
+
+class App {
+  data = {
+    store,
+    routerConfig
+  }
+  created(res) {
+  }
+  onShow(){
+    myApi.versionFn();
+    console.log("onShow APP");
+  }
+}
+
+export default new App();
+</script>
+
+<style>
+
+</style>
+
+<script cml-type="json">
+{
+  "wx": {
+    "window": {
+      "backgroundTextStyle":"light",
+      "navigationBarBackgroundColor": "#fff",
+      "navigationBarTitleText": "保险方案专家1对1量身定制",
+      "navigationBarTextStyle":"black"
+    }
+  },
+  "baidu": {
+    "window": {
+      "backgroundTextStyle": "light",
+      "navigationBarBackgroundColor": "#ffffff",
+      "navigationBarTitleText": "保险方案专家1对1量身定制",
+      "navigationBarTextStyle": "black"
+    }
+  },
+  "alipay": {
+      "window": {
+        "defaultTitle": "保险方案专家1对1量身定制"
+      }
+  }
+}
+</script>

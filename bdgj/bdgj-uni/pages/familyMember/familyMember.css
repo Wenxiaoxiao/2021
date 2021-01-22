@@ -1,0 +1,227 @@
+/**
+ * 这里编写 sass 之后，可在 vue 的 style 标签中通过 @import 相对路径引入
+ * 注意 style 标签的 lang 属性需要设置为 less/sass
+ */
+.wrapper {
+  flex-direction: row;
+  justify-content: space-around;
+}
+.container {
+  width: 750rpx;
+  min-height: 1000rpx;
+}
+/*margin值*/
+/*上*/
+.margin-top-10 {
+  margin-top: 10rpx !important;
+}
+.margin-top-20 {
+  margin-top: 20rpx !important;
+}
+.margin-top-30 {
+  margin-top: 30rpx !important;
+}
+.margin-top-40 {
+  margin-top: 40rpx !important;
+}
+/*左*/
+.margin-left-10 {
+  margin-left: 10rpx !important;
+}
+.margin-left-20 {
+  margin-left: 20rpx !important;
+}
+.margin-left-30 {
+  margin-left: 30rpx !important;
+}
+.margin-left-40 {
+  margin-left: 40rpx !important;
+}
+/*右*/
+.margin-right-10 {
+  margin-right: 10rpx !important;
+}
+.margin-right-20 {
+  margin-right: 20rpx !important;
+}
+.margin-right-30 {
+  margin-right: 30rpx !important;
+}
+.margin-right-40 {
+  margin-right: 40rpx !important;
+}
+/*下*/
+.margin-bottom-10 {
+  margin-bottom: 10rpx !important;
+}
+.margin-bottom-20 {
+  margin-bottom: 20rpx !important;
+}
+.margin-bottom-30 {
+  margin-bottom: 30rpx !important;
+}
+.margin-bottom-40 {
+  margin-bottom: 40rpx !important;
+}
+/*padding值*/
+/*上*/
+.padding-top-10 {
+  padding-top: 10rpx !important;
+}
+.padding-top-20 {
+  padding-top: 20rpx !important;
+}
+.padding-top-30 {
+  padding-top: 30rpx !important;
+}
+.padding-top-40 {
+  padding-top: 40rpx !important;
+}
+/*左*/
+.padding-left-10 {
+  padding-left: 10rpx !important;
+}
+.padding-left-20 {
+  padding-left: 20rpx !important;
+}
+.padding-left-30 {
+  padding-left: 30rpx !important;
+}
+.padding-left-40 {
+  padding-left: 40rpx !important;
+}
+/*右*/
+.padding-right-10 {
+  padding-right: 10rpx !important;
+}
+.padding-right-20 {
+  padding-right: 20rpx !important;
+}
+.padding-right-30 {
+  padding-right: 30rpx !important;
+}
+.padding-right-40 {
+  padding-right: 40rpx !important;
+}
+/*下*/
+.padding-bottom-10 {
+  padding-bottom: 10rpx !important;
+}
+.padding-bottom-20 {
+  padding-bottom: 20rpx !important;
+}
+.padding-bottom-30 {
+  padding-bottom: 30rpx !important;
+}
+.padding-bottom-40 {
+  padding-bottom: 40rpx !important;
+}
+.active {
+  color: #4680f6;
+}
+.justify-center {
+  flex-direction: row;
+  justify-content: center;
+}
+.justify-between {
+  flex-direction: row;
+  justify-content: space-between;
+}
+.fl {
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-end;
+}
+.fr {
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+.fc {
+  flex-direction: row;
+  justify-content: center;
+}
+.line-one {
+  lines: 1;
+}
+.line-two {
+  lines: 2;
+}
+.f-24 {
+  font-size: 24rpx;
+  line-height: 36rpx;
+}
+.f-26 {
+  font-size: 26rpx;
+  line-height: 39rpx;
+}
+.f-28 {
+  font-size: 28rpx;
+  line-height: 42rpx;
+}
+.f-30 {
+  font-size: 30rpx;
+  line-height: 45rpx;
+}
+.f-32 {
+  font-size: 32rpx;
+  line-height: 48rpx;
+}
+.c-f {
+  color: #ffffff;
+}
+.c-0 {
+  color: #000000;
+}
+image {
+  height: auto;
+}
+.policyShare .share-list {
+  display: inline-block;
+  width: 100%;
+  margin-right: 15rpx;
+  text-align: center;
+  padding: 0 30rpx;
+  background-color: #fff;
+}
+.policyShare .share-list .list-line {
+  padding: 30rpx 0;
+  position: relative;
+  flex-direction: row;
+  align-items: center;
+}
+.policyShare .share-list .list-line:last-child {
+  border-bottom: 0;
+}
+.policyShare .share-list .iconfont {
+  position: absolute;
+  color: #fff;
+  width: 40rpx;
+  height: 40rpx;
+  line-height: 40rpx;
+  font-size: 50rpx;
+  border-radius: 20rpx;
+  -webkit-border-radius: 20rpx;
+  -moz-border-radius: 20rpx;
+  -ms-border-radius: 20rpx;
+  -o-border-radius: 20rpx;
+  right: 0;
+  top: 50%;
+  margin-top: -20rpx;
+  color: #0084ff;
+}
+.policyShare .share-list .images {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 50%;
+  border: 1px solid #ddd;
+}
+.policyShare .share-list .name {
+  max-width: 400rpx;
+  font-size: 28rpx;
+  padding-left: 20rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #000;
+}

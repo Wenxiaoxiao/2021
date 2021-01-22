@@ -1,0 +1,212 @@
+<template>
+    <view class="views" c-if="{{hasData}}">
+        <block c-if="{{noneData}}">
+            <view class="nonData">
+                <image class="empty-icon" src="https://bx.wts999.com/m/xcxStatic/noClaims.png"></image>
+                <view class="empty-tip">您还没有在梧桐树保险网购买过保单!</view>
+            </view>
+        </block>
+        <block c-else>
+            <scroller class="insure_nav_box" scroll-direction="horizontal" width="{{-1}}">
+                <container direction="row">
+                    <view class="{{currentFamilyIdx==i?'active insure_nav':'insure_nav'}}" style="width:{{relationsWidth}}" c-for="{{myFamily}}" c-for-index="i" c-bind:click="toggleTab(i,$event)" data-id="{{item.cards[0].cardNo}}">{{item.shortName}}</view>
+                </container>
+            </scroller>
+            <scroller class="insure_box" height="{{scrollHeight}}">
+                <view class="insure_box_1" c-if="{{listArr.length}}">
+                    <view class="insure_msg">
+                        <text class="insure_name">{{myFamily[currentFamilyIdx].realName}}</text>
+                        <view class="insure_a">
+                            <view class="insure_a_box"><text class="a1">保单数:</text><text class="b1">{{insureMsg.policyCount}}份</text></view>
+                            <view class="insure_a_box"><text class="a1">总保障:</text><text class="b1">{{insureMsg.guaranteeAmount}}万</text></view>
+                            <view class="insure_a_box"><text class="a1">总保费:</text><text class="b1">{{insureMsg.premium}}元</text></view>
+                        </view>
+                    </view>
+                    <!-- 险种比率 -->
+                    <view class="insure_rate">
+                        <view class="insure_item" c-for="{{listArr}}" c-for-index="i">
+                            <view class="fr">
+                                <text class="insure_type">{{item.typeName}}</text>
+                                <view class="rate_box">
+                                    <view c-if="{{item.guaranteeRate==0}}" class="rate zero_rate" style="{{'width:0'}}"></view>
+                                    <view c-else-if="{{item.guaranteeRate>0&&20>=item.guaranteeRate}}" class="rate" style="{{'width:20%'}}">{{item.guaranteeRate}}%</view>
+                                    <view c-else class="rate" style="{{'width:'+item.guaranteeRate+'%'}}">{{item.guaranteeRate}}%　</view>
+                                </view>
+                                <text class="insure_amount">{{item.available}}</text>
+                            </view>
+                        </view>
+                    </view>
+                    <view style="position:relative;">
+                        <image class="to_prefessor" src="{{imgSrc}}" c-bind:click=""></image>
+                        <origin-button class="kefu" session-from="nickName={{userInfo.nick}}|avatarUrl={{userInfo.headImage}}|gender={{userInfo.sex}}|country=''|province={{userInfo.province}}|city={{userInfo.city}}" open-type="contact"></origin-button>
+                    </view>
+                </view>
+            </scroller>
+            <c-loading loading="{{isLoading}}" tip="{{'加载中'}}"></c-loading>
+        </block>
+        <nav navbar="{{navbar}}"></nav>
+    </view>
+</template>
+<script>
+    import cml from 'chameleon-api';
+    import tools from '../../api/tools.js';
+    import http from '../../api/http.js';
+    import notice from '../../api/notice.js';
+    import store from '../../store/';
+    
+	class insureAnalysis {
+		data = {
+            userInfo: '',
+            hasData: false,
+            noneData: false,
+            isLoading: false,
+            scrollHeight: -1,
+            navbar: "analysis",
+            insureMsg: '',
+            // 家庭成员信息
+            myFamily: [],
+            listArr: [],
+            // 当前选中成员
+            currentFamilyIdx: 0,
+            currentPerson: {},
+            imgSrc: "https://bx.wts999.com/m/xcxStatic/bdgj/toprofessor.png",
+            relationsWidth: "750cpx"  // 每个名字宽度
+		}
+
+		methods = {
+            toggleTab(i,e) {
+                this.currentFamilyIdx= i;
+                this.listArr= [];
+                this.isLoading= true;
+                this.getDetail(e.target.dataset.id);
+            },
+            getDetail(id) {
+                var that= this;
+                // 获取保单详情
+                http({
+                    name: 'i_insure',
+                    data: {
+                        insuredIdentifyNumber: id
+                    }
+                }).then(function(res) {
+                    var d= res.data;
+                    // 单位替换成万
+                    d.guaranteeAmount= Math.ceil(d.guaranteeAmount/1000)/10;
+                    d.premium= parseFloat(d.premium).toFixed(2);
+                    that.insureMsg= d;
+                }).catch(function(res) {
+                })
+                // 获取保额详情
+                http({
+                    name: 'i_detail',
+                    data: {
+                        insuredIdentifyNumber: id
+                    }
+                }).then(function(res) {
+                    var arr=[];
+                    res.data.map(function(item) {
+                        // available>=0 才显示
+                        if(item.available>=0) {
+                            if(item.available==0) {
+                                if(item.guaranteeRate==0) {
+                                    item.available= "无";
+                                }else {
+                                    item.guaranteeRate= 100;
+                                    item.available= "有";
+                                }
+                            }else {
+                                if(item.guaranteeRate>=1) {
+                                    item.guaranteeRate= '100';
+                                }else {
+                                    item.guaranteeRate= (item.guaranteeRate*100).toFixed();
+                                }
+                                item.available= Math.ceil((item.available/10000).toFixed(1))+'万';
+                            }
+                            arr.push(item);
+                        }
+                    })
+                    that.listArr= arr;     
+                    that.isLoading= false;
+                }).catch(function(res) {
+                    console.log(res)
+                })
+            }
+		}
+        beforeCreate() {
+            console.log('store:',store);
+            var that= this;
+            notice.showloading("加载中...");
+            this.userInfo= store.state.WTS_USER_XCX.wxInfo;
+            http({
+                name: 'i_Analysis'
+            }).then(function(res) {
+                that.hasData= true;
+                if(!res.data.length) {
+                    that.noneData= true;
+                    notice.hideloading();
+                    return false;
+                }
+                that.getDetail(res.data[0].cards[0].cardNo);
+                // 每个名字长度
+                if(res.data.length<=4){
+                    that.relationsWidth = (750/res.data.length)+"cpx";
+                }else{
+                    that.relationsWidth = "220cpx";
+                }
+                // 截取过长名字
+                res.data.map(function(item) {
+                    if(item.realName.length>4) {
+                        item.shortName= item.realName.slice(0,4)+'...';
+                    }else {
+                        item.shortName= item.realName;
+                    }
+                })
+                that.myFamily= res.data;
+                notice.hideloading();
+                that.isLoading= true;
+            }).catch(function(res) {
+                console.log(res)
+            })
+        }
+
+		created() {
+			// notice.showloading("加载中...");
+			cml.getSystemInfo().then((info) => {
+				if(info.env == 'weex') {
+					this.scrollHeight = Number(info.viewportHeight) - 215 - 88;
+					this.totalHeight =  Number(info.viewportHeight)  - 88;
+				} else {
+					this.scrollHeight = Number(info.viewportHeight) - 215;
+                    this.totalHeight =  Number(info.viewportHeight);
+				}
+			})
+			// tools.hideMenu();
+		}
+
+		mounted() {
+			
+		}
+	}
+
+	export default new insureAnalysis();
+</script>
+
+<style lang="less">
+    @import './insureAnalysis.less';
+</style>
+<script cml-type="json">
+	{ 
+        "base": { 
+            "usingComponents": {
+				"nav": "../../components/nav",
+                "c-tab": "cml-ui/components/c-tab/c-tab",
+                "c-tab-pane": "cml-ui/components/c-tab-pane/c-tab-pane",
+                "c-loading": "cml-ui/components/c-loading/c-loading"
+            },
+			"navigationBarTitleText": "家庭保单智能管家",
+			"backgroundTextStyle": "dark",
+			"backgroundColor": "#fff",
+			"defaultTitle": "家庭保单智能管家"
+        } 
+    }
+</script>

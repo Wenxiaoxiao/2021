@@ -1,0 +1,50 @@
+<template>
+  <app router-config="{{routerConfig}}">
+    <text>顶部</text>
+  </app>
+</template>
+
+<script>
+import routerConfig from '../router.config.json';
+
+class App {
+  data = {
+    routerConfig
+  }
+  created(res) {
+  }
+}
+
+export default new App();
+</script>
+
+<style>
+
+</style>
+
+<script cml-type="json">
+{
+  "wx": {
+    "window": {
+      "backgroundTextStyle": "light",
+      "navigationBarBackgroundColor": "#fff",
+      "navigationBarTitleText": "梧桐树保险课堂",
+      "navigationBarTextStyle": "black"
+    },
+    "sitemapLocation": "sitemap.json"
+  },
+  "baidu": {
+    "window": {
+      "backgroundTextStyle": "light",
+      "navigationBarBackgroundColor": "#ffffff",
+      "navigationBarTitleText": "Chameleon",
+      "navigationBarTextStyle": "black"
+    }
+  },
+  "alipay": {
+      "window": {
+        "defaultTitle": "Chameleon"
+      }
+  }
+}
+</script>

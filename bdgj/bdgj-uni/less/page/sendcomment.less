@@ -1,0 +1,183 @@
+.market-comment{
+    .top{
+        width: 100%;
+        position: relative;
+        #text{
+            width: 100%;
+            border: none;
+            font-size: 30rpx;
+            line-height: 40rpx;
+            padding: 20rpx 30rpx;
+            resize:none;
+            vertical-align: middle;
+        }
+        .number{
+            position: absolute;
+            right: 30rpx;
+            bottom: 20rpx;
+            font-size: 28rpx;
+            color: #999;
+            flex-direction: row;
+            view{
+                 font-size: 28rpx;
+                 line-height: 40rpx;
+            }
+        }
+        .red{
+            color: red;
+        }
+    }
+    .middle{
+        background-color: #fff;
+        border-top: 1px solid #ececec;
+        padding: 15rpx 30rpx;
+        height: 80rpx;
+        font-size: 30rpx;
+        line-height: 50rpx;
+        flex-direction: row;
+        .xxs{
+            display: inline-block;
+            position: relative;
+            padding-top:3rpx;
+        }
+        .xx{
+            display: inline-block;
+            width: 40rpx;
+            height: 40rpx;
+            margin-left: 15rpx;
+            background: url("https://bx.wts999.com/m/resource/xcxStatic/xx.png") no-repeat;
+            background-size: 100% 100%;
+            &.active{
+                background: url("https://bx.wts999.com/m/resource/xcxStatic/xx-active.png") no-repeat;
+                background-size: 100% 100%;
+            }
+        }
+    }
+    #send{
+        width: 100%;
+        margin-top: 100rpx;
+        height: 100rpx;
+        line-height: 100rpx;
+        text-align: center;
+        font-size: 40rpx;
+        background-color: #0084ff;
+        color: #fff;
+    }
+    .titles{
+        font-size: 36rpx;
+        line-height: 90rpx;
+        padding-left: 30rpx;
+        background-color: #fff;
+        border-bottom: 1px solid #ececec;
+    }
+    .getMore{
+        width: 100%;
+        display: block;
+        background-color: #fff;
+        text-align: center;
+        line-height: 80rpx;
+        font-size: 30rpx;
+        color: #666;
+        border-top: 1px solid #ececec;
+        margin-bottom: 10rpx;
+    }
+    .commentList{
+        .commentLi{
+            background-color: #fff;
+            width: 100%;
+            padding: 15rpx 30rpx;
+            font-size: 30rpx;
+            margin-bottom: 20rpx;
+            &:last-child{
+                margin-bottom: 0;
+            }
+            .head{
+                position: relative;
+                padding-left: 100rpx;
+            }
+            .headImg{
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 80rpx;
+                height: 80rpx;
+                border-radius:50%;
+            }
+            .name{
+                font-size: 30rpx;
+                line-height: 40rpx;
+            }
+            .timeAndLevel{
+                font-size: 26rpx;
+                line-height: 35rpx;
+                .time{
+                    padding-right: 10rpx;
+                    position: relative;
+                    top: 3px;
+                    border-right: 1px solid #ececec;
+                    padding-right: 8px;
+                    margin-right: 5px;
+                    color: #666;
+                }
+                .xx{
+                    line-height: 34rpx;
+                    margin-right: 5px;
+                }
+            }
+            .content{
+                font-size: 32rpx;
+                margin-top: 10px;
+                word-break:break-all;
+            }
+        }
+        .xx{
+            display: inline-block;
+            margin-right: 5px;
+            &:after{
+                content: "\e6c4";
+                font-family: "iconfont";
+                display: inline-block;
+                font-size: 28rpx;
+                color: #0084ff;
+                vertical-align: middle;
+            }
+        }
+    }
+    .allComments{
+        font-size: 32rpx;
+        background-color: #fff;
+        line-height: 90rpx;
+        border-bottom: 1px solid #ececec;
+        padding-left: 30rpx;
+    }
+    .productsLevel{
+        background-color: #fff;
+        margin-bottom: 20rpx;
+        padding: 15rpx 30rpx;
+        .p1{
+            font-size: 38rpx;
+            line-height: 60rpx;
+            margin-bottom: 5px;
+        }
+        .p2 {
+            font-size: 30rpx;
+            line-height: 45rpx;
+        }
+        .xx{
+            position: relative;
+            top: -2px;
+        }
+
+    }
+    .notMore{
+        display: none;
+        width: 100%;
+        font-size: 30rpx;
+        color: #666;
+        line-height: 90rpx;
+        text-align: center;
+        &.active{
+            display: block;
+        }
+    }
+}

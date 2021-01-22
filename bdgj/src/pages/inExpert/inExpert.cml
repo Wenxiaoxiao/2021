@@ -1,0 +1,257 @@
+<template>
+  <view class="inExpert">
+    <scroller class="view-container" height="{{-1}}" bottom-offset="{{50}}" c-bind:scrolltobottom="onBottom">
+      <view class="agent-card">
+        <view class="agent-top"></view>
+        <view class="card">
+            <image src="{{detailData.ico}}" class="card-pic" alt=""></image>
+            <image src="{{imgSrc}}" class="icon-card" alt=""></image>
+            <view class="card-content">
+                <view class="name">{{detailData.name}}</view>
+                <view class="dest break">{{detailData.desc}}</view>
+            </view>
+            <view class="cred-num break">
+                <text class="iconfont icon-laoshirenzheng1"></text><text class="bank_num">银保监会执业证：{{detailData.license}}</text>
+            </view>
+        </view>
+      </view>
+      <view class="comment-box">
+          <text class="comment-title">客户评价</text>
+          <view class="comment-list">
+            <view class="comment-item" c-for="{{commentsList}}" c-for-item="val" c-for-index="i" c-if="{{commentsList.length > 0 && val.commentName}}">
+                <view class="user-msg clearfix">
+                    <image src="{{val.commentIco?val.commentIco:imgSrc1}}" class="user-img"></image>
+                    <text class="user-name">{{val.commentName}}</text>
+                </view>
+                <view class="user-content break">{{val.commentContent}}</view>
+            </view>
+          </view>
+          <view id="emptyDom">
+            <block c-if="{{hasMore}}">
+                <image class="a1" src="{{loadingImg}}"></image>
+                <text class="a2">加载中...</text>
+            </block>
+            <block c-else>
+                <text class="a3">没有更多评论了~</text>
+            </block>
+          </view>
+      </view>
+      <view class="bottom-blank"></view>
+    </scroller>
+    <view class="btn-bottom">
+        <view class="btn btn1" c-bind:click="reversePop">我要预约</view>
+        <view class="btn btn2" c-bind:click="showCommontBox">我要评价</view>
+    </view>
+    <!-- 预约弹窗 -->
+    <reverse-pop isLayerHide="{{isLayerHide}}" agentId="{{agentId}}" c-bind:hidePop="hidePop"></reverse-pop>
+    <!-- 评论弹窗 -->
+    <view class="comment-input" c-show="{{showComment}}">
+      <view class="comment-mask" c-bind:click="hideCom"></view>
+        <view class="comment-content" c-if="{{showComment}}">
+          <view class="inputAreas">
+            <origin-textarea show-confirm-bar="{{false}}" fixed="{{true}}" class="c_user_text" cursor-spacing="78"
+            maxlength="{{200}}" style="height:180cpx;min-height: 100%;padding: 20cpx;font-size: 30cpx;"  c-bind:bindlinechange="lineChange"
+            c-bind:blur="getComment" focus="{{textFocus}}" placeholder="输入您的评论.."></origin-textarea>
+          </view>
+          <view class="right">
+              <view id="sendMsg" c-bind:click="commentSubmit">发布</view>
+          </view>
+        </view>
+    </view>
+    <!-- 等待审核 
+    <c-dialog show="{{showWait}}" title="提交成功，请等待审核！" content="" confirm-text="我知道" confirm-style="color:#008cff;text-align:center;"></c-dialog> -->
+  </view>
+</template>
+
+<script>
+
+	import cml from 'chameleon-api';
+  import http from '../../api/http.js';
+  import notcie from '../../api/notice.js';
+
+class InExpert   {
+
+  data = {
+    cursorSpacing:"85",//键盘距离光标高度
+    agentId: '',  // 顾问id
+    inType: '',
+    detailData: '', // 页面数据
+    isLayerHide: false, // 预约弹窗
+    pageNum: 1, // 当前页
+    maxPage: 99, // 评论最大页
+    hasMore: true, // 有更多数据
+    loadingImg: "https://bx.wts999.com/m/xcxStatic/bdgj/loading.gif",
+    showComment: false,  // 评论框
+    textFocus: false,  // focus textarea
+    commentsList: [], // 评论列表
+    commentMsg: '',   // 输入的评论内容
+    imgSrc: "https://bx.wts999.com/m/xcxStatic/bdgj/icon-cred-big.png",
+    imgSrc1: "https://bx.wts999.com/m/xcxStatic/person-center-03.jpg",
+    timer: null,   // 触底加载节流
+  }
+
+  computed = {
+  }
+
+  watch  = {
+  }
+
+  methods = {
+    // 顾问详情
+    detailAjax() {
+      var ajax,
+          that= this;
+      if(this.inType == "1"){
+        ajax = "Exe_agentsDetail"
+      }
+      http({
+        name: ajax,
+        data: {
+            id: that.agentId
+        }
+      }).then(function(res) {
+          console.log(res.data);
+          that.detailData= res.data;
+      }).catch(function(res) {
+          console.log(res)
+      })
+    },
+    // 评论列表
+    commentDemand(){
+      this.isTextLogin = true;
+
+      var that= this;
+      http({
+        name: "Exe_AgentShowComments",
+        data: {
+          agentId: that.agentId,
+          status: "1",
+          pageSize: 10,
+          pageNum: that.pageNum
+        }
+      }).then(function(res) {
+        that.maxPage= res.pages;
+        if(that.pageNum==1) {
+          that.commentsList= res.data;
+        }else {
+          that.commentsList= that.commentsList.concat(res.data);
+        }
+        if(that.maxPage== 0||that.pageNum==that.maxPage) {
+          that.hasMore= false;
+        }
+      }).catch(function(res) {
+        console.log(res)
+      })
+    },
+    // 预约
+    reversePop() {
+      this.isLayerHide= true;
+    },
+    // 显示评论弹窗
+    showCommontBox() {
+      this.showComment= true;
+      this.textFocus= true;
+    },
+    // 发布评论
+    commentSubmit() {
+      var that= this;
+      //避免键盘收起时阻塞取值
+      setTimeout(_=>{
+        http({
+          name: "Exe_agentComments",
+          data: {
+            agentId: this.agentId,
+            commentContent: this.commentMsg
+          }
+        }).then((res) =>{
+          that.textFocus= false;
+          that.showComment= false;
+          notcie.alert("提交成功，请等待审核！");
+        }).catch(function(res) {
+          console.log(res)
+        })
+      },200);
+    },
+    // 隐藏预约弹窗
+    hidePop() {
+        this.isLayerHide= false;
+    },
+    // 输入的评论内容
+    getComment(e) {
+      this.commentMsg= e.detail.value;
+    },
+    // 隐藏评论框
+    hideCom() {
+      this.showComment= false;
+      this.textFocus= false;
+    },
+    // 上拉加载
+    onBottom(e) {
+      if(this.timer) return false;
+      var that= this;
+      // 最大页就不加载
+      if(that.pageNum==that.maxPage) {
+          this.hasMore= false;
+          return false;
+      }
+      that.pageNum++;
+      that.commentDemand();
+      // 1s只触发一次加载
+      this.timer= setTimeout(function() {
+          clearTimeout(that.timer);
+          that.timer= null;
+      }, 200);
+    }
+  }
+
+  beforeCreate(query) {
+    this.agentId = query.agentId; 
+    this.inType = query.inType; //详情类型
+    this.detailAjax();
+    this.commentDemand();
+  }
+
+  created(query) {
+  }
+
+  beforeMount(query) {
+  }
+
+  onShow() {
+  }
+
+  mounted() {
+  }
+
+  onHide() {
+  }
+
+  beforeDestroy() {
+  }
+
+  destroyed() {
+  }
+}
+
+export default new InExpert();
+</script>
+
+<style>
+  @import './inExpert.less';
+</style>
+
+<script cml-type="json">
+{
+  "base": {
+    "usingComponents": {
+      "reverse-pop": "/src/pages/reversePop/reversePop",
+      "c-dialog": "cml-ui/components/c-dialog/c-dialog"
+    }
+  },
+  "wx": {
+    "navigationBarTitleText": "家庭保单智能管家",
+    "backgroundTextStyle": "dark",
+    "backgroundColor": "#E2E2E2"
+  }
+}
+</script>

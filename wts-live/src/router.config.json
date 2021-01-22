@@ -1,0 +1,15 @@
+{
+  "mode": "history",
+  "routes":[
+    {
+      "url": "/cml/wx/index",
+      "path": "/pages/index/index",
+      "name": "梧桐树保险课堂"
+    },
+    {
+      "url": "/cml/wx/webview",
+      "path": "/pages/webview/webview",
+      "name": "梧桐树保险课堂"
+    }
+  ]
+}

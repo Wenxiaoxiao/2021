@@ -1,0 +1,106 @@
+<template>
+<page title="评价商品">
+    <view class="all-container">
+        <view class="body-container market-comment">
+            <c-textarea submitVal="{{submitVal}}" c-bind:onshow="getContent"></c-textarea>
+            <view class="middle">
+                星级评价：
+                <view class="xxs">
+                    <view c-catch:click="changelevel(1)" class="xx {{level>0?'active':''}}"></view>
+                    <view c-catch:click="changelevel(2)" class="xx {{level>1?'active':''}}"></view>
+                    <view c-catch:click="changelevel(3)" class="xx {{level>2?'active':''}}"></view>
+                    <view c-catch:click="changelevel(4)" class="xx {{level>3?'active':''}}"></view>
+                    <view c-catch:click="changelevel(5)" class="xx {{level>4?'active':''}}"></view>
+                </view>
+            </view>
+            <view id="send" c-catch:click="submit()">提交评价</view>
+        </view>
+        </view>
+</page>
+</template>
+
+<script>
+  import cml from 'chameleon-api';
+  import tools from '../../api/tools.js';
+	import notice from '../../api/notice.js';
+	import http from '../../api/http.js';
+  import store from '../../store/';
+  import util from '../../components/util/util.interface'
+  class onlineClaims {
+    data = {
+      policyNo:"",
+      productId:"",
+      productName:"",
+      submitVal:"",
+      level:5,
+    }
+    methods = {
+      getContent(res){
+        this.submitVal = res.detail.value;
+      },
+      //选择评论等级
+      changelevel(num){
+        this.level = num;
+      },
+      submit(){
+        if(!this.submitVal) return notice.msg("请输入评论内容");
+        if(this.submitVal.length>150) return notice.msg("评论内容仅支持150字以内");
+        var params={
+              policyNo: this.policyNo ,    //保单号
+              insuranceProductId: this.productId, //产品ID
+              insuranceProductName: this.productName, //产品名称
+              starLevel: this.level ,    //评论星级
+              comment: this.submitVal ,    //评论内容
+          }
+
+            http({
+						name: 'P_addComment',
+						data: params
+					})
+					.then(function(data, e) {
+						if(data.httpCode!=200) return;
+            store.state.hasComMit = true;
+            notice.msg("提交评论成功！3秒后返回上一页",3000)
+            setTimeout(() => {
+              cml.navigateBack(-1);
+            }, 3000);
+         
+					})
+					.catch(error => {
+            notice.hideloading();
+						console.log(error);
+					});
+      }
+    }
+
+    beforeCreate(query) {
+      this.policyNo = query.policyNo;
+      this.productId = query.productId;
+      this.productName = query.productName;
+      util.hideShareMenu();
+		};
+
+    created() {
+    }
+
+    mounted() {
+    }
+  }
+  export default new onlineClaims();
+</script>
+<style lang="less" scoped>
+@import "./sendcomment.less";
+</style>
+<script cml-type="json">
+  {
+    "base":{
+      "usingComponents": {
+        "c-textarea": "/components/c-textarea/c-textarea"
+      },
+      "navigationBarTitleText": "快速理赔",
+      "backgroundTextStyle": "dark",
+      "backgroundColor": "#fff",
+      "defaultTitle": "快速理赔"
+    }
+  }
+</script>

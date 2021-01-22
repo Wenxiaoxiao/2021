@@ -1,0 +1,28 @@
+<script cml-type="interface">
+interface ToolsInterface {
+  getMsg(msg: String): String;
+  
+  auth(): Object;
+  versionFn(): void;
+  showShare(): void;
+}
+
+</script>
+
+<script cml-type="wx">
+import Method from './tool.wx.js'
+
+export default new Method();
+</script>
+
+<script cml-type="alipay">
+
+import Method from './tool.alipay.js'
+
+export default new Method();
+</script>
+
+
+
+
+

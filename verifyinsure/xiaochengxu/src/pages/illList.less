@@ -1,0 +1,195 @@
+@import './main.less';
+.fx-illList{
+    width:100%;
+    height:100%;
+    background:#fff;
+    position: relative;
+    overflow: hidden;
+    view{
+        height:auto;
+    }
+    .fx-tips{
+        height:88rpx;
+        line-height:88rpx;
+        font-size:30rpx;
+        border-top:2rpx solid #ddd;
+        border-bottom:2rpx solid #dddddd;
+        color:#4580f6;
+        padding-left: 27rpx;
+    }
+    .fix-results{
+        position:fixed;
+        bottom:92rpx;
+        width:100%;
+        .mask{
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;left: 0;
+            background-color: rgba(0, 0, 0, .6);
+        }
+        .fix-main{
+            position: absolute;
+            width: 100%;
+            height: 50%;
+            bottom: 0;
+            left: 0;
+            background:#fff;
+            overflow: auto;
+        }
+        .titile{
+            position: relative;
+            &>text{
+                color:#000;
+                font-size:28rpx;
+                height:30rpx;
+                line-height:30rpx;
+                margin-top:30rpx;
+                padding-left:30rpx;
+            }
+        }
+        .list{
+            display:block;  
+            padding-top:20rpx;
+            .list-item{
+                margin-left:22rpx;
+                position: relative;
+                overflow: hidden;
+                margin-bottom:10rpx;
+                display:inline-block;
+                &>.close{
+                    position: absolute;
+                    width:22rpx;
+                    height:23rpx;
+                    top:12rpx;
+                    right:27rpx;
+                }
+                &>span{
+                    background:#dae6fd;
+                    color:#4580f6;
+                    font-size:26rpx;
+                    height:46rpx;
+                    line-height:46rpx;
+                    padding-left:20rpx;
+                    padding-right:55rpx;
+                    border-radius:20rpx;
+                    max-width:340rpx;
+                    white-space: pre-wrap;     
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    -ms-text-overflow: ellipsis;
+                    -o-text-overflow: ellipsis;
+                    display:inline-block;
+                }
+            }
+        }
+    }
+    .fx-btns{
+        height:92rpx;
+        position:fixed;
+        bottom:0;
+        width:100%;
+        border-top:1px solid #ddd;
+        display:table-cell;
+        view{
+            width:50%;
+            height:100%;
+            float:left;
+            text-align: center;
+            font-size:30rpx;
+        }
+        .preBtn{
+            color:#000;
+            background:#fff;
+            line-height:92rpx;
+        }
+        .nextBtn{
+            background:#4580f6;
+            color:#fff;
+            line-height:92rpx;
+        }
+    }
+    .illList{
+        display:table-cell;
+        height:100%;
+    }
+    .point-list,.child-list{
+        height:100%;
+        padding-bottom:180rpx;
+        width:338rpx;
+        background:#f6f6f6;
+        overflow: auto;
+        float: left;
+    }
+    .child-list{
+        width:412rpx;
+        background:#fff;
+    }
+    .point-list{
+        &>.item{
+            &>span{
+                height: 100%;
+                width: 100%;
+                display:block;
+            }
+        }
+        .activeItem{
+            background: #ffffff;
+            color:#4580f6;
+            display: inline-block;
+        }
+    }
+    .point-list,.child-list{
+        &>span{
+            position:relative;
+            display:block;
+            &>span{
+                padding-left: 26rpx;
+                padding-right:18rpx;
+                line-height:34rpx;
+                font-size:28rpx;
+                padding-top:28rpx;
+                padding-bottom:28rpx;
+                color:#333;
+            }
+        }
+        .disease{
+            height:auto;
+            position: relative;
+            border-bottom:1px solid #ddd;
+            min-height:88rpx;
+            line-height:40rpx;
+            .diseaseItem{
+                width:370rpx;
+                padding-right:0;
+                &.active{
+                    color: #4580f6;
+                }
+            }
+            .choseIcon{
+                opacity: 0;
+                width:40rpx;
+                height:22rpx;
+                position: absolute;
+                color:#1b8bf9;
+                padding:0;
+                top:50%;
+                transform: translateY(-50%);
+                &>image{
+                    width:30rpx;
+                    height:22rpx;
+                    position: absolute;
+                }
+                &.active{
+                    opacity: 1;
+                }
+            }
+        }
+    }
+    .child-list{
+        &>span{
+            &>span{ display: inline-block;padding-right:26rpx;}
+        }
+    }
+}

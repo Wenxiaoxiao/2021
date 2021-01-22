@@ -1,0 +1,418 @@
+<template>
+	<page title='家庭保单智能管家'>
+	<view class="policyList">
+		<view class="poilcy_mask" c-if="{{loadingMask}}" style="height:{{totalHeight}}cpx;"></view>
+		<!-- 保单统计 -->
+		<view class="policy-count" c-if="{{!iconIsHide}}">
+			<view class="count-item" c-catch:click="routerUrl('/pages/policyNumbers/policyNumber','有效保单总数','1')">
+				<view class="p1">{{policyCount.validPoliycNum || 0}}</view>
+				<view class="p2">有效保单总数</view>
+			</view>
+			<view class="count-item" c-catch:click="routerUrl('/pages/policyNumbers/policyNumber','近3月续费保单数','2')">
+				<view class="p1">{{policyCount.needPay || 0}}</view>
+				<view class="p2">近3月续费保单数</view>
+			</view>
+			<view class="count-item" c-catch:click="routerUrl('/pages/familyTotalPremium/familyTotalPremium','今年家庭总保费',policyCount.totalFee)">
+				<view class="p1">￥{{policyCount.totalFee || 0}}</view>
+				<view class="p2">今年家庭总保费</view>
+			</view>
+		</view>
+
+		<!-- 成员列表 -->
+		<view class="issort-content {{relationsClass}}">
+			<scroller class="carousel_content" scroll-direction="horizontal" width="{{-1}}">
+				<container direction="row">
+					<block c-for="{{relations}}" c-for-index="index" c-for-item="item">
+						<view c-if="{{item.id}}" style="width:{{relationsWidth}}" c-catch:click="isSortClick('1',item)" class="carousel_item {{insurederId==item.id?'active':''}}">
+							<text>{{item.realName}}</text>
+						</view>
+						<view  style="width:{{relationsWidth}}" c-else c-catch:click="isSortClick('0',item)" class="carousel_item {{insurederId==item.id?'active':''}}">
+							<text>{{item.realName}}</text>
+						</view>
+					</block>
+				</container>
+			</scroller>
+		</view>
+
+		<!--订单列表-->
+		<view class="policyList">
+		<!--<c-loading tip="加载中..." loading="{{loading}}"></c-loading>-->
+			<scroller height="{{ scrollHeight }}" bottom-offset="{{ 100 }}" c-bind:scrolltobottom="getOrderListData">
+				<block c-if="{{total>0}}">
+					<cell class="cell" c-for="{{orders}}" c-for-index="index" c-for-item="itemdata">
+						<policylistitem c-bind:actiondetail="actionDetail" c-bind:changerelations="changeMemberRelations" itemdata="{{itemdata}}" issort="{{isSort}}" iconishide="{{iconIsHide}}"></policylistitem>
+					</cell>
+					<block c-if="{{orders.length>=total}}">
+						<view class="noData">--暂无更多数据--</view>
+					</block>
+				</block>
+				<block c-else>
+					<view id="emptyDom">
+						<view class="mescroll-empty">
+							<image mode="widthFix" mode="widthFix" class="empty-icon" src="https://bx.wts999.com/m/xcxStatic/noClaims.png"></image>
+							<view class="empty-tip">您还没有在梧桐树保险网购买过保单!</view>
+						</view>
+					</view>
+				</block>
+			</scroller>
+		</view>
+
+		<nav c-show="{{!iconIsHide}}" navbar="{{navbar}}"></nav>
+	</view>
+	</page>
+</template>
+
+<script>
+	import findIndex from 'lodash/findIndex'
+	import cml from 'chameleon-api';
+	import notice from '../../api/notice.js';
+	import http from '../../api/http.js';
+	import store from '../../store/';
+	import filter from '../../api/filter';
+	import tools from '../../api/tools';
+	import util from '../../components/util/util.interface'
+	var vm = null;
+	class policyList {
+		data = {
+			relationsWidth:"750cpx",
+			navbar:"policyList",
+			shareid:"",
+			userId:"",
+			isSort:"0",
+			totalHeight:-1,  //总高度
+			getDataFlag:true,
+			scrollHeight: -1,
+			iconIsHide: false, //被邀请人页面
+			loading: false,
+			loadingMask:true,
+			relationsClass:"",
+			relations: [], //成员列表初始化
+			orders: [], //保单列表初始化
+			page: {
+				size: 20, //页容量
+				num: 1, //页码(从1开始)
+			},
+			total: 0, //总个数
+			insurederId: "", //当前请求分类的列表
+			_index: 0,
+			//保单统计
+			policyCount: {
+				// 有效保单数
+				validPoliycNum: 0,
+				//近3月保单数
+				needPay: 0,
+				//总保费
+				totalFee: 0
+			},
+
+		}
+		beforeCreate() {
+			util.hideShareMenu();
+		}
+		created(query) {
+			this.versionFn();
+			notice.showloading("加载中...");
+			vm = this;
+			this.shareid = query.userId;
+			cml.getSystemInfo().then((info) => {
+				var number = this.shareid ? 100 : 310;
+				if(info.env == 'weex') {
+					this.scrollHeight = Number(info.viewportHeight) - number - 88;
+					this.totalHeight =  Number(info.viewportHeight)  - 88;
+				} else {
+					this.scrollHeight = Number(info.viewportHeight) - number;
+					this.totalHeight =  Number(info.viewportHeight);
+				}
+			})
+
+			this.iconIsHide =this.shareid ? true : false;
+			tools.login()
+				.then(res=>{
+					if(!res.id){
+						return cml.redirectTo ({
+							path: "/pages/authorizationPage/authorizationPage",
+						});
+					}
+					this.userId = this.shareid?this.shareid:store.state.WTS_USER_XCX.id;
+					this.getPolicyCount();
+					this.getRelations(function(){
+					vm.getOrderListData()
+				});
+				})
+				.catch(err=>{
+					console.log(err);
+				})
+	
+		}
+		onShow(){
+			if(store.state.hasComMit){
+				store.state.hasComMit = false;
+				this.page.num = 1;
+				vm.orders = [];
+				this.getOrderListData();
+			}
+		}
+		methods = {
+			versionFn() {
+				const updateManager = util.getUpdateManager();
+				console.log("updateManager",updateManager);
+				updateManager.onCheckForUpdate((res) => {
+					// 请求完新版本信息的回调
+					console.log(res.hasUpdate);
+					if (res.hasUpdate) {
+					util.showLoading({
+						title: '正在更新小程序',
+					});
+					}
+				});
+				updateManager.onUpdateReady(()=>{
+				util.hideLoading();
+				// 新的版本已经下载好，调用 applyUpdate 应用新版本并重启
+				updateManager.applyUpdate();
+				});
+				updateManager.onUpdateFailed(() => {
+					// 新的版本下载失败
+					notice.alert('新版本已经上线啦~，请您删除当前小程序，重新搜索打开哟~');
+				});
+			},
+			//查看保单详情的点击事件
+			actionDetail(e){
+				if(e.detail.item.policyNo == 0) return notice.msg("您的保单正在生成中，如有疑问，请联系你的专属顾问！");
+				cml.navigateTo({
+					path: '/pages/policyDetail/policyDetail',
+					query: {
+						pid: e.detail.item.pid,
+						ishare:this.iconIsHide
+					}
+				})
+			},
+			//修改成员分信息
+			changeMemberRelations(){
+				this.page.num = 1;
+				this.orders = [];
+				this.getRelations(function(){
+					vm.getOrderListData()
+				});
+				
+			},
+			// 查看统计数据
+			routerUrl(path,name,type){
+				cml.navigateTo({
+					path: path,
+					query:{
+						name,
+						type:type || ""
+					}
+				})
+			},
+			//获取成员分类数据
+			getRelations(callback) {
+				http({
+						name: 'P_bind_newRelations',
+						data: {
+							userId: this.userId
+						}
+					})
+					.then(data => {
+						vm.relationsClass = "";
+						if(data.httpCode!=200) return;
+						vm.changeRelationsText(data.data.relations);
+						if(data.data.relations && data.data.relations.length>0){
+							vm.relations = [{
+								birthday: "",
+								cards: [],
+								id: "",
+								realName: "全部",
+								relationType: "",
+								sex: null,
+								userId: ""
+							}]
+							vm.relations.push.apply(vm.relations, data.data.relations);
+						}
+						
+
+						if(vm.relations.length<=4){
+								vm.relationsWidth = (750/vm.relations.length)+"cpx";
+						}else{
+							vm.relationsWidth = "170cpx";
+						}
+						if(vm.relations.length) vm.relationsClass = "borderNone";
+
+						//处理字数
+							
+						callback();
+
+					})
+					.catch(error => {
+						notice.alert("请求超时!")
+						console.log(error);
+					});
+			},
+
+			//处理relations字数
+			changeRelationsText(relations){
+				for(var i=0;i<relations.length;i++){
+					if(relations.length<5){
+						var size = 20/relations.length;
+						relations[i].realName = relations[i].realName.length>size?relations[i].realName.substring(0,size-1)+"...":relations[i].realName;
+					}else{
+						relations[i].realName = relations[i].realName.length>3?relations[i].realName.substring(0,3)+"...":relations[i].realName;
+					}
+				}
+			},
+			//获取保单统计
+			getPolicyCount() {
+				http({
+						name: 'P_policyCount',
+						data: {
+							userId: this.userId
+						}
+					})
+					.then(data => {
+						if(data.httpCode!=200) return;
+						console.log(data.data);
+						vm.policyCount = data.data
+					})
+					.catch(error => {
+						notice.alert("请求超时!")
+						console.log(error);
+					});
+			},
+
+			//获取订单列表数据
+			getOrderListData() {
+				if((this.orders && this.orders.length && this.orders.length>=this.total) || !vm.getDataFlag){
+					return;
+				}
+				vm.loading = true;
+				notice.showloading("加载中...");
+				vm.getDataFlag = false;
+				var params = this.policyParams();
+				var url = "P_policyList";
+				if(vm.isSort == 0){
+					url = "get_allPolicy";
+				}
+				http({
+						name: url,
+						data: params
+					})
+					.then(data => {
+						if(data.httpCode!=200) return;
+						vm.total = data.data.total;
+						if(data.data.total > 1000) {
+							vm.total = 0;
+							data.data.data = []
+						}
+						if(this.page.num == 1) {
+							if(data.data.data && data.data.data.length && !vm.relations.length){
+								vm.relations = [{
+									birthday: "",
+									cards: [],
+									id: "",
+									realName: "全部",
+									relationType: "",
+									sex: null,
+									userId: ""
+								}];
+								vm.relationsClass = "borderNone";
+							}
+							vm.orders = data.data.data;
+						} else {
+							vm.orders = vm.orders.concat(data.data.data);
+						}
+						setTimeout(() => {
+							vm.getDataFlag = true;
+							vm.loading = false;
+							vm.loadingMask = false;
+							notice.hideloading();
+						}, 200);
+						
+						this.page.num++;
+					})
+					.catch(error => {
+						vm.loading = false;
+						vm.loadingMask = false;
+						notice.hideloading();
+						vm.getDataFlag = true;
+						notice.alert("请求超时!")
+						console.log(error);
+					});
+			},
+
+			//查询保单参数处理
+			policyParams() {
+				var params = {
+					pageSize: this.page.size,
+					pageNum: this.page.num,
+					effectiveStatus: '1', //保障中/未保障
+					userId: this.userId
+				}
+				if(this.insurederId) {
+					this._index = findIndex(this.relations, ['id', this.insurederId])
+					if(this.relations[this._index].cards && this.relations[this._index].cards.length > 0) {
+
+						this.isSort = 1;
+						params.insurederIdentifyNumbers = "";
+						for(var j = 0; j < this.relations[this._index].cards.length; j++) {
+							if(j == 0) {
+								params.insurederIdentifyNumbers = this.relations[this._index].cards[j].cardNo;
+							} else {
+								params.insurederIdentifyNumbers += "," + this.relations[this._index].cards[j].cardNo;
+							}
+						}
+					}
+					params.isSort = this.isSort;
+        			params.insurederId =  this.insurederId;
+				}
+				return params
+			},
+
+			//成员分类切换的点击事件
+			isSortClick(para1, para2) {
+				if(vm.loading){
+					return;
+				}
+				if(vm.insurederId == para2.id) return;
+				vm.isSort = para1;
+				vm.insurederId = para2.id;
+				this.page.num = 1;
+				vm.orders = [];
+				this.getOrderListData()
+			},
+		}
+	}
+	export default new policyList();
+</script>
+<style lang="less" scoped>
+	@import "./policyList.less";
+	.poilcy_mask{
+		width: 100%;
+		height: 100%;
+		top: 0;
+		left: 0;
+		z-index: 100;
+		position: fixed;
+		background: #fff;
+	}
+	.noData{
+		width: 100%;
+		text-align: center;
+		padding: 30cpx 0;
+		color: #333;
+	}
+</style>
+<script cml-type="json">
+	{
+		"base": {
+			"usingComponents": {
+				"c-loading": "cml-ui/components/c-loading/c-loading",
+				"policylistitem": "../../components/policyList",
+				"nav": "../../components/nav"
+			},
+			"navigationBarTitleText": "保单管理",
+			"backgroundTextStyle": "dark",
+			"backgroundColor": "#fff",
+			"defaultTitle": "家庭保单智能管家"
+		}
+	}
+</script>

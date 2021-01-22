@@ -1,0 +1,193 @@
+<template>
+	<page title="保单邀请" height="100%">
+	<view class="poilcy_mask" c-if="{{loading}}" style="height:{{totalHeight}}cpx;"></view>
+		<view class="body-container invitation">
+			<image src="https://bx.wts9999.net/m/lib/images/invitation-bac.png" alt="" class="bac"></image>
+			<view class="top">
+				<image src="{{img || 'https://bx.wts9999.net/m/lib/images/person-center-03.jpg'}}" alt="" class="auther"></image>
+				<view class="name">{{name}}</view>
+				<view class="text">邀请你加入Ta的共享保单</view>
+				<view class="text">一起管理保单</view>
+			</view>
+			<form report-submit="true" report-submit-timeout="10000" onSubmit="submits" bindsubmit="submits">
+				<origin-button form-type="submit" class="btn" id="receive">接受邀请</origin-button>
+			</form>
+		</view>
+	</page>
+</template>
+
+<script>
+	import cml from 'chameleon-api';
+	import store from '../../store/';
+	import notice from '../../api/notice.js';
+	import http from '../../api/http.js';
+	import tools from '../../api/tools.js';
+
+	const TIMERSIZE = 120; // 倒计时总时长 秒
+
+	class invitation {
+		data = {
+			name: "",
+			checkKey: "",
+			img: "",
+			inviteId: "",
+			loading:false,
+			user:{},
+			totalHeight:-1,
+			testName: ""
+		}
+		methods = {
+			submits(event) {
+				var vm = this;
+				console.log(event);
+				if(this.user.id == this.inviteId)return notice.alert("您已加入家庭保单管理，不能重复加入哦！");
+				http({
+						name: 'acceptPolicyShare',
+						data: {
+							inviteId: this.inviteId,
+							checkKey: this.checkKey
+						}
+					})
+					.then(function(data) {
+						if(data.httpCode!=200) return;
+						if(data.data.code == 1) {
+							return cml.redirectTo({
+								path: "/pages/policyList/policyList"
+							});
+						}
+						cml.alert({
+							message: "加入成功,进去我的保单",
+							confirmTitle: "我知道了"
+						}).then(function(value) {
+							cml.redirectTo({
+								path: "/pages/policyList/policyList",
+							});
+						})
+					})
+					.catch(error => {
+						console.log(error);
+					});
+			},
+		}
+
+		beforeCreate(query) {
+			this.testName = query;
+			this.loading = true;
+			notice.showloading("加载中...");
+			tools.login("/pages/invitation/invitation",query)
+				.then(res=>{
+					if(!res.id){
+						return cml.redirectTo ({
+							path: "/pages/authorizationPage/authorizationPage",
+							query:{
+								path:"/pages/invitation/invitation"
+							}
+						});
+					}
+					setTimeout(() => {
+						this.loading = false;
+						notice.hideloading();
+					}, 200);
+					let obj = {};
+					try{
+						 obj =  JSON.parse(unescape(unescape(unescape(query.query))));
+					}
+					catch(e){
+						obj = query.query;
+					}
+					
+					//obj = JSON.parse(decodeURIComponent(query));
+					this.name = obj.name;
+					this.checkKey = obj.checkKey;
+					this.img = obj.img;
+					this.inviteId = obj.inviteId;
+					this.user = store.state.WTS_USER_XCX;
+				})
+				.catch(err=>{
+					this.loading = false;
+					notice.hideloading();
+					console.log(err);
+				})
+
+
+				cml.getSystemInfo().then((info) => {
+				if(info.env == 'weex') {
+					this.totalHeight =  Number(info.viewportHeight)  - 88;
+				} else {
+					this.totalHeight =  Number(info.viewportHeight);
+				}
+			})
+		}
+
+		mounted() {
+			
+		}
+	}
+	export default new invitation();
+</script>
+<style lang="less" scoped>
+.poilcy_mask{
+		width: 100%;
+		height: 100%;
+		top: 0;
+		left: 0;
+		z-index: 100;
+		position: fixed;
+		background: #fff;
+	}
+	.invitation {
+		height: 100%;
+		position: relative;
+		background-color: #fff;
+		.bac {
+			position: fixed;
+			bottom: 0;
+			left: 50%;
+			margin-left: -375cpx;
+			width: 750cpx;
+			height: 1195cpx;
+		}
+		.top {
+			padding-top: 100cpx;
+			position: relative;
+			z-index: 99;
+			.auther {
+				display: block;
+				width: 175cpx;
+				height: 175cpx;
+				border-radius: 50%;
+				border: 3px solid #0084ff;
+				margin: 0 auto 5px;
+			}
+			.name {
+				font-size: 30cpx;
+				line-height: 1.5;
+				margin-bottom: 10px;
+				text-align: center;
+				color: #000;
+			}
+			.text {
+				color: #0084ff;
+				text-align: center;
+				font-size: 36cpx;
+				line-height: 1.6;
+			}
+		}
+		.btn {
+			position: fixed;
+			bottom: 50cpx;
+			left: 50%;
+			width: 700cpx;
+			margin-left: -350cpx;
+			font-size: 34cpx;
+			line-height: 90cpx;
+			text-align: center;
+			color: #fff;
+			background: #0084ff;
+			border-radius: 90cpx;
+		}
+	}
+</style>
+<script cml-type="json">
+	{ "base":{ "usingComponents": {}, "navigationBarTitleText": "保单邀请", "backgroundTextStyle": "dark", "backgroundColor": "#fff" } }
+</script>

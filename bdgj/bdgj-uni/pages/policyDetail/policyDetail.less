@@ -1,0 +1,262 @@
+@import '../../less/main';
+
+.policyDetail{
+    background: #f5f5f5;
+  .policyStatus{
+    position: relative;
+    padding: 40rpx 40rpx 40rpx 150rpx;
+    min-height: 170rpx;
+	box-sizing: border-box;
+
+    .iconfont{
+      position: absolute;
+      left: 40rpx;
+      top: 40rpx;
+      font-size: 90rpx;
+      line-height: 90rpx;
+      color: #0382ff;
+      width: 90rpx;
+      height: 90rpx;
+      .icon-status{
+        width: 100%;
+        height: 100%;
+      }
+    }
+
+    .icon-baocun{
+      left: 20rpx;
+    }
+    
+    .icon-shijian{
+      top: 30rpx;
+    }
+    .name{
+      font-size: 38rpx;
+      line-height: 1.4;
+      color: #0382ff;
+      font-weight: 900;
+      &.hei-90{
+        line-height: 90rpx;
+      }
+    }
+    .text{
+      font-size: 30rpx;
+      line-height: 1.5;
+      color: #666;
+    }
+  }
+  .listInfoBox {
+    font-size: 32rpx;
+  
+    .policy-04-list {
+      background-color: #fff;
+      margin-bottom: 20rpx;
+      .dlBox {
+        z-index: 3;
+        .dlheader {
+          height: 90rpx;
+          line-height: 90rpx;
+          position: relative;
+          padding: 0 30rpx;
+          
+          &:before{
+            content: '';
+            display: inline-block;
+            position: absolute;
+            left: 30rpx;
+            top: 50%;
+            margin-top: -6rpx;
+            width: 12rpx;
+            height: 12rpx;
+            border-radius: 10rpx;
+            background-color:#0382ff;
+          }
+          .item-title {
+            font-size: 38rpx;
+            padding-left: 30rpx;
+            font-weight: 800;
+          }
+        }
+        .dd {
+          position: relative;
+          padding: 10px 30rpx;
+          box-sizing: border-box;
+          border-top: 1px dashed #ddd;
+          .img-compangs{
+            width: 210rpx;
+            position: absolute;
+            right: 10px;
+            bottom: 70rpx;
+            height: 100rpx;
+            z-index: 10;
+			opacity: 0.4;
+          }
+		    .insurederNum{
+		              position: relative;
+		              left: -30rpx;
+		              top: -24rpx;
+		              color: @baseColor;
+		              .spans{
+		                position: relative;
+		                width: 98rpx;
+		                height: 40rpx;
+		                z-index: 10;
+		                font-weight: bold;
+		                font-size: 24rpx;
+		                line-height: 40rpx;
+		                top: 8px;
+		                text-indent: 35rpx;
+		                display: block;
+		                background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGIAAAAnCAYAAAD0MJ3RAAAACXBIWXMAAAsSAAALEgHS3X78AAAByElEQVRoge2bv07CUBSHfzUMDiaQOOgGcdHEAXgDRseOjvgG7h3ExO59AxndZHT0EWAw0cXApoOJTRwcTK45/AkgJdwW2lPi71va0Juclq/n9t72XAc3xoCsSwigC+ARQMd4w/1YUEQ6DAC0AQTGw6dNhJ0tvMhtoAzgCkDf8XFpc77MiGzoAXCNh/6yaMyIbKjKM8Tx4S6LRhHZUQRw7/hoRkWkiOy5jcoMitCh7fiozEamCB2km+rMRqYIPaqzQ1uK0KXl+CiBItSRLmqYFRShz3A4y5l1PqgX4p7GbgGoHYy2wvcP0H0fbUli3FgiTvYB93gqYUKjDHRegOcPmkhIw/oZUSkC56eLEjDOEjl2uKd+QdtKzVqE3PWrODv67/9nYor2GVHaTBsSDYevOYEicoK1iL7Fl1ebNiQaaxEPr5tpQyIJrUW8fQF3T9ETN/lNjkkbkohu7FccnFmnwjXfNeWDOkdN+gykMpAi9JGKQM4jlJGa2QAUoU5rUhtLEXr0jDfKBlCEGtIlzRWZUYQOzb8FyRSRPRfGmy8uE2J/syaJCceZsCCBIrJj5foIikiXcDxEDVZFoYh0iL2GjiI2w3qrSgH8AgardzGh01bCAAAAAElFTkSuQmCC') no-repeat left center;
+		                background-size: 100% 100%;
+		                color: #fff;
+		                
+		              }
+		            }
+
+          .ulListBox {
+            position: relative;
+            z-index: 11;
+			
+            view {
+              flex-direction: row;
+              position: relative;
+              word-break: break-all;
+              margin: 0 0 10rpx;
+              line-height: 40rpx;
+			  font-size: 32rpx;
+              .btn {
+                display: inline-block;
+                text-align: center;
+                border: 1px solid #ff6f07;
+                background: #fff;
+                color: #ff6f07;
+                margin: 0 3rpx;
+                border-radius: 9rpx;
+                font-size: 28rpx;
+                height: 60rpx;
+                line-height: 58rpx;
+                padding: 0 8rpx;
+              }
+            }
+            .policyName{
+              max-width: 500rpx;
+            }
+            .break{
+                padding: 20rpx;
+            }
+  
+            .lastList {
+              margin: 10rpx 0;
+              padding-right: 20rpx;
+              text-align: right;
+              min-height: 0;
+            }
+          }
+        }
+      }
+    }
+    
+  }
+  .block{
+      width: 100%;
+      height: 100rpx;
+  }
+  .bottom-btns{
+      position: fixed;
+      z-index: 12;
+      bottom: 0;
+      left: 0;
+      padding: 20rpx;
+      width: 100%;
+      background-color: #fff;
+      border-top: 1px dashed #ddd;
+      display: -webkit-flex; /* Safari */
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      flex-direction: row;
+	  box-sizing: border-box;
+      .btn{
+		margin: 0 8rpx;
+        text-align: center;
+        background-color: #0382ff;
+        height: 60rpx;
+        line-height: 60rpx;
+        color: #fff;
+        border-radius: 10rpx;
+        flex: 1;
+      }
+      .btn-disable{
+        background-color: #bdbdbd;
+      }
+  }
+  .checkPolicy_list_mask {
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    position: fixed;
+    z-index: 100;
+    top: 0;
+    left: 0;
+  }
+  
+  .checkPolicy_list {
+    width: 680rpx;
+    background: #fff;
+    position: fixed;
+    top: 30%;
+    left: 50%;
+    margin-left: -340rpx;
+    text-align: center;
+    color: #000;
+    z-index: 101;
+  
+    .checkPolicy_list_title {
+      font-size: 35rpx;
+      font-weight: 900;
+      line-height: 90rpx;
+      border-bottom: 1px solid #ccc;
+    }
+  
+    .checkPolicy_list_item {
+      padding: 0 20rpx;
+  
+      .item {
+        line-height: 90rpx;
+        border-bottom: 1px solid #ccc;
+  
+        &:nth-last-of-type(1) {
+          border: none;
+        }
+      }
+    }
+  }
+  .prompt{
+    padding: 5px 30rpx;
+    border-top: 1px dashed #ddd;
+    .list-form{
+        font-size: 34rpx;
+        line-height: 1.8;
+        text-align: center;
+    }
+    .left-yuan{
+        position: relative;
+        font-size: 30rpx;
+        line-height: 25rpx;
+        color: #000;
+        padding-left: 10rpx;
+        &::before{
+            content: '';
+            width: 5rpx;
+            height: 5rpx;
+            border-radius: 50%;
+            background-color: #ff6f07;
+            position: absolute;
+            left: 0;
+            top: 50%;
+            margin-top: -2rpx;
+        }
+    }
+}
+}

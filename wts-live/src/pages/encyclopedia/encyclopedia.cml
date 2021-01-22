@@ -1,0 +1,107 @@
+<template>
+  <view class="apps">
+    <view class="list-box" c-for="{{encyclopedia}}" c-for-item="item">
+      <text c-if="{{item.keyWords.length}}" class="list-box-title">{{item.text}}</text>
+      <view class="item-box">
+        <button btn-style="display: inline-block;border-radius: 26cpx;width: 210cpx;background: #f5f5f5;height: 52cpx;" text-style="color: #333333;font-size: 28cpx;line-height: 52cpx;font-family: MicrosoftYaHei;" class="list-box-item" text="{{words}}" c-for="{{item.keyWords}}" c-for-item="words" c-bind:tap="encyclopediaDetail(words)"></button>
+      </view>
+    </view>
+    <block c-if="{{showWrapper}}">
+      <view class="{{showWrapper?'encyclopedia-wrapper active':'encyclopedia-wrapper'}}" data-close="true" c-bind:tap="closeWrapper">
+        <view class="wrapper-box">
+          <view class="wrapper-title"><text>{{encyclopediaKeywords}}</text><image src="{{closeImg}}" c-bind:tap="closeWrapper" data-close="true"></image></view>
+          <my-richtext class="wrapper-content" textMsg="{{encyclopediaDetailMsg}}"></my-richtext>
+        </view>
+      </view>
+    </block>
+  </view>
+</template>
+
+<script>
+
+import api from '../../utils/api'
+import lifeCycle from '../../components/lifeCycle/lifeCycle.interface'
+import App from '../../app/app'
+
+class encyclopedia   {
+
+  data = {
+    encyclopedia: [],
+    encyclopediaKeywords: '',
+    encyclopediaDetailMsg: '',
+    showWrapper: false,
+    closeImg: require("../../assets/images/close-wrapper.png")
+  }
+
+  computed = {
+  }
+
+  watch  = {
+  }
+
+  methods = {
+    encyclopediaDetail(words) {
+      var _that= this;
+      _that.encyclopediaKeywords= words;
+      api.getEncyclopediaDetail({
+        keyWord: words
+      },function(data) {
+        _that.encyclopediaDetailMsg= data.data.data;
+        _that.showWrapper= true;
+      })
+    },
+    closeWrapper(e) {
+      if(e.target.dataset.close) this.showWrapper= false;
+    },
+    ...lifeCycle
+  }
+  beforeCreate(query) {
+  }
+
+  created(query) {
+    var _that= this;
+    api.getEncyclopedia(function(data) {
+      _that.encyclopedia= data.data.data;
+    })
+  }
+
+  beforeMount(query) {
+  }
+
+  onShow() {
+  }
+
+  mounted() {
+  }
+
+  onHide() {
+  }
+
+  beforeDestroy() {
+  }
+
+  destroyed() {
+  }
+}
+
+export default new encyclopedia();
+</script>
+
+<style>
+  @import './encyclopedia.less';
+</style>
+
+<script cml-type="json">
+{
+  "base": {
+    "usingComponents": {
+      "my-richtext": "/src/components/myRichtext/myRichtext"
+    }
+  },
+  "wx": {
+    "navigationBarTitleText": "梧桐树保险课堂-cml",
+    "backgroundTextStyle": "dark",
+    "backgroundColor": "#E2E2E2"
+  }
+}
+</script>

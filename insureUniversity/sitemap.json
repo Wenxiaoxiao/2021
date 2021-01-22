@@ -1,0 +1,30 @@
+{
+	"rules":[{
+		"action": "allow",
+		"page": "pages/glcpDetail/glcpDetail",
+		"params": ["id", "articleType"],
+		"matching": "exact"
+	},{
+		"action": "allow",
+		"page": "pages/qaDetail/qaDetail",
+		"params": ["id"],
+		"matching": "exact"
+	},{
+		"action": "allow",
+		"page": "pages/article/article",
+		"params": ["type","code"],
+		"matching": "exact"
+	},{
+		"action": "allow",
+		"page": "pages/qanda/qanda"
+	},{
+		"action": "allow",
+		"page": "pages/live/live"
+	},{
+		"action": "allow",
+		"page": "pages/learn/learn"
+	},{
+		"action": "allow",
+		"page": "pages/encyclopedia/encyclopedia"
+	}]
+}

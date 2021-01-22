@@ -1,0 +1,296 @@
+
+.live{
+    background: #fff;
+    height: 100vh;
+    font-family: SourceHanSansCN-Regular;
+
+    //回复的弹窗相关
+    .maskInfo{
+      width: 100%;
+      height: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 100;
+      background: rgba(0,0,0,0.2);
+      &.active{
+        z-index: -100;
+      }
+      .maskContent{
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background: #fff;
+        border-radius: 20rpx 20rpx 0 0;
+        .mask_title{
+          width: 100%;
+          height: 100rpx;
+          font-size: 34rpx;
+          text-align: center;
+          line-height: 100rpx;
+          position: relative;
+          .mask_close{
+            width: 100rpx;
+            height: 100rpx;
+            line-height: 100rpx;
+            text-align: center;
+            position: absolute;
+            right: 0;
+            top: 0;
+            font-size: 50rpx;
+            color: #666;
+          }
+        }
+        .my-input {
+          height: 100rpx;
+      }
+      }
+    }
+
+  .newMessage{
+    position: fixed;
+    right: 30rpx;
+    bottom: 130rpx;
+    z-index: 10;
+    .newMessageContent{
+      display: flex;
+      flex-direction: row-reverse;
+    }
+    .item{
+      background: #999999;
+      padding: 10rpx;
+      border-radius: 15rpx;
+      color: #fff;
+      display: flex;
+      flex-direction: row-reverse;
+      margin-top: 10rpx;
+      max-width: 500rpx;
+      image{
+        width: 40rpx;
+        height: 40rpx;
+        border-radius: 20rpx;
+        margin-left: 10rpx;
+
+      }
+    }
+  }
+    
+  .chat-inner{
+    padding: 10rpx;
+    padding-bottom: 0;
+    box-sizing: border-box;
+    background: #f9f9f9;
+    .chat-tpl-01{
+      width: 100%;
+      padding: 18rpx;
+      padding-top: 0;
+      &.active{
+        .messagecontent{
+          flex-direction: row-reverse !important;
+          .top{
+            flex-direction: row-reverse !important;
+          }
+        }
+      }
+      .time{
+        width: 100%;
+        text-align: center;
+        color: #999;
+        font-size: 24rpx;
+      }
+      .messagecontent{
+        display: flex;
+        flex-direction: row;
+        .left{
+          image{
+            width: 60rpx;
+            height: 60rpx;
+            border-radius: 50%;
+          }
+        }
+        .right{
+          margin-right:18rpx;
+          .top{
+            display: flex;
+            flex-direction: row;
+          }
+          .labels{
+            font-size: 20rpx;
+            line-height: 34rpx;
+            padding: 0 10rpx;
+            color: #fff;
+            background: #9095b5;
+            border-radius: 5rpx;
+            width: auto;
+            display: inline-block;
+            margin-left: 20rpx;
+          }
+          .username{
+            font-size: 26rpx;
+            color: #000;
+            line-height: 34rpx;
+            margin-left: 10rpx;
+          }
+          .usermessage{
+            word-wrap:break-word;
+            margin-top: 18rpx;
+            max-width: 550rpx;
+            padding: 18rpx;
+            background: #fff;
+            border-radius: 10rpx;
+            font-size: 28rpx;
+            letter-spacing: 1rpx;
+            .citeSender{
+              width: 100%;
+              color:#ccc;
+              padding-bottom: 18rpx;
+              margin-bottom: 18rpx;
+              border-bottom: 1rpx dashed #ccc;
+            }
+            image{
+              width: 400rpx;
+            }
+          }
+        }
+      }
+    }
+}
+    .class-info {
+      background: #Fff;
+      .banner-img{
+        margin-bottom: 40rpx;
+        width: 100%;
+        height: 422rpx;
+      }
+      .class-title {
+        padding: 0 30rpx 0;
+        font-size: 34rpx;
+        line-height: 34rpx;
+      }
+      .class-time {
+        padding: 0 30rpx 30rpx;
+        margin-top: 20rpx;
+        font-size: 26rpx;
+        line-height: 26rpx;
+      }
+    }
+    .class-detail-content{
+      background: #f2f2f2;
+      padding-top: 16rpx;
+    }
+    .class-detail {
+      padding: 25rpx 0 0;
+      background: #fff;
+      .sub-title {
+        margin: 0 30rpx;
+        padding-left: 10rpx;
+        margin-bottom: 20rpx;
+        border-left: 6rpx solid #0084ff;
+        font-size: 30rpx;
+        height: 30rpx;
+        line-height: 30rpx;
+      }
+      .class-detail-msg {
+        margin: 0 30rpx;
+        padding: 30rpx 30rpx 20rpx;
+        box-shadow: 0rpx 0rpx 10rpx 0rpx #dddddd;
+        border-radius: 8rpx;
+      }
+      .class-detail-desc {
+        margin-top: 20rpx;
+      }
+      .live-btn {
+        margin: 50rpx 30rpx 20rpx;
+      }
+      .btn-signed {
+          border-radius: 8rpx;
+          background: #e1e1e1;
+          font-size:34rpx;
+          color: #333333;
+      }
+      .btn-order {
+        width: 690rpx;
+        background: #ffa200;
+        border-radius: 8rpx;
+        font-size:34rpx;
+        border: none;
+        text-align: center;
+        color: #fff;
+      }
+    }
+    .details-box{
+      background: #91a2ff;
+      box-sizing: border-box;
+  
+      .ct-box-01 image{
+        width: 100%;
+        height: 1600rpx;
+        object-fit: cover;
+      }
+  
+      .ct-box-02 image{
+        width: 100%;
+        height: 1800rpx;
+        object-fit: cover;
+      }
+  
+      .ct-box-03 image{
+        width: 100%;
+        height: 1600rpx;
+        object-fit: cover;
+      }
+    }
+  
+    
+    .videoLayer{
+      height: 422rpx;
+  
+      .mylive {
+          height: 422rpx;
+          width:100%;
+      }
+      video,
+      image {
+          width: 100%;
+          height: 422rpx;
+          position: relative;
+      }
+    }
+    .chat-box {
+      .send-chat {
+        position: fixed;
+        padding: 16rpx 30rpx 16rpx;
+        height: 100rpx;
+        background: #fff;
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        bottom: 0;
+        border-top: 1rpx solid #e5e5e5;
+      
+        .send-chat-input {
+          padding-left: 30rpx;
+          flex: 1;
+          height: 72rpx;
+          line-height: 72rpx;
+          background: #f9f9f9;
+          border-radius: 36rpx;
+          color: #aaaaaa;
+        }
+        .send-chat-btn{
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          width: 140rpx;
+          image{
+            width: 46rpx;
+            height: 46rpx;
+            margin-left: 20rpx;
+          }
+        }
+      }
+  }
+  }
+  

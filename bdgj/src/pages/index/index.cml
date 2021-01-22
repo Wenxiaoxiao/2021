@@ -1,0 +1,159 @@
+<template>
+  <page title="首页">
+  <view class='container' style="height:{{scrollHeight+'cpx'}}">
+    <scroller
+      bottom-offset="10"
+      height="{{scrollHeight}}"
+      class="columnList"
+    >
+        <view
+          class="columnLi"
+          c-for="{{columnName}}"
+          c-catch:click="changeColumn(item.code)"
+          data-idx="{{index}}"
+          
+        >
+            <text
+            class="column-text {{showCode==item.code?'columnLi-active':''}}"
+            >{{item.name}}</text>
+        </view>
+    </scroller>
+    <list
+      bottom-offset="100cpx"
+      c-bind:scrolltobottom="onBottom"
+      height="{{scrollHeight}}"
+      class="productList"
+    >
+        <cell
+          c-for="{{productLists}}"
+          data-idx="{{index}}"
+          class="productLi"
+        >
+            <text class="product-title">{{item.insuranceTitle}}</text>
+            <text class="product-desc">{{item.designIdea}}</text>
+            <view class='justify-between'>
+              <view class='text-left fl'>
+                <text class='price'>{{item.productPrice}}</text>
+                <text class='price-desc'>元</text>
+              </view>
+              <text class='product-button'>查看详情</text>
+            </view>
+        </cell>
+        <cell c-if="{{!canScroll}}">
+          <text class='not-more'>没有更多数据了...</text>
+        </cell>
+    </list>
+  </view>
+  </page>
+</template>
+
+<script>
+var vm;
+  import cml from 'chameleon-api';
+  import tools from '../../api/tools.js';
+  import notice from '../../api/notice.js';
+  import http from '../../api/http.js';
+  class Index {
+    data = {
+      scrollHeight: 1100,
+      showCode:'06',//默认显示栏目
+      pageNum:1,//页码
+      pageSize:20,//每页数量
+      columnName:null,//全部列名称
+      productLists:null,//产品列表
+      canScroll:false,//能否下拉
+    }
+    methods = {
+      changeColumn(id){
+        //切换左侧导航
+        this.showCode=id;
+        this.pageNum=1;
+        this.getColumns();
+      },
+      getColumns(type){
+        //获取列表数据
+        http({
+          name:'product.list',
+          data: {
+            //产品code
+            code: this.showCode,
+            //当前页数
+            pageNum: this.pageNum,
+            //当前条数
+            pageSize: this.pageSize,
+            pageType: "1"
+          }
+        }).then(function(r,e){
+          console.log(r);
+          if(type==1){
+            vm.getColumnName(r.data);
+          }
+          let list;
+          // 获取当前栏目数据
+          for(var k in r.data){
+            if(r.data[k].code==vm.showCode){
+              list=r.data[k].productList;
+              break;
+            }
+          }
+          vm.productLists =vm.pageNum==1?list:vm.productLists.concat(list);
+          vm.canScroll=list.length<vm.pageSize?false:true;
+          console.log(notice.alert);
+          
+          
+        })
+      },
+      getColumnName(data){
+        var names=[];
+        for(var k in data){
+          names.push({
+            name:data[k].name,
+            code:data[k].code
+          })
+        }
+        vm.columnName=names;
+      },
+      onBottom(){
+        //上拉加载
+        if(!vm.canScroll)return;
+        vm.canScroll=false;
+        this.pageNum++;
+        this.getColumns();
+      }
+    }
+
+    created() {
+      vm=this;
+      this.getColumns(1);
+      
+    }
+
+    mounted() {
+      cml.getSystemInfo().then((info) => {
+          vm.scrollHeight=Number(info.viewportHeight);
+      })
+    }
+  }
+  export default new Index();
+</script>
+<style lang="less" scoped>
+@import './index.less';
+.apps{
+  background: #eee;
+  overflow: auto;
+}
+.footer-zhanwei {
+    width: 750cpx;
+    background: #fff;
+    border-top: 1cpx solid #E6E6E6;
+  }
+</style>
+<script cml-type="json">
+  {
+    "base":{
+      "navigationBarTitleText": "首页",
+      "backgroundTextStyle": "dark",
+      "backgroundColor": "#fff"
+    }
+  }
+</script>

@@ -1,0 +1,130 @@
+.views {
+  height: 100%;
+  background: #eee;
+}
+.views .title_box {
+  display: flex;
+  border-bottom: 2rpx solid #ddd;
+  flex-direction: row;
+  background: #eee;
+}
+.views .title_box .title {
+  width: 50%;
+  height: 86rpx;
+  line-height: 86rpx;
+  color: #000;
+  font-size: 32rpx;
+  text-align: center;
+  border-bottom: 4rpx solid transparent;
+}
+.views .title_box .title.active {
+  color: #4580f6;
+  background: #fff;
+  border-bottom: 4rpx solid #4580f6;
+}
+.views .none .none_face {
+  display: block;
+  margin: 220rpx auto 0;
+  width: 175rpx;
+  height: 175rpx;
+}
+.views .none .none_text {
+  margin-top: 38rpx;
+  font-family: PingFang-SC-Regular;
+  font-size: 28rpx;
+  line-height: 28rpx;
+  letter-spacing: 0rpx;
+  color: #666666;
+  text-align: center;
+}
+.views .none .tips {
+  position: fixed;
+  bottom: 210rpx;
+  margin-left: 35rpx;
+  font-family: PingFang-SC-Regular;
+  line-height: 50rpx;
+  font-size: 28rpx;
+  letter-spacing: 0rpx;
+  color: #666;
+}
+.views .none .fixed_icon {
+  position: fixed;
+  right: 26rpx;
+  bottom: 325rpx;
+  width: 110rpx;
+  height: 110rpx;
+}
+.views .item {
+  background: #fff;
+  margin-bottom: 16rpx;
+}
+.views .item .item_title {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 30rpx 0 30rpx 28rpx;
+  border-bottom: 2rpx dashed #f3f3f3;
+  font-size: 30rpx;
+}
+.views .item .item_title .a1 {
+  width: 32rpx;
+  height: 32rpx;
+  vertical-align: top;
+  box-sizing: border-box;
+}
+.views .item .item_title .a2 {
+  margin-left: 14rpx;
+  margin-right: 82rpx;
+  color: #000;
+  letter-spacing: 0;
+  line-height: 32rpx;
+}
+.views .item .item_title .a3 {
+  color: #307aff;
+  line-height: 32rpx;
+}
+.views .item .item_content {
+  padding: 20rpx 28rpx;
+}
+.views .item .item_content .b1 {
+  font-family: SourceHanSansCN-Regular;
+  font-size: 32rpx;
+  line-height: 50rpx;
+  letter-spacing: 0;
+  color: #333333;
+}
+.views .item .claim-return {
+  border-top: 2rpx dashed #eee;
+  padding: 20rpx 30rpx;
+  font-size: 30rpx;
+}
+.views .item .claim-return .name {
+  color: #0084ff;
+  flex-direction: row;
+}
+.views .item .claim-return .name .reason {
+  width: 500rpx;
+  color: #333;
+  word-break: break-all;
+}
+.views #emptyDom {
+  margin-bottom: 20rpx;
+  flex-direction: row;
+  justify-content: center;
+  color: #888;
+}
+.views #emptyDom .a1 {
+  width: 30rpx;
+  height: 30rpx;
+}
+.views #emptyDom .a2 {
+  margin-left: 16rpx;
+  height: 30rpx;
+  line-height: 30rpx;
+  font-size: 26rpx;
+}
+.views #emptyDom .a3 {
+  height: 30rpx;
+  line-height: 30rpx;
+  font-size: 26rpx;
+}

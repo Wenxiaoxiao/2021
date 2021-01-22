@@ -1,0 +1,156 @@
+@import '../../less/main';
+.market-comment{
+    .middle{
+        background-color: #fff;
+        border-top: 1px solid #ececec;
+        padding: 15cpx 30cpx;
+        height: 80cpx;
+        font-size: 30cpx;
+        line-height: 50cpx;
+        flex-direction: row;
+        .xxs{
+            display: inline-block;
+            position: relative;
+            padding-top:3cpx;
+        }
+        .xx{
+            display: inline-block;
+            width: 40cpx;
+            height: 40cpx;
+            margin-left: 15cpx;
+            background: url("https://bx.wts999.com/m/xcxStatic/xx.png") no-repeat;
+            background-size: 100% 100%;
+            &.active{
+                background: url("https://bx.wts999.com/m/xcxStatic/xx-active.png") no-repeat;
+                background-size: 100% 100%;
+            }
+        }
+    }
+    #send{
+        width: 100%;
+        margin-top: 100cpx;
+        height: 100cpx;
+        line-height: 100cpx;
+        text-align: center;
+        font-size: 40cpx;
+        background-color: #0084ff;
+        color: #fff;
+    }
+    .titles{
+        font-size: 36cpx;
+        line-height: 90cpx;
+        padding-left: 30cpx;
+        background-color: #fff;
+        border-bottom: 1px solid #ececec;
+    }
+    .getMore{
+        width: 100%;
+        display: block;
+        background-color: #fff;
+        text-align: center;
+        line-height: 80cpx;
+        font-size: 30cpx;
+        color: #666;
+        border-top: 1px solid #ececec;
+        margin-bottom: 10cpx;
+    }
+    .commentList{
+        .commentLi{
+            background-color: #fff;
+            width: 100%;
+            padding: 15cpx 30cpx;
+            font-size: 30cpx;
+            margin-bottom: 20cpx;
+            &:last-child{
+                margin-bottom: 0;
+            }
+            .head{
+                position: relative;
+                padding-left: 100cpx;
+            }
+            .headImg{
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 80cpx;
+                height: 80cpx;
+                border-radius:50%;
+            }
+            .name{
+                font-size: 30cpx;
+                line-height: 40cpx;
+            }
+            .timeAndLevel{
+                font-size: 26cpx;
+                line-height: 35cpx;
+                .time{
+                    padding-right: 10cpx;
+                    position: relative;
+                    top: 3px;
+                    border-right: 1px solid #ececec;
+                    padding-right: 8px;
+                    margin-right: 5px;
+                    color: #666;
+                }
+                .xx{
+                    line-height: 34cpx;
+                    margin-right: 5px;
+                }
+            }
+            .content{
+                font-size: 32cpx;
+                margin-top: 10px;
+                word-break:break-all;
+            }
+        }
+        .xx{
+            display: inline-block;
+            margin-right: 5px;
+            &:after{
+                content: "\e6c4";
+                font-family: "iconfont";
+                display: inline-block;
+                font-size: 28cpx;
+                color: #0084ff;
+                vertical-align: middle;
+            }
+        }
+    }
+    .allComments{
+        font-size: 32cpx;
+        background-color: #fff;
+        line-height: 90cpx;
+        border-bottom: 1px solid #ececec;
+        padding-left: 30cpx;
+    }
+    .productsLevel{
+        background-color: #fff;
+        margin-bottom: 20cpx;
+        padding: 15cpx 30cpx;
+        .p1{
+            font-size: 38cpx;
+            line-height: 60cpx;
+            margin-bottom: 5px;
+        }
+        .p2 {
+            font-size: 30cpx;
+            line-height: 45cpx;
+        }
+        .xx{
+            position: relative;
+            top: -2px;
+        }
+
+    }
+    .notMore{
+        display: none;
+        width: 100%;
+        font-size: 30cpx;
+        color: #666;
+        line-height: 90cpx;
+        text-align: center;
+        &.active{
+            display: block;
+        }
+    }
+}

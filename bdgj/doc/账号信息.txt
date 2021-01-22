@@ -1,0 +1,23 @@
+﻿��ͥ�������ܹܼ�    
+//保单管家相关测试 
+wutongshu0715@126.com  
+wuts0715
+
+
+appid: wx647f23f59d34653e
+AppSecret: ba9178bdf9d013207cae9eb7baf80cda
+
+
+//保单管家相关正式
+wutongshu9988@163.com 
+wuts0715
+appid: wx2f37768dbc17af85
+AppSecret: 01aa69173c9f8094682c5975c03c9632
+
+
+//蜡烛宝贝相关  
+账号：wutongshu7788@163.com  
+密码：wuts0715
+
+appid:wxcf6de2f6fc4c5fd7
+AppSecret：bad10308f674b89246e2dce0b80a2ced

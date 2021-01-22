@@ -1,0 +1,287 @@
+<template>
+  <view class="counselorPage">
+      <view class="{{inType == 1?'active counselor-bottom':'counselor-bottom'}}">
+          <view class="nav2-top">
+              <view class="{{inType == 1?'active column-tap fl':'column-tap fl'}}" c-bind:click="switchType(1)"><text class="a1">保险顾问</text></view>
+              <view class="{{inType == 2?'active column-tap fl':'column-tap fl'}}" c-bind:click="switchType(2)"><text class="a1">保险专家</text></view>
+          </view>
+          <view class="search" c-show="{{inType == 1}}">
+              <view class="search-chunk clearfix">
+                  <text class="iconfont icon-fangdajing fl"></text>
+                  <input class="search_ipt" c-model="{{searchName}}" cstyle="border:none;background:#eee;color:#aaa;height:60cpx;line-height:60cpx;width:600cpx;" placeholder="输入姓名、执业证号搜索顾问" id="searchWords" c-bind:input="searchInput"></input>
+                  <text class="iconfont icon-guanbi fr" c-bind:click="resultInit"></text>
+              </view>
+          </view>
+          <scroller c-if="{{showScroll}}" height="{{-1}}" c-bind:onscroll="toTopFn" scroll-top="{{scrollTop}}" bottom-offset="{{50}}" c-bind:scrolltobottom="onBottom" class="view-container">
+              <view class="teacher-box">
+                  <!-- 经纪人 -->
+                  <view class="teacher-list agent" c-show="{{inType == 1}}">
+                      <view c-for="{{personList}}" c-for-item="list" c-for-index="n" class="list-li">
+                          <view class="teacher-top">
+                              <view c-bind:click="urlTo('/pages/inExpert/inExpert',list.id,1)">
+                                  <image src="{{list.ico}}" class="t_pic"></image>
+                              </view>
+                              <view class="t_msg">
+                                  <view c-bind:click="urlTo('/pages/inExpert/inExpert',list.id,1)">
+                                      <view class="name">{{list.name}}</view>
+                                      <view class="des">{{list.desc}}</view>
+                                  </view>
+                                  <view class="nav2-teach-btn" id="{{list.id}}" c-bind:click="reversePop">预约</view>
+                              </view>
+                          </view> 
+                          <view class="teacher-bottom">
+                              <view class="p2 fl">
+                                  <text class="iconfont icon-dianzan"></text>好评率：<text style="font-size:28cpx;">{{list.favorableRate?list.favorableRate:100}}%</text>
+                              </view>
+                              <view c-bind:click="urlTo('/pages/inExpert/inExpert',list.id,1)" class="p3 fr">
+                                  详情<text class="iconfont icon-gengduo"></text>
+                              </view>
+                          </view>
+                      </view>
+                  </view>
+                  <!-- 保险专家/核保专家-->
+                  <view class="teacher-list in-expert" c-show="{{inType == 2}}">
+                      <view c-for="{{personList}}" c-for-item="list" c-for-index="n" class="list-li">
+                          <view class="list-box" c-bind:click="urlTo('/pages/unExpert/unExpert',list.id,2)">
+                              <image src="{{list.ico}}" class="t_pic"></image>
+                              <view class="t_msg">
+                                  <view class="name">{{list.name}}
+                                    <text class="tag">{{list.sign}}</text>
+                                  </view>
+                                  <view class="dest">{{list.desc}}</view>
+                                  <view class="detail fr">详情<text class="iconfont icon-gengduo"></text></view>
+                              </view>
+                          </view>
+                      </view>
+                  </view>
+                  <view id="emptyDom">
+                    <block c-if="{{hasMore}}">
+                        <image class="a1" src="{{loadingImg}}"></image>
+                        <text class="a2">加载中...</text>
+                    </block>
+                    <block c-else>
+                        <text class="a3">-- 暂无更多数据 --</text>
+                    </block>
+                  </view>
+              </view>   
+          </scroller>
+          <image class="toTop" c-show="{{toTop}}" src="{{imgSrc}}" c-bind:click="goTop"></image>
+      </view>
+      <!-- 预约弹窗 -->
+      <reverse-pop isLayerHide="{{isLayerHide}}" agentId="{{agentId}}" c-bind:hidePop="hidePop"></reverse-pop>
+  </view>
+</template>
+
+<script>
+
+	import debounce from 'lodash/debounce';
+	import cml from 'chameleon-api';
+    import http from '../../api/http.js';
+    import tools from '../../api/tools.js';
+
+class AppointAdviser   {
+
+  data = {
+      imgSrc: "https://bx.wts999.com/m/xcxStatic/bdgj/sq_go_top.png",
+      hasMore: true,
+      loadingImg: "https://bx.wts999.com/m/xcxStatic/bdgj/loading.gif",
+      toTop: false,
+      nowTop: 0,  // 当前滚动的高度
+      inType:1, //1 经纪人 2保险专家
+      personList:[],  //经纪人列表
+      isLayerHide:false,  //预约弹窗隐藏
+      agentId:'',
+      searchName:"",    //搜索内容
+      size: 20,      // 每页数据条数
+      currentPage: 1, //当前页
+      maxPage: 99,    // 最大页
+      scrollTop: 0,    // 滚动到的位置
+      showScroll: true, //重置scroll高度
+      timer: null   // 触底加载节流
+  }
+
+  computed = {
+  }
+
+  watch  = {
+  }
+
+  methods = {
+    // 获取数据
+    getData(inType) {
+        var ajax= "",
+            that= this;
+        if(this.inType == 1){ //经纪人查询
+            ajax= "Exe_agentsList";
+        }else if(this.inType == 2){ //保险专家
+            ajax= "Exe_expertsList";
+        }
+        http({
+            name: ajax,
+            data: {
+                pageSize: that.size,
+                pageNum: that.currentPage,
+                searchStr: that.searchName
+            }
+        }).then(function(res) {
+            that.showScroll= true;
+            that.maxPage= res.pages;
+            // 标签截取10个字
+            // res.data.map(function(item) {
+            //     if(item.sign>10) {
+            //     item.sign= item.sign.slice(0,10)+'...';
+            //     }
+            // })
+            if(that.maxPage== 0||that.currentPage== that.maxPage) {
+                that.hasMore= false;
+            }
+            // 分页就加载，否则重置
+            if(that.currentPage>1) {
+                that.personList= that.personList.concat(res.data);
+            }else {
+                that.personList= res.data;
+            }
+        }).catch(function(res) {
+            console.log(res)
+        })
+    },
+    /**
+     * 经纪人类型切换
+     * @param {*}type 当前切换类型
+     */
+    switchType(type){
+        var that= this;
+        if(this.inType == type) return false;
+        setTimeout(function() {
+            // 切换类型
+            that.inType = type;
+            // 重置状态
+            that.showScroll= false;
+            that.personList = [];
+            that.scrollTop = 0;
+            that.currentPage = 1;
+            that.hasMore= true;
+            that.searchName = "";
+            // 请求数据
+            that.getData(that.inType);
+        },100)
+    },
+    // 关键字搜索
+    searchInput: tools.debounce(function(e) {
+        this.currentPage= 1;
+        this.hasMore= true;
+        this.searchName= e[0].detail.value;
+        this.getData(this.inType);
+    },500),
+    // 滚动大于1000显示totop图标
+    toTopFn(e) {
+        this.nowTop= e.detail.scrollTop;
+        if(e.detail.scrollTop>1000) {
+            this.toTop= true;
+        }else {
+            this.toTop= false;
+        }
+    },
+    // 返回顶部
+    goTop() {
+        var that= this;
+        this.scrollTop= this.nowTop;
+        setTimeout(function(){
+            that.scrollTop= 0;
+        },200)
+    },
+    resultInit(){
+        if(tools.trim(this.searchName)=='') return false;
+        setTimeout(_=>{
+            this.resultHide = true;
+            this.searchName = "";
+            this.personList = [];
+            this.scrollTop = 0;
+            this.getData(this.inType);
+        },100);
+    },
+    urlTo(url,id,inType) {
+        cml.navigateTo({
+            path: url,
+            query: {
+                agentId: id.toString(),
+                inType: inType
+            }
+        })
+    },
+    // 滚动到底部
+    onBottom(e) {
+        if(this.timer) return false;
+        var that= this;
+        // 最大页就不加载
+        if(that.currentPage==that.maxPage) {
+            this.hasMore= false;
+            return false;
+        }
+        that.currentPage++;
+        that.getData(that.inType);
+        // 1s只触发一次加载
+        this.timer= setTimeout(function() {
+            clearTimeout(that.timer);
+            that.timer= null;
+        }, 200);
+    },
+    // 预约
+    reversePop(e) {
+        this.isLayerHide= true;
+        this.agentId= e.target.id.toString();
+    },
+    // 隐藏预约弹窗
+    hidePop() {
+        console.log("hidepop")
+        this.isLayerHide= false;
+    }
+  }
+
+  beforeCreate(query) {
+    this.getData(this.inType);
+  }
+
+  created(query) {
+  }
+
+  beforeMount(query) {
+  }
+
+  onShow() {
+  }
+
+  mounted() {
+  }
+
+  onHide() {
+  }
+
+  beforeDestroy() {
+  }
+
+  destroyed() {
+  }
+}
+
+export default new AppointAdviser();
+</script>
+
+<style>
+  @import './appointAdviser.less';
+</style>
+
+<script cml-type="json">
+{
+  "base": {
+    "usingComponents": {
+        "reverse-pop": "/src/pages/reversePop/reversePop"
+    }
+  },
+  "wx": {
+    "navigationBarTitleText": "家庭保单智能管家",
+    "backgroundTextStyle": "dark",
+    "backgroundColor": "#E2E2E2"
+  }
+}
+</script>

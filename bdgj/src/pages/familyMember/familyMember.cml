@@ -1,0 +1,90 @@
+<template>
+	<page title="我的家庭成员">
+		<view class="policyShare view-container">
+			<view class="share-list">
+				<view class="list-line clearfix">
+					<image mode="widthFix" class="fl images" src="{{user.headimgurl?user.headimgurl:'https://bx.wts999.com/m/xcxStatic/person-center-03.jpg'}}"></image>
+					<view class="name fl">{{user.nickname}}</view>
+				</view>
+			</view>
+			<view class="share-list">
+				<view c-for="{{shareUser}}" c-for-index="i" c-for-item="val" class="list-line clearfix">
+					<image mode="widthFix" class="iconfont icon-lajitong" src="https://bx.wts999.com/m/xcxStatic/lajitong.png" c-catch:click="removeUserShare(val.nickname,val.id,i)"></image>
+					<image mode="widthFix" src="{{val.headimgurl?val.headimgurl:'https://bx.wts999.com/m/xcxStatic/person-center-03.jpg'}}" class="fl images" alt></image>
+					<view class="name fl">{{val.nickname}}</view>
+				</view>
+
+			</view>
+		</view>
+	</page>
+</template>
+
+<script>
+	import cml from 'chameleon-api';
+	// import _ from 'lodash';
+	import tools from '../../api/tools.js';
+	import notice from '../../api/notice.js';
+	import http from '../../api/http.js';
+	import store from '../../store/';
+	var vm = null;
+	class familyMember {
+		data = {
+			shareUser: [],
+			user: {}
+		}
+		methods = {
+			/**查询被邀请用户 */
+			shareUserQuery() {
+				http({
+						name: 'P_policyIsSared',
+						data: {}
+					})
+					.then(function(data, e) {
+						if(data.httpCode!=200) return;
+						vm.shareUser = data.data
+					})
+					.catch(error => {
+						console.log(error);
+					});
+			},
+			/** 删除被邀请用户 */
+			removeUserShare(name, id, i) {
+				notice.confirm("确认要删除 (" + (name) + ") 吗？", btn = ['删除', '我再想想'])
+					.then(function(value) {
+						http({
+								name: 'P_removePolicyShare',
+								data: {
+									accepterId: id
+								}
+							})
+							.then(function(data, e) {
+								if(data.httpCode!=200) return;
+								vm.shareUser.splice(i, 1);
+							})
+							.catch(error => {
+								console.log(error);
+							});
+					})
+					.catch(error => {
+						console.log(error);
+					});
+			},
+		}
+
+		created() {
+			vm = this;
+			this.user = store.state.WTS_USER_XCX;
+		}
+
+		mounted() {
+			this.shareUserQuery()
+		}
+	}
+	export default new familyMember();
+</script>
+<style lang="less" scoped>
+	@import "./familyMember.less";
+</style>
+<script cml-type="json">
+	{ "base":{ "usingComponents": { }, "navigationBarTitleText": "我的家庭成员", "backgroundTextStyle": "dark", "backgroundColor": "#fff" } }
+</script>

@@ -1,0 +1,135 @@
+.views {
+    height: 100%;
+    background: #eee;
+    .title {
+        height: 150cpx;
+        width: 100%;
+    }
+    .item_box {
+        background: #fff;
+        .item_szm {
+            height: 48cpx;
+            line-height: 48cpx;
+            background: #eee;
+            font-family: PingFang-SC-Regular;
+            font-size: 26cpx;
+            color: #666666;
+            text-indent: 30cpx;
+        }
+        .item {
+            padding: 30cpx 0 0 30cpx;
+            height: 150cpx;
+            overflow-y: hidden;
+            flex-direction: row;
+            &:last-child {
+                .item_content {
+                    border-bottom: none;
+                }
+            }
+            .item_img {
+                width: 200cpx;
+                height: 94cpx;
+                border-radius: 50%;
+            }
+            .item_content {
+                padding-bottom: 30cpx;
+                padding-right: 24cpx;
+                margin-left: 20cpx;
+                width: 610cpx;
+                flex-direction: row;
+                justify-content: space-between;
+                border-bottom: 2cpx solid #c7c7c7;
+                .item_msg {
+                    margin-right: 30cpx;
+                    min-width: 200cpx;
+                    border-right: 2cpx solid #eee;
+                    .item_name {
+                        margin-bottom: 26cpx;
+                        height: 34cpx;
+                        font-family: PingFang-SC-Medium;
+                        font-size: 34cpx;
+                        line-height: 34cpx;
+                        letter-spacing: 0cpx;
+                        color: #000000;
+                    }
+                    .item_num {
+                        height: 28cpx;
+                        font-family: PingFang-SC-Regular;
+                        font-size: 28cpx;
+                        line-height: 28cpx;
+                        letter-spacing: 0cpx;
+                        color: #4580f6;
+                    }
+                }
+                .item_call {
+                    margin-top: 16cpx;
+                    width: 50cpx;
+                    height: 50cpx;
+                    font-size: 50cpx;
+                    color: #4580f6;
+                }
+            }
+        }
+    }
+    .right_box {
+        position: fixed;
+        top: 220cpx;
+        right: 32cpx;
+        padding: 10cpx;
+        background-color: #ffffff;
+        box-shadow: 0px 0px 10cpx 0px  rgba(0, 0, 0, 0.2);
+        border-radius: 10cpx;
+        .right_item {
+            padding: 4cpx 0;
+            width: 26cpx;
+            font-size: 24cpx;
+            color: #999;
+            text-align: center;
+            &.active {
+                color: #4580f6;
+            }
+        }
+    }
+}
+
+@font-face {font-family: "iconfont";
+    src: url('../../assets/fonts/iconfont.eot?t=1574651221709'); /* IE9 */
+    src: url('../../assets/fonts/iconfont.eot?t=1574651221709#iefix') format('embedded-opentype'), /* IE6-IE8 */
+    url('data:application/x-font-woff2;charset=utf-8;base64,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') format('woff2'),
+    url('../../assets/fonts/iconfont.woff?t=1574651221709') format('woff'),
+    url('../../assets/fonts/iconfont.ttf?t=1574651221709') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+ */
+    url('../../assets/fonts/iconfont.svg?t=1574651221709#iconfont') format('svg'); /* iOS 4.1- */
+  }
+  
+  .iconfont {
+    font-family: "iconfont" !important;
+    font-size: 16px;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  .icon-gengduo:before {
+    content: "\e6c4";
+  }
+  
+  .icon-fangdajing:before {
+    content: "\e60d";
+  }
+  
+  .icon-callout:before {
+    content: "\e613";
+  }
+  
+  .icon-dianhua:before {
+    content: "\e633";
+  }
+  
+  .icon-guanbi:before {
+    content: "\e611";
+  }
+  
+  .icon-dianzan:before {
+    content: "\e73c";
+  }
+  

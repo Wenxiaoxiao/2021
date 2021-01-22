@@ -1,0 +1,76 @@
+<template>
+<view class="upload_com">
+    <view class="wrapper">
+        <view class="pic_list">
+            <view
+                c-for="{{imgDatas}}"
+                c-for-index="index"
+                c-for-item="src"
+                c-key="index"
+            >
+                <view >
+                    <image src="{{src}}"></image>
+                    <view class="modal">已传图片</view>
+                </view>
+                <view class="delete" c-bind:click="deleteImg(index,uploadType)"><image src="{{upload_delete}}"></image></view>
+            </view>
+        </view>
+        <view class="upload" c-bind:click="choseImg(uploadType)">
+            <image src="{{upload_pic}}" alt=""></image>
+        </view>
+    </view>
+</view>
+</template>
+<script>
+import cml from 'chameleon-api';
+import myApi from '../../components/tools/tools.interface';
+import tools from '../../api/tools.js';
+import http from '../../api/http.js';
+class UpLoad implements UpLoadInterface {
+  props = {
+    uploadType: String
+  }
+  data = {
+    imgDatas:[],
+    temImgData:[],
+    upload_pic:require("../../assets/images/verifyinsurance/upload.png"),
+    upload_delete:require("../../assets/images/verifyinsurance/delete.png")
+  }
+  methods = {
+      choseImg(){
+        // choice方式选择图片
+        let that = this;
+        cml.chooseImage({ type: 'choice' }).then((res) => {
+            const myImageData = res.tempFilePaths[0]; // 微信小程序中使用返回的 res.tempFilePaths[0]
+            // 接下来可以进行上传到服务器等操作
+            that.imgDatas.push(myImageData);
+            that.$cmlEmit("returnImg",{
+                imgDatas: that.imgDatas,
+                uploadType:that.uploadType
+            })
+        })
+      },
+    //删除图片
+    deleteImg(index,uploadType){
+        this.imgDatas.splice(index,1);
+        this.$cmlEmit("returnImg",{
+            imgDatas: this.imgDatas,
+            uploadType:uploadType
+        })
+    }
+  }
+}
+export default new UpLoad();
+</script>
+<style >
+@import "upLoad.less";
+</style>
+<script cml-type="json">
+{
+    "base": {
+        "usingComponents": {
+                
+        }
+    }
+}
+</script>

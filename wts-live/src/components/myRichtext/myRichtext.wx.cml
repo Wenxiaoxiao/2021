@@ -1,0 +1,33 @@
+<template>
+  <origin-rich-text class="richtext" nodes="{{textMsg}}"></origin-rich-text>
+</template>
+
+<script>
+
+class myRichtext implements myRichtextInterface {
+  props = {
+    textMsg: String
+  }
+  data = {
+  }
+  watch ={
+  }
+  methods = {
+  }
+}
+
+export default new myRichtext();
+</script>
+
+<style >
+@import "myRichtext.less";
+</style>
+
+<script cml-type="json">
+{
+  "base": {
+    "usingComponents": {
+    }
+  }
+}
+</script>

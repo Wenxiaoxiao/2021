@@ -1,0 +1,232 @@
+
+.apps{
+  background: #f2f2f2;
+  height: 100%;
+	font-family: SourceHanSansCN-Regular;
+  .class-info {
+    background: #Fff;
+    .banner-img{
+      margin-bottom: 40rpx;
+      width: 100%;
+      height: 422rpx;
+    }
+    .class-title {
+      padding: 0 30rpx 0;
+      font-size: 34rpx;
+      line-height: 34rpx;
+    }
+    .class-time {
+      padding: 0 30rpx 30rpx;
+      margin-top: 20rpx;
+      font-size: 26rpx;
+      line-height: 26rpx;
+    }
+  }
+  .class-detail {
+    padding: 25rpx 0 0;
+    margin-top: 16rpx;
+    background: #fff;
+    .sub-title {
+      margin: 0 30rpx;
+      padding-left: 10rpx;
+      margin-bottom: 20rpx;
+      border-left: 6rpx solid #0084ff;
+      font-size: 30rpx;
+      height: 30rpx;
+      line-height: 30rpx;
+    }
+    .class-detail-msg {
+      margin: 0 30rpx;
+      padding: 30rpx 30rpx 20rpx;
+      box-shadow: 0rpx 0rpx 10rpx 0rpx #dddddd;
+      border-radius: 8rpx;
+    }
+    .class-detail-desc {
+      margin-top: 20rpx;
+    }
+    .live-btn {
+      margin: 50rpx 30rpx 20rpx;
+    }
+	.btn-signed {
+		border-radius: 8rpx;
+		background: #e1e1e1;
+		font-size:34rpx;
+		color: #333333;
+	}
+    .btn-order {
+      width: 690rpx;
+      background: #ffa200;
+      border-radius: 8rpx;
+      font-size:34rpx;
+      border: none;
+      text-align: center;
+      color: #fff;
+    }
+  }
+  .details-box{
+    background: #91a2ff;
+    box-sizing: border-box;
+
+    .ct-box-01 image{
+      width: 100%;
+      height: 1600rpx;
+      object-fit: cover;
+    }
+
+    .ct-box-02 image{
+      width: 100%;
+      height: 1800rpx;
+      object-fit: cover;
+    }
+
+    .ct-box-03 image{
+      width: 100%;
+      height: 1600rpx;
+      object-fit: cover;
+    }
+  }
+
+  
+  .videoLayer{
+    height: 422rpx;
+
+    .mylive {
+        height: 422rpx;
+		width:100%;
+    }
+    video,
+    image {
+        width: 100%;
+        height: 422rpx;
+        position: relative;
+    }
+  }
+  .chat-box {
+    .my-input {
+        height: 100rpx;
+    }
+    .chat-inner{
+        padding: 10rpx;
+        padding-bottom: 0;
+        box-sizing: border-box;
+
+        .chat-tpl-01{
+            display: flex;
+            flex-direction: row;
+            margin-top: 10rpx;
+            &:first-child{
+                margin-top: 0;
+          }
+
+          .t-date{
+            background: #fff;
+            font-size: 28rpx;
+            width: 150rpx;
+            text-align: center;
+            border-radius: 10rpx;
+            align-self: flex-start;
+            line-height: 45rpx;
+            flex-shrink: 0;
+          }
+
+          image{
+            width: 45rpx;
+            height: 45rpx;
+            align-self: flex-start;
+            margin: 0 5rpx;
+            flex-shrink: 0;
+            border-radius: 50%;
+          }
+
+          .t-name{
+            background: #fff;
+            color: #E96B17;
+            border-radius: 10rpx;
+            width: 160rpx;
+            text-align: center;
+            font-size: 26rpx;
+            align-self: flex-start;
+            line-height: 45rpx;
+            flex-shrink: 0;
+          }
+
+          .t-ct{
+            margin-left: 5rpx;
+            max-width: 360rpx;
+            background: #fff;
+            font-size: 28rpx;
+            border-radius: 10rpx;
+            line-height: 45rpx;
+            padding: 0 10rpx;
+            overflow:hidden;
+          }
+
+          .t-teachet{
+            width: 160rpx;
+            line-height: 45rpx;
+            background: #FFD801;
+            color: #E96B16;
+            text-align: center;
+            border-radius: 10rpx;
+            font-size: 26rpx;
+          }
+
+          .t-dui{
+            width: 45rpx;
+            height: 45rpx;
+            font-size: 32rpx;
+            border-radius: 50%;
+            text-align: center;
+            color: #FFD701;
+            margin-left: 5rpx;
+          }
+        }
+
+        .chat-tpl-02{
+            margin-top: 10rpx;
+            display: flex;
+            flex-direction: column;
+
+            .t-ct{
+                margin-top: 20rpx;
+                max-width: 530rpx;
+                background: #fff;
+                font-size: 28rpx;
+                margin-left: 200rpx;
+                border-radius: 10rpx;
+                padding: 0 10rpx;
+                color: #03c;
+                font-weight: bold;
+                line-height: 45rpx;
+            }
+        }
+    }
+
+    .send-chat{
+        position: fixed;
+        height: 100rpx;
+        background: #fff;
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        bottom: 0;
+
+        input{
+            flex: 1;
+            margin-left: 20rpx;
+            border: none;
+        }
+
+        button{
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            height: 100rpx;
+            background: #f48900;
+            color: #fff;
+            width: 200rpx;
+        }
+    }
+}
+}

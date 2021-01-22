@@ -1,0 +1,99 @@
+.views {
+    height: 100%;
+    background: #eee;
+    .title {
+        height: 75px;
+        width: 100%;
+    }
+    .item_box {
+        background: #fff;
+        .item_szm {
+			display: block;
+            height: 24px;
+            line-height: 24px;
+            background: #eee;
+            font-family: PingFang-SC-Regular;
+            font-size: 13px;
+            color: #666666;
+            text-indent: 30rpx;
+        }
+        .item {
+			display: flex;
+            padding: 30rpx 0 0 30rpx;
+            height: 75px;
+            overflow-y: hidden;
+            flex-direction: row;
+			box-sizing: border-box;
+            &:last-child {
+                .item_content {
+                    border-bottom: none;
+                }
+            }
+            .item_img {
+                width: 200rpx;
+                height: 47px;
+                border-radius: 50%;
+				opacity: 0.4;
+            }
+            .item_content {
+				display: flex;
+                padding-bottom: 15px;
+                padding-right: 24rpx;
+                margin-left: 20rpx;
+                width: 610rpx;
+                flex-direction: row;
+                justify-content: space-between;
+                border-bottom: 2rpx solid #c7c7c7;
+				box-sizing: border-box;
+                .item_msg {
+                    margin-right: 30rpx;
+                    min-width: 250rpx;
+                    border-right: 2rpx solid #eee;
+                    .item_name {
+                        margin-bottom: 13px;
+                        height: 17px;
+                        font-family: PingFang-SC-Medium;
+                        font-size: 17px;
+                        line-height: 17px;
+                        letter-spacing: 0rpx;
+                        color: #000000;
+                    }
+                    .item_num {
+                        height: 14px;
+                        font-family: PingFang-SC-Regular;
+                        font-size: 14px;
+                        line-height: 14px;
+                        letter-spacing: 0rpx;
+                        color: #4580f6;
+                    }
+                }
+                .item_call {
+                    margin-top: 16rpx;
+                    width: 50rpx;
+                    height: 50rpx;
+                    font-size: 50rpx;
+                    color: #4580f6;
+                }
+            }
+        }
+    }
+    .right_box {
+        position: fixed;
+        top: 220rpx;
+        right: 32rpx;
+        padding: 10rpx;
+        background-color: #ffffff;
+        box-shadow: 0px 0px 10rpx 0px  rgba(0, 0, 0, 0.2);
+        border-radius: 10rpx;
+        .right_item {
+            padding: 4rpx 0;
+            width: 26rpx;
+            font-size: 24rpx;
+            color: #999;
+            text-align: center;
+            &.active {
+                color: #4580f6;
+            }
+        }
+    }
+}
