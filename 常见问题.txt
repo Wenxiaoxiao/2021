@@ -1,0 +1,13 @@
+1.layer出现两个遮罩层
+答：当前弹出层点击事件被绑定了多次
+
+2.解决js/css文件添加版本号问题
+2.1找到node_modules/gulp-rev-append/index.js
+2.2找到第10行，添加：var dataParse=+ new Date();
+2.3找到第53行：data = fs.readFileSync(dependencyPath)改成：data = dataParse;
+2.4把所有需要添加版本号的资源后面添加： ?rev=@@hash
+
+
+浏览器对mp4的编码方式要求的非常严格
+视频编码必须是 H.264 
+音频编码必须是: AAC
